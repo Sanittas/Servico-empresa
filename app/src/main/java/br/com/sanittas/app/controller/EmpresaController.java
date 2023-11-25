@@ -1,6 +1,5 @@
 package br.com.sanittas.app.controller;
 
-import br.com.sanittas.app.exception.ValidacaoException;
 import br.com.sanittas.app.service.EmailServices;
 import br.com.sanittas.app.service.EmpresaServices;
 import br.com.sanittas.app.service.autenticacao.dto.EmpresaLoginDto;
@@ -14,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/empresas")
@@ -57,12 +57,9 @@ public class EmpresaController {
             services.cadastrar(empresa);
             log.info("Empresa cadastrada com sucesso: {}", empresa.razaoSocial());
             return ResponseEntity.status(201).build();
-        } catch (ValidacaoException e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar empresa: {}", e.getMessage());
-            return ResponseEntity.status(409).build();
-        } catch (Exception e) {
-            log.error("Erro ao cadastrar empresa: {}", e.getMessage());
-            return ResponseEntity.status(400).build();
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 
@@ -73,9 +70,9 @@ public class EmpresaController {
             services.atualizar(empresa, id);
             log.info("Dados da empresa atualizados com sucesso: cnpj:{}\n razaoSocial:{}", empresa.cnpj(),empresa.razaoSocial());
             return ResponseEntity.status(200).build();
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao atualizar empresa: {}", e.getMessage());
-            return ResponseEntity.status(400).build();
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 
@@ -86,9 +83,9 @@ public class EmpresaController {
             services.deletar(id);
             log.info("Empresa deletada com sucesso: ID {}", id);
             return ResponseEntity.status(200).build();
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao deletar empresa: {}", e.getMessage());
-            return ResponseEntity.status(400).build();
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 
@@ -99,9 +96,9 @@ public class EmpresaController {
             services.gravaArquivosCsv(services.listarEmpresas());
             log.info("Exportação de dados para arquivo CSV concluída com sucesso");
             return ResponseEntity.status(200).build();
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao exportar dados para arquivo CSV: {}", e.getMessage());
-            return ResponseEntity.status(400).body(e);
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 
@@ -112,9 +109,9 @@ public class EmpresaController {
             services.ordenarPorRazaoSocial();
             log.info("Empresas ordenadas por razão social com sucesso");
             return ResponseEntity.status(200).build();
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao ordenar empresas por razão social: {}", e.getMessage());
-            return ResponseEntity.status(400).build();
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 
@@ -125,9 +122,9 @@ public class EmpresaController {
             Integer response = services.pesquisaBinariaRazaoSocial(razaoSocial);
             log.info("Resultado da pesquisa binária por razão social: {}", response);
             return ResponseEntity.status(200).body(response);
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro na pesquisa binária por razão social: {}", e.getMessage());
-            return ResponseEntity.status(400).build();
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 
@@ -137,9 +134,9 @@ public class EmpresaController {
             String token = services.generateToken(cnpj);
             emailServices.enviarEmailComToken(cnpj, token);
             return ResponseEntity.status(200).build();
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             log.info(e.getLocalizedMessage());
-            return ResponseEntity.status(400).body(e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 
@@ -154,8 +151,8 @@ public class EmpresaController {
         try {
             services.validarToken(token);
             return ResponseEntity.status(200).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(400).body(e.getLocalizedMessage());
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 
@@ -170,10 +167,8 @@ public class EmpresaController {
         try {
             services.alterarSenha(novaSenhaDto);
             return ResponseEntity.status(200).build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(409).build(); // Conflito, token inválido
-        } catch (Exception e) {
-            return ResponseEntity.status(400).body(e.getLocalizedMessage());
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 }

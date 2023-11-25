@@ -7,15 +7,13 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-@RestController("/categoria-servico")
+@RestController
+@RequestMapping("/categorias-servicos")
 public class CategoriaServicoController {
     @Autowired
     private CategoriaServicoServices categoriaServicoServices;
@@ -40,6 +38,26 @@ public class CategoriaServicoController {
             return ResponseEntity.status(201).build();
         } catch (Exception e) {
             throw new RuntimeException(e.getLocalizedMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> atualizar(@PathVariable Integer id, @RequestBody @Valid CategoriaServicoCriacaoDto categoriaServico) {
+        try {
+            categoriaServicoServices.atualizar(id, categoriaServico);
+            return ResponseEntity.status(200).build();
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Integer id) {
+        try {
+            categoriaServicoServices.deletar(id);
+            return ResponseEntity.status(200).build();
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 }

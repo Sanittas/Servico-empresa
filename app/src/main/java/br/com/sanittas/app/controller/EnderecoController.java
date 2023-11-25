@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -15,9 +16,6 @@ import java.util.List;
 @RequestMapping("/enderecos")
 @Slf4j
 public class EnderecoController {
-
-    @Autowired
-    private EmpresaServices empresaServices;
 
     @Autowired
     private EnderecoServices enderecoServices;
@@ -37,12 +35,11 @@ public class EnderecoController {
             if (!response.isEmpty()) {
                 return ResponseEntity.status(200).body(response);
             }
-
             log.info("A empresa com ID {} não possui endereços cadastrados.", id_empresa);
             return ResponseEntity.status(204).build();
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao listar endereços da empresa com ID: {}", id_empresa, e);
-            return ResponseEntity.status(400).build();
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 

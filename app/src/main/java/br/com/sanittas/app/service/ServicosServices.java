@@ -8,6 +8,7 @@ import br.com.sanittas.app.repository.ServicoRepository;
 import br.com.sanittas.app.service.servico.dto.ServicoCriacaoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,7 +27,12 @@ public class ServicosServices {
     private CategoriaServicoRepository categoriaServicoRepository;
 
     public List<Servico> listar() {
-        return servicoRepository.findAll();
+        try{
+            return servicoRepository.findAll();
+        }catch (Exception e){
+            log.error("Erro ao buscar servicos: " + e.getLocalizedMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public void cadastrar(ServicoCriacaoDto dados) {
@@ -37,9 +43,30 @@ public class ServicosServices {
             novoServico.setCategoriaServico(categoria);
             servicoRepository.save(novoServico);
         } catch (Exception e) {
-            throw new RuntimeException(e.getLocalizedMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
 
+    public void atualizar(Integer id, ServicoCriacaoDto dados) {
+        try {
+            CategoriaServico categoria = categoriaServicoRepository.findById(dados.getFkCategoriaServico()).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Categoria não encontrada"));
+            Servico servicoAtualizado = servicoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Servico não encontrado"));
+            servicoAtualizado.setDescricao(dados.getDescricao());
+            servicoAtualizado.setCategoriaServico(categoria);
+            servicoRepository.save(servicoAtualizado);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    public void deletar(Integer id) {
+        try {
+            var servico = servicoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Servico não encontrado"));
+            servicoRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

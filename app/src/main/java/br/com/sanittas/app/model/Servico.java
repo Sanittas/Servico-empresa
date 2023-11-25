@@ -16,6 +16,6 @@ public class Servico {
     @ManyToOne
     @JoinColumn(name = "fk_categoria_servico")
     private CategoriaServico categoriaServico;
-    @OneToMany(mappedBy = "servico")
+    @OneToMany(mappedBy = "servico",orphanRemoval = true)
     private List<ServicoEmpresa> servicoEmpresa;
 }

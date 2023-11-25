@@ -1,7 +1,6 @@
 package br.com.sanittas.app.service;
 
 import br.com.sanittas.app.api.configuration.security.jwt.GerenciadorTokenJwt;
-import br.com.sanittas.app.exception.ValidacaoException;
 import br.com.sanittas.app.model.Empresa;
 import br.com.sanittas.app.model.Endereco;
 import br.com.sanittas.app.repository.EmpresaRepository;
@@ -11,9 +10,10 @@ import br.com.sanittas.app.service.empresa.dto.*;
 import br.com.sanittas.app.service.endereco.dto.ListaEndereco;
 import br.com.sanittas.app.util.ListaObj;
 import lombok.SneakyThrows;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,14 +26,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 
 @Service
+@Slf4j
 public class EmpresaServices {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmpresaServices.class);
 
     @Autowired
     private EmpresaRepository repository;
@@ -48,7 +50,7 @@ public class EmpresaServices {
     private AuthenticationManager authenticationManager;
 
     public ListaObj<ListaEmpresa> listarEmpresas() {
-        LOGGER.info("Listando todas as empresas.");
+        log.info("Listando todas as empresas.");
         List<Empresa> empresas = repository.findAll();
         ListaObj<ListaEmpresa> listaEmpresas = new ListaObj<>(empresas.size());
         for (Empresa empresa : empresas) {
@@ -62,7 +64,7 @@ public class EmpresaServices {
             );
             listaEmpresas.adiciona(empresaDto);
         }
-        LOGGER.info("Empresas listadas com sucesso.");
+        log.info("Empresas listadas com sucesso.");
         return listaEmpresas;
     }
 
@@ -82,44 +84,50 @@ public class EmpresaServices {
 
     public void cadastrar(EmpresaCriacaoDto empresa) {
         if (repository.existsByRazaoSocial(empresa.razaoSocial())) {
-         throw new ValidacaoException("Razão Social já cadastrada.");
+            log.error("Razão social já cadastrada");
+         throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
         if (repository.existsByCnpj(empresa.cnpj())) {
-            throw new ValidacaoException("CNPJ já cadastrado.");
+            log.error("CNPJ já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
-        LOGGER.info("Cadastrando nova empresa.");
+        log.info("Cadastrando nova empresa.");
         Empresa empresaNova = new Empresa();
         empresaNova.setRazaoSocial(empresa.razaoSocial());
         empresaNova.setCnpj(empresa.cnpj());
         empresaNova.setSenha(passwordEncoder.encode(empresa.senha()));
-
-
         repository.save(empresaNova);
-        LOGGER.info("Empresa cadastrada com sucesso.");
+        log.info("Empresa cadastrada com sucesso.");
     }
 
     public void atualizar(EmpresaCriacaoDto empresa, Integer id) {
-        LOGGER.info("Atualizando empresa com ID: {}", id);
+        log.info("Atualizando empresa com ID: {}", id);
         var empresaAtualizada = repository.findById(id);
         if (empresaAtualizada.isPresent()) {
             empresaAtualizada.get().setRazaoSocial(empresa.razaoSocial());
             empresaAtualizada.get().setCnpj(empresa.cnpj());
             empresaAtualizada.get().setSenha(passwordEncoder.encode(empresa.senha()));
             repository.save(empresaAtualizada.get());
-            LOGGER.info("Empresa atualizada com sucesso.");
+            log.info("Empresa atualizada com sucesso.");
         } else {
-            LOGGER.warn("Tentativa de atualizar empresa com ID {}, mas não encontrada.", id);
+            log.warn("Tentativa de atualizar empresa com ID {}, mas não encontrada.", id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     public void deletar(Integer id) {
-        LOGGER.info("Deletando empresa com ID: {}", id);
+        var empresa = repository.findById(id);
+        if (empresa.isEmpty()){
+            log.error("Tentativa de deletar empresa com ID {}, mas não encontrada.", id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        log.info("Deletando empresa com ID: {}", id);
         repository.deleteById(id);
-        LOGGER.info("Empresa deletada com sucesso.");
+        log.info("Empresa deletada com sucesso.");
     }
 
     public EmpresaTokenDto autenticar(EmpresaLoginDto empresaLoginDto) {
-        LOGGER.info("Autenticando empresa com CNPJ: {}", empresaLoginDto.cnpj());
+        log.info("Autenticando empresa com CNPJ: {}", empresaLoginDto.cnpj());
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
                 empresaLoginDto.cnpj(), empresaLoginDto.senha());
 
@@ -135,13 +143,13 @@ public class EmpresaServices {
 
         final String jwtToken = gerenciadorTokenJwt.gerarToken(authentication);
 
-        LOGGER.info("Autenticação bem-sucedida para empresa com CNPJ: {}", empresaLoginDto.cnpj());
+        log.info("Autenticação bem-sucedida para empresa com CNPJ: {}", empresaLoginDto.cnpj());
 
         return EmpresaMapper.of(empresaAutenticada, jwtToken);
     }
 
     public void gravaArquivosCsv(ListaObj<ListaEmpresa> lista) {
-        LOGGER.info("Gravando arquivo CSV com informações das empresas.");
+        log.info("Gravando arquivo CSV com informações das empresas.");
         FileWriter arq = null;
         PrintWriter saida = null;
         boolean deuRuim = false;
@@ -152,7 +160,7 @@ public class EmpresaServices {
             arq = new FileWriter(nomeArq);
             saida = new PrintWriter(arq);
         } catch (IOException erro) {
-            LOGGER.error("Erro ao abrir o arquivo.", erro);
+            log.error("Erro ao abrir o arquivo.", erro);
             System.exit(1);
         }
 
@@ -180,25 +188,25 @@ public class EmpresaServices {
             }
 
         } catch (FormatterClosedException erro) {
-            LOGGER.error("Erro ao gravar o arquivo.", erro);
+            log.error("Erro ao gravar o arquivo.", erro);
             deuRuim = true;
         } finally {
             saida.close();
             try {
                 arq.close();
             } catch (IOException erro) {
-                LOGGER.error("Erro ao fechar o arquivo.", erro);
+                log.error("Erro ao fechar o arquivo.", erro);
                 deuRuim = true;
             }
             if (deuRuim) {
                 System.exit(1);
             }
         }
-        LOGGER.info("Arquivo CSV gravado com sucesso.");
+        log.info("Arquivo CSV gravado com sucesso.");
     }
 
     public ListaObj<ListaEmpresa> ordenarPorRazaoSocial() {
-        LOGGER.info("Ordenando empresas por Razão Social.");
+        log.info("Ordenando empresas por Razão Social.");
         ListaObj<ListaEmpresa> listaEmpresas = listarEmpresas();
         for (int i = 0; i < listaEmpresas.getNroElem() - 1; i++) {
             for (int j = i + 1; j < listaEmpresas.getNroElem(); j++) {
@@ -210,22 +218,21 @@ public class EmpresaServices {
             }
         }
         gravaArquivosCsv(listaEmpresas);
-        LOGGER.info("Empresas ordenadas por Razão Social.");
+        log.info("Empresas ordenadas por Razão Social.");
         return listaEmpresas;
     }
 
     public Integer pesquisaBinariaRazaoSocial(String razaoSocial) {
-        LOGGER.info("Realizando pesquisa binária por Razão Social: {}", razaoSocial);
+        log.info("Realizando pesquisa binária por Razão Social: {}", razaoSocial);
         ListaObj<ListaEmpresa> listaObj = ordenarPorRazaoSocial();
         Integer resultado = listaObj.pesquisaBinaria(razaoSocial);
-        LOGGER.info("Resultado da pesquisa binária: {}", resultado);
+        log.info("Resultado da pesquisa binária: {}", resultado);
         return resultado;
     }
 
-    @SneakyThrows
     public String generateToken(String cnpj) {
         try {
-            LOGGER.info("Gerando token para o email: {}", cnpj);
+            log.info("Gerando token para o email: {}", cnpj);
 
             Empresa empresa = repository.findByCnpj(cnpj)
                     .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
@@ -235,15 +242,14 @@ public class EmpresaServices {
 
             return token.getKey();
         } catch (Exception e) {
-            LOGGER.error("Erro ao gerar token: {}", e.getMessage());
-            throw e;
+            log.error("Erro ao gerar token: {}", e.getMessage());
+            throw new ResponseStatusException(HttpStatusCode.valueOf(400));
         }
     }
 
-    @SneakyThrows
     public void validarToken(String token) {
         try {
-            LOGGER.info("Validando token");
+            log.info("Validando token");
 
             PasswordTokenPublicData publicData = readPublicData(token);
 
@@ -251,7 +257,7 @@ public class EmpresaServices {
                 throw new RuntimeException("Token expirado");
             }
         } catch (Exception e) {
-            LOGGER.error("Erro ao validar token: {}", e.getMessage());
+            log.error("Erro ao validar token: {}", e.getMessage());
             throw e;
         }
     }
@@ -259,16 +265,17 @@ public class EmpresaServices {
     @SneakyThrows
     public void alterarSenha(NovaSenhaDto novaSenhaDto) {
         try {
-            LOGGER.info("Alterando senha com token");
+            log.info("Alterando senha com token");
 
             PasswordTokenPublicData publicData = readPublicData(novaSenhaDto.getToken());
 
             if (isExpired(publicData)) {
-                throw new RuntimeException("Token expirado");
+
+                throw new ResponseStatusException(HttpStatusCode.valueOf(400));
             }
 
             Empresa empresa = repository.findByCnpj(publicData.getCnpj())
-                    .orElseThrow(RuntimeException::new);
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
             KeyBasedPersistenceTokenService tokenService = this.getInstanceFor(empresa);
             tokenService.verifyToken(novaSenhaDto.getToken());
@@ -276,7 +283,7 @@ public class EmpresaServices {
             empresa.setSenha(this.passwordEncoder.encode(novaSenhaDto.getNovaSenha()));
             repository.save(empresa);
         } catch (Exception e) {
-            LOGGER.error("Erro ao alterar senha: {}", e.getMessage());
+            log.error("Erro ao alterar senha: {}", e.getMessage());
             throw e;
         }
     }

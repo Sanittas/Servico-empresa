@@ -13,16 +13,14 @@ public class ServicoEmpresa {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
-    @MapsId("fkEmpresa")
     @JoinColumn(name = "fkEmpresa")
     private Empresa empresa;
     @ManyToOne
-    @MapsId("fkServico")
     @JoinColumn(name = "fkServico")
     private Servico servico;
-    private String valorServico;
+    private Double valorServico;
     private String duracaoEstimada;
     private String equipeResponsavel;
-    @OneToMany(mappedBy = "servicoEmpresa")
+    @OneToMany(mappedBy = "servicoEmpresa",orphanRemoval = true)
     private List<AgendamentoServico> agendamentoServico;
 }

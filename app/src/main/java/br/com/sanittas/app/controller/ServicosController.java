@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -29,10 +30,10 @@ public class ServicosController {
                 return ResponseEntity.status(200).body(response);
             }
             log.info("Nenhum servico encontrado");
-            return ResponseEntity.status(204).build();
-        }catch (Exception e) {
-            log.error("Erro ao buscar servicos", e.getLocalizedMessage());
-            throw new RuntimeException(e.getLocalizedMessage());
+            return ResponseEntity.status(204).body(response);
+        }catch (ResponseStatusException e) {
+            log.error("Erro ao buscar servicos: " + e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 
@@ -42,9 +43,33 @@ public class ServicosController {
             services.cadastrar(dados);
             log.info("Servico cadastrado com sucesso");
             return ResponseEntity.status(201).build();
-        }catch (Exception e){
-            log.error("Erro ao cadastrar servico", e.getLocalizedMessage());
-            throw new RuntimeException(e.getLocalizedMessage());
+        }catch (ResponseStatusException e){
+            log.error("Erro ao cadastrar servico" + e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> atualizar(@PathVariable Integer id, @RequestBody @Valid ServicoCriacaoDto dados) {
+        try{
+            services.atualizar(id, dados);
+            log.info("Servico atualizado com sucesso");
+            return ResponseEntity.status(200).build();
+        }catch (ResponseStatusException e){
+            log.error("Erro ao atualizar servico" + e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Integer id) {
+        try{
+            services.deletar(id);
+            log.info("Servico deletado com sucesso");
+            return ResponseEntity.status(200).build();
+        }catch (ResponseStatusException e){
+            log.error("Erro ao deletar servico" + e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 

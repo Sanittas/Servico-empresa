@@ -84,14 +84,10 @@ public class FuncionarioServices {
     }
 
     public void deletar(Integer id) {
-        try{
         if (!repository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         repository.deleteById(id);
-        }catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
     }
 
     public Funcionario buscarPorId(Integer id) {
@@ -112,12 +108,16 @@ public class FuncionarioServices {
     }
 
     public List<ListaFuncionario> listaFuncionariosPorEmpresa(Integer idEmpresa) {
-        List<Funcionario> funcionarios = repository.findAllWithIdEmpresa(idEmpresa);
-        List<ListaFuncionario> listaFunc = new ArrayList<>();
-        for (Funcionario funcionario : funcionarios) {
-            criarDtoFuncionarios(funcionario, listaFunc);
+        try {
+            Empresa empresa = empresaRepository.findById(idEmpresa).get();
+            List<Funcionario> funcionarios = repository.findAllByIdEmpresa(empresa);
+            List<ListaFuncionario> listaFunc = new ArrayList<>();
+            for (Funcionario funcionario : funcionarios) {
+                criarDtoFuncionarios(funcionario, listaFunc);
+            }
+            return listaFunc;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        return listaFunc;
-
     }
 }

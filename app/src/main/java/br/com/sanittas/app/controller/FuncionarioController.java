@@ -1,6 +1,5 @@
 package br.com.sanittas.app.controller;
 
-import br.com.sanittas.app.exception.ValidacaoException;
 import br.com.sanittas.app.model.Funcionario;
 import br.com.sanittas.app.service.FuncionarioServices;
 import br.com.sanittas.app.service.funcionario.dto.FuncionarioCriacaoDto;
@@ -34,9 +33,9 @@ public class FuncionarioController {
             }
             log.info("Nenhum funcionario encontrado");
             return ResponseEntity.status(204).body(response);
-        }catch (Exception e) {
+        }catch (ResponseStatusException e) {
             log.error("Erro ao buscar funcionarios", e.getLocalizedMessage());
-            throw new RuntimeException(e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 

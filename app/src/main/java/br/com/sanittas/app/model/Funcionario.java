@@ -33,6 +33,7 @@ public class Funcionario {
     @NotBlank
     private String numeroRegistroAtuacao;
     @ManyToOne
+    @JoinColumn(name = "fk_empresa")
     private Empresa idEmpresa;
 
 }

@@ -50,6 +50,19 @@ public class EmpresaController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ListaEmpresa buscarEmpresaPorId(@PathVariable Integer id) {
+        try {
+            log.info("Recebida solicitação para buscar empresa com ID: {}", id);
+            ListaEmpresa response = services.listarEmpresaPorId(id);
+            log.info("Empresa encontrada com sucesso: {}", response.razaoSocial());
+            return response;
+        } catch (ResponseStatusException e) {
+            log.error("Erro ao buscar empresa com ID {}: {}", id, e.getMessage());
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
     @PostMapping("/cadastrar/")
     public ResponseEntity<Void> cadastrarEmpresa(@RequestBody @Valid EmpresaCriacaoDto empresa) {
         try {

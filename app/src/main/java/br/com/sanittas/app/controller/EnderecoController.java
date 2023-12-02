@@ -1,9 +1,8 @@
 package br.com.sanittas.app.controller;
 
-import br.com.sanittas.app.service.EmpresaServices;
+import br.com.sanittas.app.model.Endereco;
 import br.com.sanittas.app.service.EnderecoServices;
 import br.com.sanittas.app.service.endereco.dto.EnderecoCriacaoDto;
-import br.com.sanittas.app.service.endereco.dto.ListaEndereco;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +26,10 @@ public class EnderecoController {
      * @return ResponseEntity<List<ListaEndereco>> - Lista de endereços.
      */
     @GetMapping("/empresas/{id_empresa}")
-    public ResponseEntity<List<ListaEndereco>> listarEnderecosPorEmpresa(@PathVariable Integer id_empresa) {
+    public ResponseEntity<List<Endereco>> listarEnderecosPorEmpresa(@PathVariable Integer id_empresa) {
         try {
             log.info("Listando endereços da empresa com ID: {}", id_empresa);
             var response = enderecoServices.listarEnderecosPorEmpresa(id_empresa);
-
             if (!response.isEmpty()) {
                 return ResponseEntity.status(200).body(response);
             }
@@ -56,9 +54,9 @@ public class EnderecoController {
             log.info("Cadastrando endereço para a empresa com ID: {}", empresa_id);
             enderecoServices.cadastrarEnderecoEmpresa(endereco, empresa_id);
             return ResponseEntity.status(201).build();
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar endereço para a empresa com ID: {}", empresa_id, e);
-            return ResponseEntity.status(400).build();
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 
@@ -70,14 +68,14 @@ public class EnderecoController {
      * @return ResponseEntity<ListaEndereco> - Endereço atualizado.
      */
     @PutMapping("/empresas/{id}")
-    public ResponseEntity<ListaEndereco> atualizarEnderecoEmpresa(@RequestBody EnderecoCriacaoDto enderecoCriacaoDto, @PathVariable Long id) {
+    public ResponseEntity<Endereco> atualizarEnderecoEmpresa(@RequestBody EnderecoCriacaoDto enderecoCriacaoDto, @PathVariable Long id) {
         try {
             log.info("Atualizando endereço com ID: {}", id);
             var endereco = enderecoServices.atualizar(enderecoCriacaoDto, id);
             return ResponseEntity.status(200).body(endereco);
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao atualizar endereço com ID: {}", id, e);
-            return ResponseEntity.status(400).build();
+            throw new ResponseStatusException(e.getStatusCode());
         }
     }
 

@@ -1,5 +1,6 @@
 package br.com.sanittas.app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import lombok.Setter;
 public class Endereco {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "fk_empresa")
     private Empresa empresa;

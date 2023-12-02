@@ -1,5 +1,7 @@
 package br.com.sanittas.app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,12 +17,14 @@ public class ServicoEmpresa {
     @ManyToOne
     @JoinColumn(name = "fkEmpresa")
     private Empresa empresa;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "fkServico")
     private Servico servico;
     private Double valorServico;
     private String duracaoEstimada;
     private String equipeResponsavel;
+    @JsonManagedReference
     @OneToMany(mappedBy = "servicoEmpresa",orphanRemoval = true)
     private List<AgendamentoServico> agendamentoServico;
 }

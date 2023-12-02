@@ -1,5 +1,6 @@
 package br.com.sanittas.app.controller;
 
+import br.com.sanittas.app.model.Empresa;
 import br.com.sanittas.app.service.EmailServices;
 import br.com.sanittas.app.service.EmpresaServices;
 import br.com.sanittas.app.service.autenticacao.dto.EmpresaLoginDto;
@@ -51,11 +52,11 @@ public class EmpresaController {
     }
 
     @GetMapping("/{id}")
-    public ListaEmpresa buscarEmpresaPorId(@PathVariable Integer id) {
+    public Empresa buscarEmpresaPorId(@PathVariable Integer id) {
         try {
             log.info("Recebida solicitação para buscar empresa com ID: {}", id);
-            ListaEmpresa response = services.listarEmpresaPorId(id);
-            log.info("Empresa encontrada com sucesso: {}", response.razaoSocial());
+            Empresa response = services.listarEmpresaPorId(id);
+            log.info("Empresa encontrada com sucesso: {}", response.getRazaoSocial());
             return response;
         } catch (ResponseStatusException e) {
             log.error("Erro ao buscar empresa com ID {}: {}", id, e.getMessage());

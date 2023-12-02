@@ -1,5 +1,6 @@
 package br.com.sanittas.app.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class Empresa {
     @CNPJ @Column(unique = true)
     private String cnpj;
     private String senha;
+    @JsonManagedReference
     @OneToMany(mappedBy = "empresa", orphanRemoval = true)
     private List<Endereco> enderecos = new ArrayList<>();
 

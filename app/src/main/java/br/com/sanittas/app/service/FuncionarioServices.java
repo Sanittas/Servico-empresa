@@ -7,8 +7,6 @@ import br.com.sanittas.app.repository.EmpresaRepository;
 import br.com.sanittas.app.repository.FuncionarioRepository;
 import br.com.sanittas.app.service.funcionario.dto.FuncionarioCriacaoDto;
 import br.com.sanittas.app.service.funcionario.dto.FuncionarioMapper;
-import br.com.sanittas.app.service.funcionario.dto.ListaFuncionario;
-import br.com.sanittas.app.service.funcionario.dto.ListaFuncionarioAtualizacao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +14,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,56 +28,40 @@ public class FuncionarioServices {
     @Autowired
     private GerenciadorTokenJwt gerenciadorTokenJwt;
 
-    public List<ListaFuncionario> listaFuncionarios() {
+    public List<Funcionario> listaFuncionarios() {
         var funcionarios = repository.findAll();
-        List<ListaFuncionario> listaFunc = new ArrayList<>();
-        for (Funcionario funcionario : funcionarios) {
-            criarDtoFuncionarios(funcionario, listaFunc);
-        }
-        return listaFunc;
+        return funcionarios;
     }
 
-    private static void criarDtoFuncionarios(Funcionario funcionario,  List<ListaFuncionario> listaFuncionarios) {
-        var funcionarioDto = new ListaFuncionario(
-                funcionario.getId(),
-                funcionario.getFuncional(),
-                funcionario.getNome(),
-                funcionario.getCpf(),
-                funcionario.getRg(),
-                funcionario.getEmail(),
-                funcionario.getNumeroRegistroAtuacao(),
-                funcionario.getIdEmpresa()
-        );
-        listaFuncionarios.add(funcionarioDto);
-    }
+//    private static void criarDtoFuncionarios(Funcionario funcionario,  List<ListaFuncionario> listaFuncionarios) {
+//        var funcionarioDto = new ListaFuncionario(
+//                funcionario.getId(),
+//                funcionario.getFuncional(),
+//                funcionario.getNome(),
+//                funcionario.getCpf(),
+//                funcionario.getRg(),
+//                funcionario.getEmail(),
+//                funcionario.getNumeroRegistroAtuacao(),
+//                funcionario.getIdEmpresa()
+//        );
+//        listaFuncionarios.add(funcionarioDto);
+//    }
 
-    public ListaFuncionarioAtualizacao atualizar(Integer id, Funcionario dados) {
-        try{
-        var funcionario = repository.findById(id);
-        if (funcionario.isPresent()) {
-            funcionario.get().setFuncional(dados.getFuncional());
-            funcionario.get().setNome(dados.getNome());
-            funcionario.get().setCpf(dados.getCpf());
-            funcionario.get().setRg(dados.getRg());
-            funcionario.get().setEmail(dados.getEmail());
-            funcionario.get().setNumeroRegistroAtuacao(dados.getNumeroRegistroAtuacao());
-
-            ListaFuncionarioAtualizacao FuncionarioDto = new ListaFuncionarioAtualizacao(
-                    funcionario.get().getId(),
-                    funcionario.get().getFuncional(),
-                    funcionario.get().getNome(),
-                    funcionario.get().getCpf(),
-                    funcionario.get().getRg(),
-                    funcionario.get().getEmail(),
-                    funcionario.get().getNumeroRegistroAtuacao()
-            );
-            repository.save(funcionario.get());
-            return FuncionarioDto;
+    public Funcionario atualizar(Integer id, FuncionarioCriacaoDto dados) {
+        var funcionario = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        funcionario.setFuncional(dados.getFuncional());
+        funcionario.setNome(dados.getNome());
+        if (repository.existsByCpf(dados.getCpf())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
-        return null;
-        }catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        funcionario.setCpf(dados.getCpf());
+        funcionario.setRg(dados.getRg());
+        if (repository.existsByEmail(dados.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
+        funcionario.setEmail(dados.getEmail());
+        funcionario.setNumeroRegistroAtuacao(dados.getNumeroRegistroAtuacao());
+        return repository.save(funcionario);
     }
 
     public void deletar(Integer id) {
@@ -107,15 +88,11 @@ public class FuncionarioServices {
         repository.save(novoFuncionario);
     }
 
-    public List<ListaFuncionario> listaFuncionariosPorEmpresa(Integer idEmpresa) {
+    public List<Funcionario> listaFuncionariosPorEmpresa(Integer idEmpresa) {
         try {
             Empresa empresa = empresaRepository.findById(idEmpresa).get();
             List<Funcionario> funcionarios = repository.findAllByIdEmpresa(empresa);
-            List<ListaFuncionario> listaFunc = new ArrayList<>();
-            for (Funcionario funcionario : funcionarios) {
-                criarDtoFuncionarios(funcionario, listaFunc);
-            }
-            return listaFunc;
+            return funcionarios;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }

@@ -68,20 +68,12 @@ public class EmpresaServices {
         return listaEmpresas;
     }
 
-    public ListaEmpresa listarEmpresaPorId(Integer id) {
+    public Empresa listarEmpresaPorId(Integer id) {
         log.info("Listando empresa com ID: {}", id);
         var empresa = repository.findById(id);
         if (empresa.isPresent()) {
-            List<ListaEndereco> listaEnderecos = new ArrayList<>();
-            extrairEndereco(empresa.get(), listaEnderecos);
-            var empresaDto = new ListaEmpresa(
-                    empresa.get().getId(),
-                    empresa.get().getRazaoSocial(),
-                    empresa.get().getCnpj(),
-                    listaEnderecos
-            );
             log.info("Empresa listada com sucesso.");
-            return empresaDto;
+            return empresa.get();
         }
         log.warn("Tentativa de listar empresa com ID {}, mas não encontrada.", id);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);

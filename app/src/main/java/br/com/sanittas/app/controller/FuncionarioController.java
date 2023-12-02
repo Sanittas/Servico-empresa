@@ -3,7 +3,6 @@ package br.com.sanittas.app.controller;
 import br.com.sanittas.app.model.Funcionario;
 import br.com.sanittas.app.service.FuncionarioServices;
 import br.com.sanittas.app.service.funcionario.dto.FuncionarioCriacaoDto;
-import br.com.sanittas.app.service.funcionario.dto.ListaFuncionario;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -24,7 +23,7 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioServices services;
     @GetMapping("/")
-    public ResponseEntity<List<ListaFuncionario>> listar() {
+    public ResponseEntity<List<Funcionario>> listar() {
         try{
             var response = services.listaFuncionarios();
             if (!response.isEmpty()){
@@ -81,7 +80,7 @@ public class FuncionarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Integer id, @RequestBody @Valid Funcionario dados) {
+    public ResponseEntity<?> atualizar(@PathVariable Integer id, @RequestBody @Valid FuncionarioCriacaoDto dados) {
         try{
             var funcionario = services.atualizar(id,dados);
             log.info("Funcionario atualizado" + funcionario);
@@ -105,7 +104,7 @@ public class FuncionarioController {
     }
 
     @GetMapping("/empresa/{id}")
-    public ResponseEntity<List<ListaFuncionario>> listarPorEmpresa(@PathVariable Integer id) {
+    public ResponseEntity<List<Funcionario>> listarPorEmpresa(@PathVariable Integer id) {
         try{
             var response = services.listaFuncionariosPorEmpresa(id);
             if (!response.isEmpty()){

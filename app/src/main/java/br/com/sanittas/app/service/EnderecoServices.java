@@ -45,79 +45,35 @@ public class EnderecoServices {
         }
     }
 
-    public ListaEndereco atualizar(EnderecoCriacaoDto enderecoCriacaoDto, Long id) {
-        try {
-            log.info("Atualizando endereço com ID: {}", id);
-            var endereco = repository.findById(id);
-            if (endereco.isPresent()) {
-                endereco.get().setLogradouro(enderecoCriacaoDto.getLogradouro());
-                endereco.get().setNumero(enderecoCriacaoDto.getNumero());
-                endereco.get().setComplemento(enderecoCriacaoDto.getComplemento());
-                endereco.get().setEstado(enderecoCriacaoDto.getEstado());
-                endereco.get().setCidade(enderecoCriacaoDto.getCidade());
-                repository.save(endereco.get());
+    public Endereco atualizar(EnderecoCriacaoDto enderecoCriacaoDto, Long id) {
 
-                log.info("Endereço atualizado com sucesso. ID: {}", id);
-
-                return new ListaEndereco(
-                        endereco.get().getId(),
-                        endereco.get().getLogradouro(),
-                        endereco.get().getNumero(),
-                        endereco.get().getComplemento(),
-                        endereco.get().getEstado(),
-                        endereco.get().getCidade()
-                );
-            } else {
-                log.warn("Tentativa de atualizar endereço com ID {}, mas não encontrado.", id);
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            log.error("Erro ao atualizar endereço com ID: {}", id, e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        log.info("Atualizando endereço com ID: {}", id);
+        var endereco = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        endereco.setLogradouro(enderecoCriacaoDto.getLogradouro());
+        endereco.setNumero(enderecoCriacaoDto.getNumero());
+        endereco.setComplemento(enderecoCriacaoDto.getComplemento());
+        endereco.setCidade(enderecoCriacaoDto.getCidade());
+        endereco.setEstado(enderecoCriacaoDto.getEstado());
+        return repository.save(endereco);
     }
 
     public void deletarEndereco(Long id) {
-        try {
-            log.info("Deletando endereço com ID: {}", id);
+        log.info("Deletando endereço com ID: {}", id);
 
-            if (repository.existsById(id)) {
-                repository.deleteById(id);
-                log.info("Endereço deletado com sucesso. ID: {}", id);
-            } else {
-                log.warn("Tentativa de deletar endereço com ID {}, mas não encontrado.", id);
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            log.info("Endereço deletado com sucesso. ID: {}", id);
+        } else {
+            log.warn("Tentativa de deletar endereço com ID {}, mas não encontrado.", id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
-    public List<ListaEndereco> listarEnderecosPorEmpresa(Integer idEmpresa) {
+    public List<Endereco> listarEnderecosPorEmpresa(Integer idEmpresa) {
         try {
             log.info("Listando endereços para a empresa com ID: {}", idEmpresa);
-            var empresa = empresaRepository.findById(idEmpresa);
-            List<ListaEndereco> enderecos = new ArrayList<>();
-
-            if (empresa.isPresent()) {
-                for (Endereco endereco : empresa.get().getEnderecos()) {
-                    var enderecoDto = new ListaEndereco(
-                            endereco.getId(),
-                            endereco.getLogradouro(),
-                            endereco.getNumero(),
-                            endereco.getComplemento(),
-                            endereco.getEstado(),
-                            endereco.getCidade()
-                    );
-                    enderecos.add(enderecoDto);
-                }
-
-                log.info("Endereços listados com sucesso para a empresa com ID: {}", idEmpresa);
-                return enderecos;
-            } else {
-                log.warn("Tentativa de listar endereços para empresa com ID {}, mas não encontrada.", idEmpresa);
-                return enderecos;
-            }
+            var empresa = empresaRepository.findById(idEmpresa).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            return empresa.getEnderecos();
         } catch (Exception e) {
             log.error("Erro ao listar endereços para a empresa com ID: {}", idEmpresa, e);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

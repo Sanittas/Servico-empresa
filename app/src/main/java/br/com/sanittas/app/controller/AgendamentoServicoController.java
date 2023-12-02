@@ -3,8 +3,8 @@ package br.com.sanittas.app.controller;
 import br.com.sanittas.app.model.AgendamentoServico;
 import br.com.sanittas.app.service.AgendamentoServicoServices;
 import br.com.sanittas.app.service.agendamento.dto.AgendamentoCriacaoDto;
-import br.com.sanittas.app.service.agendamento.dto.ListaAgendamento;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +14,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/agendamentos")
+@Slf4j
 public class AgendamentoServicoController {
     @Autowired
     private AgendamentoServicoServices services;
 
     @GetMapping("/")
-    public ResponseEntity<List<ListaAgendamento>>listar() {
+    public ResponseEntity<List<AgendamentoServico>>listar() {
         try {
-            List<ListaAgendamento> response = services.listar();
+            List<AgendamentoServico> response = services.listar();
             if (!response.isEmpty()) {
                 return ResponseEntity.status(200).body(response);
             }
@@ -37,6 +38,8 @@ public class AgendamentoServicoController {
             services.cadastrar(dados);
             return ResponseEntity.status(201).build();
         } catch (ResponseStatusException e) {
+            log.error("Erro ao cadastrar agendamento: " + e.getMessage());
+            log.error(e.getReason());
             throw new ResponseStatusException(e.getStatusCode());
         }
     }

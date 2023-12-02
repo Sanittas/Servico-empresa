@@ -1,6 +1,7 @@
 package br.com.sanittas.app.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class AgendamentoServico {
     @ManyToOne
     @JoinColumn(name = "fk_usuario")
     private Usuario usuario;
+    @JsonBackReference
     @ManyToOne
     private ServicoEmpresa servicoEmpresa;
 }

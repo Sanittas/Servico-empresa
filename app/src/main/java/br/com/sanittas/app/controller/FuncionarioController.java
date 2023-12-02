@@ -39,6 +39,18 @@ public class FuncionarioController {
         }
     }
 
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<Integer> getIdByCpf(@PathVariable String cpf) {
+        try{
+            var funcionario = services.buscarPorCpf(cpf);
+            log.info("Funcionario encontrado" + funcionario);
+            return ResponseEntity.status(200).body(funcionario);
+        }catch (ResponseStatusException e){
+            log.info("Funcionario não encontrado");
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> buscar(@PathVariable Integer id) {
         try{

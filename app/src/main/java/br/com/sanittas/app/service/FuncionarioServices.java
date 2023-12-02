@@ -120,4 +120,9 @@ public class FuncionarioServices {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
+
+    public Integer buscarPorCpf(String cpf) {
+        Funcionario funcionario = repository.findByCpf(cpf).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return funcionario.getId();
+    }
 }

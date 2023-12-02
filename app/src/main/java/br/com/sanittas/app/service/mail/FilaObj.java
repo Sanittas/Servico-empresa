@@ -1,14 +1,22 @@
-package br.com.sanittas.app.service;
+package br.com.sanittas.app.service.mail;
 
-public class FilaObj<T> {
+import br.com.sanittas.app.service.mail.EventManager;
+import jakarta.validation.constraints.Email;
+import lombok.Getter;
+
+@Getter
+public class FilaObj {
     // Atributos
     private int tamanho;
-    private T[] fila;
+    private EmailEmpresa[] fila;
+    private EventManager events;
 
     // Construtor
     public FilaObj(int capacidade) {
     this.tamanho = 0;
-    this.fila = (T[]) new Object[capacidade];
+    this.fila = new EmailEmpresa[capacidade];
+    this.events = new EventManager();
+    this.events.subscribe(new EmailThread(this));
     }
 
     // Métodos
@@ -27,16 +35,17 @@ public class FilaObj<T> {
                        no índice tamanho, e incrementa tamanho
                        Lançar IllegalStateException caso a fila esteja cheia
      */
-    public void insert(T info) {
+    public void insert(EmailEmpresa emailEmpresa) {
         if (isFull()) {
             throw new IllegalStateException("Fila cheia");
         }
-        fila[tamanho] = info;
+        fila[tamanho] = emailEmpresa;
         tamanho++;
+        events.notificar();
     }
 
     /* Método peek - retorna o primeiro elemento da fila, sem removê-lo */
-    public T peek() {
+    public EmailEmpresa peek() {
         return fila[0];
     }
 
@@ -44,11 +53,11 @@ public class FilaObj<T> {
        vazia. Quando um elemento é removido, a fila "anda", e tamanho é decrementado
        Depois que a fila andar, "limpar" o ex-último elemento da fila, atribuindo null
      */
-    public T poll() {
+    public EmailEmpresa poll() {
         if (isEmpty()){
             throw new IllegalStateException("Fila vazia");
         }
-        T primeiro = fila[0];
+        EmailEmpresa primeiro = fila[0];
         for (int i = 0; i < tamanho - 1; i++) {
             fila[i] = fila[i + 1];
         }
@@ -62,11 +71,6 @@ public class FilaObj<T> {
         for (int i = 0; i < tamanho; i++) {
             System.out.println(fila[i]);
         }
-    }
-
-    /* Usado nos testes  - complete para que fique certo */
-    public int getTamanho(){
-        return tamanho;
     }
 }
 

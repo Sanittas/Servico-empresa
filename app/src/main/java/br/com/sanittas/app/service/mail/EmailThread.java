@@ -1,20 +1,22 @@
-package br.com.sanittas.app.service;
+package br.com.sanittas.app.service.mail;
 
-import jakarta.mail.MessagingException;
+import br.com.sanittas.app.api.configuration.MailConfig;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 @Slf4j
-public class EmailThread extends Thread{
-    private JavaMailSender emailSender;
+public class EmailThread implements EventListener {
 
-    public EmailThread(JavaMailSender emailSender) {
-        this.emailSender = emailSender;
+    private JavaMailSender javaMailSender = MailConfig.javaMailSender();
+    private FilaObj fila;
+
+    public EmailThread(FilaObj fila) {
+        this.fila = fila;
     }
-    public void run(String email, String token) {
+
+    public void enviarEmail(String email, String token) {
         try {
             log.info("Enviando e-mail para: {}", email);
 
@@ -36,7 +38,7 @@ public class EmailThread extends Thread{
                     "</body>\n" +
                     "</html>";
 
-            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
             helper.setFrom("sanittas.organization@gmail.com");
@@ -44,13 +46,21 @@ public class EmailThread extends Thread{
             helper.setSubject(assunto);
             helper.setText(conteudo, true);
 
-            emailSender.send(message);
+            javaMailSender.send(message);
 
             log.info("E-mail enviado com sucesso.");
 
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error("Erro ao enviar e-mail: {}", e.getMessage());
             throw new RuntimeException(e.getLocalizedMessage());
         }
+    }
+
+    @Override
+    public void update() {
+        EmailEmpresa emailEmpresa = fila.poll();
+        log.info("Email recebido pelo listener: {}", emailEmpresa.getEmail());
+        log.info("iniciando nova thread");
+        new Thread(() -> enviarEmail(emailEmpresa.getEmail(), emailEmpresa.getToken())).start();
     }
 }

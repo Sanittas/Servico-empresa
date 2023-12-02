@@ -102,10 +102,15 @@ public class EmpresaServices {
             log.error("CNPJ já cadastrado");
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
+        if (repository.findByEmail(empresa.email()).isPresent()) {
+            log.error("Email já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
         log.info("Cadastrando nova empresa.");
         Empresa empresaNova = new Empresa();
         empresaNova.setRazaoSocial(empresa.razaoSocial());
         empresaNova.setCnpj(empresa.cnpj());
+        empresaNova.setEmail(empresa.email());
         empresaNova.setSenha(passwordEncoder.encode(empresa.senha()));
         repository.save(empresaNova);
         log.info("Empresa cadastrada com sucesso.");
@@ -117,6 +122,7 @@ public class EmpresaServices {
         if (empresaAtualizada.isPresent()) {
             empresaAtualizada.get().setRazaoSocial(empresa.razaoSocial());
             empresaAtualizada.get().setCnpj(empresa.cnpj());
+            empresaAtualizada.get().setEmail(empresa.email());
             empresaAtualizada.get().setSenha(passwordEncoder.encode(empresa.senha()));
             repository.save(empresaAtualizada.get());
             log.info("Empresa atualizada com sucesso.");
@@ -241,15 +247,15 @@ public class EmpresaServices {
         return resultado;
     }
 
-    public String generateToken(String cnpj) {
+    public String generateToken(String email) {
         try {
-            log.info("Gerando token para o email: {}", cnpj);
+            log.info("Gerando token para o email: {}", email);
 
-            Empresa empresa = repository.findByCnpj(cnpj)
+            Empresa empresa = repository.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
             KeyBasedPersistenceTokenService tokenService = getInstanceFor(empresa);
-            Token token = tokenService.allocateToken(empresa.getCnpj());
+            Token token = tokenService.allocateToken(empresa.getEmail());
 
             return token.getKey();
         } catch (Exception e) {

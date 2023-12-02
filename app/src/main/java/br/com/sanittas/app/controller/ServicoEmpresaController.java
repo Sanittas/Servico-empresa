@@ -1,6 +1,5 @@
 package br.com.sanittas.app.controller;
 
-import br.com.sanittas.app.model.Servico;
 import br.com.sanittas.app.model.ServicoEmpresa;
 import br.com.sanittas.app.service.ServicoEmpresaServices;
 import br.com.sanittas.app.service.servicoEmpresa.dto.ServicoEmpresaCriacaoDto;

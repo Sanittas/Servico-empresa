@@ -23,4 +23,6 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Integer> {
     boolean existsByRazaoSocial(String s);
 
     boolean existsByCnpj(String cnpj);
+
+    Optional<Empresa> findByEmail(String email);
 }

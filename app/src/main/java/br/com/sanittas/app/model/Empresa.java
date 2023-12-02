@@ -2,6 +2,7 @@ package br.com.sanittas.app.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.UniqueElements;
@@ -19,6 +20,8 @@ public class Empresa {
     private Integer id;
     @Column(name = "razao_social")
     private String razaoSocial;
+    @Email @Column(unique = true)
+    private String email;
     @CNPJ @Column(unique = true)
     private String cnpj;
     private String senha;

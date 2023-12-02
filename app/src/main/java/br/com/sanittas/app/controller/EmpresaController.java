@@ -1,7 +1,7 @@
 package br.com.sanittas.app.controller;
 
 import br.com.sanittas.app.model.Empresa;
-import br.com.sanittas.app.service.EmailServices;
+import br.com.sanittas.app.service.mail.EmailServices;
 import br.com.sanittas.app.service.EmpresaServices;
 import br.com.sanittas.app.service.autenticacao.dto.EmpresaLoginDto;
 import br.com.sanittas.app.service.autenticacao.dto.EmpresaTokenDto;
@@ -143,10 +143,10 @@ public class EmpresaController {
     }
 
     @PostMapping("/esqueci-senha")
-    public ResponseEntity<?> esqueciASenha(@RequestParam String cnpj) {
+    public ResponseEntity<?> esqueciASenha(@RequestParam String email) {
         try {
-            String token = services.generateToken(cnpj);
-            emailServices.enviarEmailComToken(cnpj, token);
+            String token = services.generateToken(email);
+            emailServices.enviarEmailComToken(email, token);
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
             log.info(e.getLocalizedMessage());

@@ -47,23 +47,13 @@ public class AgendamentoServicoServices {
     }
 
     public void atualizar(Integer id, AgendamentoCriacaoDto dados) {
-        try{
          var agendamento = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
             agendamento.setDataHoraAgendamento(dados.getDataAgendamento());
             repository.save(agendamento);
-        }catch (Exception e){
-            log.error("Erro ao atualizar agendamento: " + e.getMessage());
-            throw new ResponseStatusException(HttpStatusCode.valueOf(400));
-        }
     }
 
     public void deletar(Integer id) {
-        try{
             var agendamento = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
             repository.deleteById(id);
-        }catch (Exception e){
-            log.error("Erro ao deletar agendamento: " + e.getMessage());
-            throw new ResponseStatusException(HttpStatusCode.valueOf(400));
-        }
     }
 }

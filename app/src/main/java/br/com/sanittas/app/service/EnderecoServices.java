@@ -28,21 +28,12 @@ public class EnderecoServices {
     private EmpresaRepository empresaRepository;
 
     public void cadastrarEnderecoEmpresa(EnderecoCriacaoDto enderecoCriacaoDto, Integer empresa_id) {
-        try {
-            log.info("Cadastrando endereço para a empresa com ID: {}", empresa_id);
-            var endereco = EnderecoMapper.of(enderecoCriacaoDto);
-            var empresa = empresaRepository.findById(empresa_id);
-
-            if (empresa.isPresent()) {
-                endereco.setEmpresa(empresa.get());
-                repository.save(endereco);
-                log.info("Endereço cadastrado com sucesso para a empresa com ID: {}", empresa_id);
-            } else {
-                log.warn("Tentativa de cadastrar endereço para empresa com ID {}, mas a empresa não foi encontrada.", empresa_id);
-            }
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        log.info("Cadastrando endereço para a empresa com ID: {}", empresa_id);
+        var endereco = EnderecoMapper.of(enderecoCriacaoDto);
+        var empresa = empresaRepository.findById(empresa_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        endereco.setEmpresa(empresa);
+        repository.save(endereco);
+        log.info("Endereço cadastrado com sucesso para a empresa com ID: {}", empresa_id);
     }
 
     public Endereco atualizar(EnderecoCriacaoDto enderecoCriacaoDto, Long id) {
@@ -59,7 +50,6 @@ public class EnderecoServices {
 
     public void deletarEndereco(Long id) {
         log.info("Deletando endereço com ID: {}", id);
-
         if (repository.existsById(id)) {
             repository.deleteById(id);
             log.info("Endereço deletado com sucesso. ID: {}", id);
@@ -70,13 +60,8 @@ public class EnderecoServices {
     }
 
     public List<Endereco> listarEnderecosPorEmpresa(Integer idEmpresa) {
-        try {
             log.info("Listando endereços para a empresa com ID: {}", idEmpresa);
             var empresa = empresaRepository.findById(idEmpresa).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
             return empresa.getEnderecos();
-        } catch (Exception e) {
-            log.error("Erro ao listar endereços para a empresa com ID: {}", idEmpresa, e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
     }
 }

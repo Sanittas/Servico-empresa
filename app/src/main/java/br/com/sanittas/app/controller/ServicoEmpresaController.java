@@ -68,6 +68,8 @@ public class ServicoEmpresaController {
             servicoEmpresaServices.atualizar(id, dados);
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
+            log.error(e.getLocalizedMessage());
+            log.error(e.getReason());
             throw new ResponseStatusException(e.getStatusCode());
         }
     }

@@ -32,19 +32,15 @@ public class FuncionarioCompetenciaServices {
     }
 
     public FuncionarioCompetencia cadastrar(FuncionarioCompetenciaDto funcionarioCompetenciaDto) {
-        try {
-            Funcionario funcionario = funcionarioRepository.findById(funcionarioCompetenciaDto.getFk_funcionario()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            Competencia competencia = competenciaRepository.findById(funcionarioCompetenciaDto.getFk_competencia()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            FuncionarioCompetencia funcionarioCompetencia = new FuncionarioCompetencia();
-            funcionarioCompetencia.setFuncionario(funcionario);
-            funcionarioCompetencia.setCompetencia(competencia);
-            funcionarioCompetencia.setEspecializacao(funcionarioCompetenciaDto.getEspecializacao());
-            funcionarioCompetencia.setExperiencia(funcionarioCompetenciaDto.getExperiencia());
-            funcionarioCompetencia.setNivel_proficiencia(funcionarioCompetenciaDto.getNivel_proficiencia());
-            return repository.save(funcionarioCompetencia);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        Funcionario funcionario = funcionarioRepository.findById(funcionarioCompetenciaDto.getFk_funcionario()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Competencia competencia = competenciaRepository.findById(funcionarioCompetenciaDto.getFk_competencia()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        FuncionarioCompetencia funcionarioCompetencia = new FuncionarioCompetencia();
+        funcionarioCompetencia.setFuncionario(funcionario);
+        funcionarioCompetencia.setCompetencia(competencia);
+        funcionarioCompetencia.setEspecializacao(funcionarioCompetenciaDto.getEspecializacao());
+        funcionarioCompetencia.setExperiencia(funcionarioCompetenciaDto.getExperiencia());
+        funcionarioCompetencia.setNivel_proficiencia(funcionarioCompetenciaDto.getNivel_proficiencia());
+        return repository.save(funcionarioCompetencia);
     }
 
     public FuncionarioCompetencia atualizar(Integer id, FuncionarioCompetenciaDto funcionarioCompetenciaDto) {
@@ -68,7 +64,7 @@ public class FuncionarioCompetenciaServices {
     }
 
 
-public List<FuncionarioCompetencia> listarPorFuncionario(Integer idFuncionario) {
+    public List<FuncionarioCompetencia> listarPorFuncionario(Integer idFuncionario) {
         try {
             return repository.findAllByFuncionarioId(idFuncionario);
         } catch (Exception e) {

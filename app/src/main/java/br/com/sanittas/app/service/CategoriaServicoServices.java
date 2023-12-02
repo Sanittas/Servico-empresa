@@ -35,23 +35,13 @@ public class CategoriaServicoServices {
     }
 
     public void atualizar(Integer id, CategoriaServicoCriacaoDto categoriaServico) {
-        try {
             CategoriaServico categoriaServicoAtualizada = categoriaServicoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
             categoriaServicoAtualizada.setAreaSaude(categoriaServico.getAreaSaude());
             categoriaServicoRepository.save(categoriaServicoAtualizada);
-        } catch (Exception e) {
-            log.error("Erro ao atualizar categoria de serviço: " + e.getMessage());
-            throw new ResponseStatusException(HttpStatusCode.valueOf(400));
-        }
     }
 
     public void deletar(Integer id) {
-        try {
             var categoriaServico = categoriaServicoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
             categoriaServicoRepository.deleteById(id);
-        } catch (Exception e) {
-            log.error("Erro ao deletar categoria de serviço: " + e.getMessage());
-            throw new ResponseStatusException(HttpStatusCode.valueOf(400));
-        }
     }
 }

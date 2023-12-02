@@ -33,20 +33,6 @@ public class FuncionarioServices {
         return funcionarios;
     }
 
-//    private static void criarDtoFuncionarios(Funcionario funcionario,  List<ListaFuncionario> listaFuncionarios) {
-//        var funcionarioDto = new ListaFuncionario(
-//                funcionario.getId(),
-//                funcionario.getFuncional(),
-//                funcionario.getNome(),
-//                funcionario.getCpf(),
-//                funcionario.getRg(),
-//                funcionario.getEmail(),
-//                funcionario.getNumeroRegistroAtuacao(),
-//                funcionario.getIdEmpresa()
-//        );
-//        listaFuncionarios.add(funcionarioDto);
-//    }
-
     public Funcionario atualizar(Integer id, FuncionarioCriacaoDto dados) {
         var funcionario = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         funcionario.setFuncional(dados.getFuncional());
@@ -72,13 +58,8 @@ public class FuncionarioServices {
     }
 
     public Funcionario buscarPorId(Integer id) {
-        try{
-            var funcionario = repository.findById(id);
-            return funcionario.get();
-        }catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-
+            var funcionario = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            return funcionario;
     }
 
     public void cadastrar(FuncionarioCriacaoDto funcionarioCriacaoDto, String token) {
@@ -89,13 +70,9 @@ public class FuncionarioServices {
     }
 
     public List<Funcionario> listaFuncionariosPorEmpresa(Integer idEmpresa) {
-        try {
-            Empresa empresa = empresaRepository.findById(idEmpresa).get();
+            Empresa empresa = empresaRepository.findById(idEmpresa).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
             List<Funcionario> funcionarios = repository.findAllByIdEmpresa(empresa);
             return funcionarios;
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
     }
 
     public Integer buscarPorCpf(String cpf) {

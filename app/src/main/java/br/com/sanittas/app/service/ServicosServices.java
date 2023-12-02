@@ -18,9 +18,6 @@ import java.util.List;
 @Service
 @Slf4j
 public class ServicosServices {
-
-    @Autowired
-    private EmpresaRepository empresaRepository;
     @Autowired
     private ServicoRepository servicoRepository;
     @Autowired
@@ -36,38 +33,26 @@ public class ServicosServices {
     }
 
     public void cadastrar(ServicoCriacaoDto dados) {
-        try {
             CategoriaServico categoria = categoriaServicoRepository.findById(dados.getFkCategoriaServico()).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Categoria não encontrada"));
             Servico novoServico = new Servico();
             novoServico.setDescricao(dados.getDescricao());
             novoServico.setCategoriaServico(categoria);
             servicoRepository.save(novoServico);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
     }
 
 
     public void atualizar(Integer id, ServicoCriacaoDto dados) {
-        try {
             CategoriaServico categoria = categoriaServicoRepository.findById(dados.getFkCategoriaServico()).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Categoria não encontrada"));
             Servico servicoAtualizado = servicoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Servico não encontrado"));
             servicoAtualizado.setDescricao(dados.getDescricao());
             servicoAtualizado.setCategoriaServico(categoria);
             servicoRepository.save(servicoAtualizado);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
     }
 
 
     public void deletar(Integer id) {
-        try {
             var servico = servicoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Servico não encontrado"));
             servicoRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
     }
 
 

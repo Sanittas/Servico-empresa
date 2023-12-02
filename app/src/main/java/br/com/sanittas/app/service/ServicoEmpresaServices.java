@@ -52,7 +52,6 @@ public class ServicoEmpresaServices {
     }
 
     public void atualizar(Integer id, ServicoEmpresaCriacaoDto dados) {
-        try {
             var servico = servicoEmpresaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
             Empresa empresa = empresaRepository.findById(dados.getIdEmpresa()).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
             Servico servico1 = servicoRepository.findById(dados.getIdServico()).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
@@ -62,17 +61,10 @@ public class ServicoEmpresaServices {
             servico.setDuracaoEstimada(dados.getDuracaoEstimada());
             servico.setEquipeResponsavel(dados.getEquipeResponsavel());
             servicoEmpresaRepository.save(servico);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
     }
 
     public void deletar(Integer id) {
-        try {
             var servico = servicoEmpresaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
             servicoEmpresaRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
     }
 }

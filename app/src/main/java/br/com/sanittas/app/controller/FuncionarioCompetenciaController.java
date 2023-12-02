@@ -2,6 +2,7 @@ package br.com.sanittas.app.controller;
 
 import br.com.sanittas.app.model.FuncionarioCompetencia;
 import br.com.sanittas.app.service.FuncionarioCompetenciaServices;
+import br.com.sanittas.app.service.funcionario.dto.FuncionarioCompetenciaDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class FuncionarioCompetenciaController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<FuncionarioCompetencia> cadastrar(@RequestBody @Valid FuncionarioCompetencia funcionarioCompetencia) {
+    public ResponseEntity<FuncionarioCompetencia> cadastrar(@RequestBody @Valid FuncionarioCompetenciaDto funcionarioCompetencia) {
         try {
             var funcionarioNovo = funcionarioCompetenciaServices.cadastrar(funcionarioCompetencia);
             return ResponseEntity.status(201).body(funcionarioNovo);
@@ -40,9 +41,9 @@ public class FuncionarioCompetenciaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FuncionarioCompetencia> atualizar(@PathVariable Integer id, @RequestBody @Valid FuncionarioCompetencia funcionarioCompetencia) {
+    public ResponseEntity<FuncionarioCompetencia> atualizar(@PathVariable Integer id, @RequestBody @Valid FuncionarioCompetenciaDto funcionarioCompetenciaDto) {
         try {
-            var funcionarioAtualizado = funcionarioCompetenciaServices.atualizar(id, funcionarioCompetencia);
+            var funcionarioAtualizado = funcionarioCompetenciaServices.atualizar(id, funcionarioCompetenciaDto);
             return ResponseEntity.status(200).body(funcionarioAtualizado);
         } catch (ResponseStatusException e) {
             throw new ResponseStatusException(e.getStatusCode());

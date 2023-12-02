@@ -1,6 +1,7 @@
 package br.com.sanittas.app.controller;
 
 import br.com.sanittas.app.model.Servico;
+import br.com.sanittas.app.model.ServicoEmpresa;
 import br.com.sanittas.app.service.ServicosServices;
 import br.com.sanittas.app.service.servico.dto.ServicoCriacaoDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -25,6 +26,22 @@ public class ServicosController {
     public ResponseEntity<?> listar() {
         try{
             List<Servico> response = services.listar();
+            if (!response.isEmpty()){
+                log.info("Servicos encontrados" + response);
+                return ResponseEntity.status(200).body(response);
+            }
+            log.info("Nenhum servico encontrado");
+            return ResponseEntity.status(204).body(response);
+        }catch (ResponseStatusException e) {
+            log.error("Erro ao buscar servicos: " + e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
+    @GetMapping("/servico-empresa/categoria/")
+    public ResponseEntity<List<Servico>> listarServicoCategoria() {
+        try{
+            List<Servico> response = services.listarServicoCategoria();
             if (!response.isEmpty()){
                 log.info("Servicos encontrados" + response);
                 return ResponseEntity.status(200).body(response);

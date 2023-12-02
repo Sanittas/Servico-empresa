@@ -24,7 +24,6 @@ public class ServicoEmpresa {
     private Double valorServico;
     private String duracaoEstimada;
     private String equipeResponsavel;
-    @JsonManagedReference
     @OneToMany(mappedBy = "servicoEmpresa",orphanRemoval = true)
     private List<AgendamentoServico> agendamentoServico;
 }

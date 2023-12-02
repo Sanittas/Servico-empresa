@@ -32,6 +32,10 @@ public class ServicosServices {
         }
     }
 
+    public List<Servico> listarServicoCategoria() {
+        return servicoRepository.findAlllJoinServicoCategoria();
+    }
+
     public void cadastrar(ServicoCriacaoDto dados) {
             CategoriaServico categoria = categoriaServicoRepository.findById(dados.getFkCategoriaServico()).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Categoria não encontrada"));
             Servico novoServico = new Servico();

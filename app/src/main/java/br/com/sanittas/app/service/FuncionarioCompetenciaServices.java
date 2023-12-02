@@ -66,4 +66,14 @@ public class FuncionarioCompetenciaServices {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
+
+
+public List<FuncionarioCompetencia> listarPorFuncionario(Integer idFuncionario) {
+        try {
+            return repository.findAllByFuncionarioId(idFuncionario);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

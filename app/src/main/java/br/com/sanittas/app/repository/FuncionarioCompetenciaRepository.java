@@ -9,6 +9,10 @@ import java.util.List;
 
 @Repository
 public interface FuncionarioCompetenciaRepository extends JpaRepository<FuncionarioCompetencia, Integer> {
+    List<FuncionarioCompetencia> findAllByFuncionarioId(Integer idFuncionario);
+
 
 //    boolean existsByFuncionarioIdAndCompetencia(Funcionario funcionario, Integer fkCompetencia);
+    
+    
 }

@@ -30,6 +30,19 @@ public class FuncionarioCompetenciaController {
         }
     }
 
+    @GetMapping("/{idFuncionario}")
+    public ResponseEntity<List<FuncionarioCompetencia>> listarPorFuncionario(@PathVariable Integer idFuncionario) {
+        try {
+            var response = funcionarioCompetenciaServices.listarPorFuncionario(idFuncionario);
+            if (response.isEmpty()) {
+                return ResponseEntity.status(204).body(response);
+            }
+            return ResponseEntity.status(200).body(response);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getLocalizedMessage());
+        }
+    }
+
     @PostMapping("/")
     public ResponseEntity<FuncionarioCompetencia> cadastrar(@RequestBody @Valid FuncionarioCompetenciaDto funcionarioCompetencia) {
         try {

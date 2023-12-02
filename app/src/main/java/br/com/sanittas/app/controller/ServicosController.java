@@ -37,6 +37,7 @@ public class ServicosController {
         }
     }
 
+
     @PostMapping("/")
     public ResponseEntity<Void> cadastrar(@RequestBody @Valid ServicoCriacaoDto dados) {
         try{

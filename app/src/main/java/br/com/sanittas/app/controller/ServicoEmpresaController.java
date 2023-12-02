@@ -1,5 +1,6 @@
 package br.com.sanittas.app.controller;
 
+import br.com.sanittas.app.model.Servico;
 import br.com.sanittas.app.model.ServicoEmpresa;
 import br.com.sanittas.app.service.ServicoEmpresaServices;
 import br.com.sanittas.app.service.servicoEmpresa.dto.ServicoEmpresaCriacaoDto;
@@ -31,6 +32,22 @@ public class ServicoEmpresaController {
         } catch (ResponseStatusException e) {
             log.error(e.getLocalizedMessage());
             log.error(e.getReason());
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<ServicoEmpresa>> listarPorEmpresa(@PathVariable Integer id) {
+        try{
+            List<ServicoEmpresa> response = servicoEmpresaServices.listarPorEmpresa(id);
+            if (!response.isEmpty()){
+                log.info("Servicos encontrados" + response);
+                return ResponseEntity.status(200).body(response);
+            }
+            log.info("Nenhum servico encontrado");
+            return ResponseEntity.status(204).body(response);
+        }catch (ResponseStatusException e) {
+            log.error("Erro ao buscar servicos: " + e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode());
         }
     }

@@ -47,6 +47,10 @@ public class ServicoEmpresaServices {
             servicoEmpresaRepository.save(novoServico);
     }
 
+    public List<ServicoEmpresa> listarPorEmpresa(Integer id) {
+        return servicoEmpresaRepository.findByEmpresaId(id);
+    }
+
     public void atualizar(Integer id, ServicoEmpresaCriacaoDto dados) {
         try {
             var servico = servicoEmpresaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));

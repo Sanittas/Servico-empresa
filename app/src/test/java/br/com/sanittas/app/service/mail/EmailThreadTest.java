@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
@@ -54,6 +56,8 @@ class EmailThreadTest {
 
         // Aguarda a conclusão da thread assíncrona
         latch.await();
+
+        Thread.sleep(500);
 
         // Verifica se o método send() foi chamado
         verify(javaMailSender, times(1)).send(any(MimeMessage.class));

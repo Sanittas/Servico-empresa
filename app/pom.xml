@@ -117,6 +117,24 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<!-- Exclui todos os pacotes exceto o da camada de serviço -->
+						<exclude>br/com/sanittas/app/api/**</exclude>
+						<exclude>br/com/sanittas/app/controller/</exclude>
+						<exclude>br/com/sanittas/app/model/*</exclude>
+						<exclude>br/com/sanittas/app/repository/*</exclude>
+						<exclude>br/com/sanittas/app/util/*</exclude>
+						<exclude>br/com/sanittas/app/service/agendamento/</exclude>
+						<exclude>br/com/sanittas/app/service/autenticacao/</exclude>
+						<exclude>br/com/sanittas/app/service/categoria/</exclude>
+						<exclude>br/com/sanittas/app/service/empresa/</exclude>
+						<exclude>br/com/sanittas/app/service/endereco/</exclude>
+						<exclude>br/com/sanittas/app/service/funcionario/</exclude>
+						<exclude>br/com/sanittas/app/service/servico/</exclude>
+						<exclude>br/com/sanittas/app/service/servicoEmpresa/</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

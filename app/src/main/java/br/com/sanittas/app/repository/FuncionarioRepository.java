@@ -16,4 +16,10 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Intege
     boolean existsByCpf(String cpf);
 
     boolean existsByEmail(String email);
+
+    Integer countByIdEmpresa(Empresa empresa);
+
+    boolean existsByRg(String rg);
+
+    boolean existsByFuncional(String funcional);
 }

@@ -1,6 +1,7 @@
 package br.com.sanittas.app.service.mail;
 
 import br.com.sanittas.app.api.configuration.MailConfig;
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,11 +10,25 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 @Slf4j
 public class EmailThread implements EventListener {
 
-    private JavaMailSender javaMailSender = MailConfig.javaMailSender();
+    private JavaMailSender javaMailSender;
     private FilaObj fila;
+    private MimeMessageHelper helper;
 
     public EmailThread(FilaObj fila) {
+        this.javaMailSender = MailConfig.javaMailSender();
         this.fila = fila;
+        try {
+            this.helper = new MimeMessageHelper(javaMailSender.createMimeMessage(), true);
+        } catch (MessagingException e) {
+            log.error("Erro ao criar MimeMessageHelper: {}", e.getMessage());
+            throw new RuntimeException(e.getLocalizedMessage());
+        }
+    }
+
+    public EmailThread(FilaObj fila, JavaMailSender javaMailSender, MimeMessageHelper helper) {
+        this.fila = fila;
+        this.javaMailSender = javaMailSender;
+        this.helper = helper;
     }
 
     public void enviarEmail(String email, String token) {
@@ -39,8 +54,6 @@ public class EmailThread implements EventListener {
                     "</html>";
 
             MimeMessage message = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
             helper.setFrom("sanittas.organization@gmail.com");
             helper.setTo(email);
             helper.setSubject(assunto);

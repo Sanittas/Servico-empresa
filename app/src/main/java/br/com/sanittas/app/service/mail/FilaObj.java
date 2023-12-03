@@ -1,7 +1,5 @@
 package br.com.sanittas.app.service.mail;
 
-import br.com.sanittas.app.service.mail.EventManager;
-import jakarta.validation.constraints.Email;
 import lombok.Getter;
 
 @Getter

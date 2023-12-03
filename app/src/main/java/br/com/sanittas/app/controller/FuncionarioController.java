@@ -22,17 +22,35 @@ import java.util.Objects;
 public class FuncionarioController {
     @Autowired
     private FuncionarioServices services;
+
     @GetMapping("/")
     public ResponseEntity<List<Funcionario>> listar() {
-        try{
+        try {
             var response = services.listaFuncionarios();
-            if (!response.isEmpty()){
+            if (!response.isEmpty()) {
                 log.info("Funcionarios encontrados" + response);
                 return ResponseEntity.status(200).body(response);
             }
             log.info("Nenhum funcionario encontrado");
             return ResponseEntity.status(204).body(response);
-        }catch (ResponseStatusException e) {
+        } catch (ResponseStatusException e) {
+            log.error("Erro ao buscar funcionarios", e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
+    @GetMapping("/count-empresa/")
+    public ResponseEntity<Integer> countFuncionariosEmpresa(HttpServletRequest request) {
+        try {
+            String requestTokenHeader = request.getHeader("Authorization");
+            String jwtToken = "";
+            if (Objects.nonNull(requestTokenHeader) && requestTokenHeader.startsWith("Bearer ")) {
+                jwtToken = requestTokenHeader.substring(7);
+            }
+            var response = services.countFuncionariosEmpresa(jwtToken);
+            log.info("Quantidade de funcionarios encontrados: " + response);
+            return ResponseEntity.status(200).body(response);
+        } catch (ResponseStatusException e) {
             log.error("Erro ao buscar funcionarios", e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode());
         }
@@ -40,11 +58,11 @@ public class FuncionarioController {
 
     @GetMapping("/cpf/{cpf}")
     public ResponseEntity<Integer> getIdByCpf(@PathVariable String cpf) {
-        try{
+        try {
             var funcionario = services.buscarPorCpf(cpf);
             log.info("Funcionario encontrado" + funcionario);
             return ResponseEntity.status(200).body(funcionario);
-        }catch (ResponseStatusException e){
+        } catch (ResponseStatusException e) {
             log.info("Funcionario não encontrado");
             throw new ResponseStatusException(e.getStatusCode());
         }
@@ -52,11 +70,11 @@ public class FuncionarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscar(@PathVariable Integer id) {
-        try{
+        try {
             var funcionario = services.buscarPorId(id);
             log.info("Funcionario encontrado" + funcionario);
             return ResponseEntity.status(200).body(funcionario);
-        }catch (ResponseStatusException e){
+        } catch (ResponseStatusException e) {
             log.info("Funcionario não encontrado");
             throw new ResponseStatusException(e.getStatusCode());
         }
@@ -64,16 +82,16 @@ public class FuncionarioController {
 
     @PostMapping("/")
     public ResponseEntity<Void> cadastrar(@RequestBody @Valid FuncionarioCriacaoDto dados, HttpServletRequest request) {
-        try{
+        try {
             String requestTokenHeader = request.getHeader("Authorization");
             String jwtToken = "";
             if (Objects.nonNull(requestTokenHeader) && requestTokenHeader.startsWith("Bearer ")) {
                 jwtToken = requestTokenHeader.substring(7);
             }
-            services.cadastrar(dados,jwtToken);
+            services.cadastrar(dados, jwtToken);
             log.info("Funcionario cadastrado");
             return ResponseEntity.status(201).build();
-        }catch (ResponseStatusException e){
+        } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar funcionario. Exceção:" + e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode());
         }
@@ -81,11 +99,11 @@ public class FuncionarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Integer id, @RequestBody @Valid FuncionarioCriacaoDto dados) {
-        try{
-            var funcionario = services.atualizar(id,dados);
+        try {
+            var funcionario = services.atualizar(id, dados);
             log.info("Funcionario atualizado" + funcionario);
             return ResponseEntity.status(200).body(funcionario);
-        }catch (ResponseStatusException e){
+        } catch (ResponseStatusException e) {
             log.error("Erro ao atualizar funcionario" + e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode());
         }
@@ -93,11 +111,11 @@ public class FuncionarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletar(@PathVariable Integer id) {
-        try{
+        try {
             services.deletar(id);
             log.info("Funcionario deletado");
             return ResponseEntity.status(200).build();
-        }catch (ResponseStatusException e){
+        } catch (ResponseStatusException e) {
             log.error("Erro ao deletar funcionario" + e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode());
         }
@@ -105,15 +123,15 @@ public class FuncionarioController {
 
     @GetMapping("/empresa/{id}")
     public ResponseEntity<List<Funcionario>> listarPorEmpresa(@PathVariable Integer id) {
-        try{
+        try {
             var response = services.listaFuncionariosPorEmpresa(id);
-            if (!response.isEmpty()){
+            if (!response.isEmpty()) {
                 log.info("Funcionarios encontrados" + response);
                 return ResponseEntity.status(200).body(response);
             }
             log.info("Nenhum funcionario encontrado");
             return ResponseEntity.status(204).body(response);
-        }catch (ResponseStatusException e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao buscar funcionarios", e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode());
         }

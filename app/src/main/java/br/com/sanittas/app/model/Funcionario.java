@@ -19,16 +19,17 @@ public class Funcionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotBlank
+    @NotBlank @Column(unique = true)
     private String funcional;
     @NotBlank
     private String nome;
-    @CPF
+    @CPF @Column(unique = true)
     private String cpf;
     @Pattern(regexp = "\\d{2}\\.\\d{3}\\.\\d{3}-[\\d\\w]",
             message = "O RG deve estar no formato XX.XXX.XXX-X ou XX.XXX.XXX-x, onde X é um dígito ou letra.")
+    @Column(unique = true)
     private String rg;
-    @Email
+    @Email @Column(unique = true)
     private String email;
     @NotBlank
     private String numeroRegistroAtuacao;

@@ -35,14 +35,24 @@ public class FuncionarioServices {
 
     public Funcionario atualizar(Integer id, FuncionarioCriacaoDto dados) {
         var funcionario = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (repository.existsByFuncional(dados.getFuncional())) {
+            log.error("Funcional já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
         funcionario.setFuncional(dados.getFuncional());
         funcionario.setNome(dados.getNome());
         if (repository.existsByCpf(dados.getCpf())) {
+            log.error("CPF já cadastrado");
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
         funcionario.setCpf(dados.getCpf());
+        if (repository.existsByRg(dados.getRg())) {
+            log.error("RG já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
         funcionario.setRg(dados.getRg());
         if (repository.existsByEmail(dados.getEmail())) {
+            log.error("Email já cadastrado");
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
         funcionario.setEmail(dados.getEmail());
@@ -63,7 +73,23 @@ public class FuncionarioServices {
     }
 
     public void cadastrar(FuncionarioCriacaoDto funcionarioCriacaoDto, String token) {
-        final Empresa empresa = empresaRepository.findByCnpj(gerenciadorTokenJwt.obterNomeUsuarioDoToken(token)).get();
+        final Empresa empresa = empresaRepository.findByCnpj(gerenciadorTokenJwt.obterNomeUsuarioDoToken(token)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (repository.existsByFuncional(funcionarioCriacaoDto.getFuncional())) {
+            log.error("Funcional já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+        if (repository.existsByCpf(funcionarioCriacaoDto.getCpf())) {
+            log.error("CPF já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+        if (repository.existsByRg(funcionarioCriacaoDto.getRg())) {
+            log.error("RG já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+        if (repository.existsByEmail(funcionarioCriacaoDto.getEmail())) {
+            log.error("Email já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
         final Funcionario novoFuncionario = FuncionarioMapper.of(funcionarioCriacaoDto);
         novoFuncionario.setIdEmpresa(empresa);
         repository.save(novoFuncionario);
@@ -78,5 +104,10 @@ public class FuncionarioServices {
     public Integer buscarPorCpf(String cpf) {
         Funcionario funcionario = repository.findByCpf(cpf).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return funcionario.getId();
+    }
+
+    public Integer countFuncionariosEmpresa(String jwtToken) {
+        final Empresa empresa = empresaRepository.findByCnpj(gerenciadorTokenJwt.obterNomeUsuarioDoToken(jwtToken)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return repository.countByIdEmpresa(empresa);
     }
 }

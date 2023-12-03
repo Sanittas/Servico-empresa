@@ -2,6 +2,7 @@ package br.com.sanittas.app.controller;
 
 import br.com.sanittas.app.model.Competencia;
 import br.com.sanittas.app.service.CompetenciaServices;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/competencias")
+@SecurityRequirement(name = "bearer-key") // Requisito de segurança para autenticação JWT
 public class CompetenciaController {
     @Autowired
     private CompetenciaServices competenciaServices;

@@ -3,6 +3,7 @@ package br.com.sanittas.app.controller;
 import br.com.sanittas.app.model.CategoriaServico;
 import br.com.sanittas.app.service.CategoriaServicoServices;
 import br.com.sanittas.app.service.categoria.dto.CategoriaServicoCriacaoDto;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/categorias-servicos")
+@SecurityRequirement(name = "bearer-key") // Requisito de segurança para autenticação JWT
 public class CategoriaServicoController {
     @Autowired
     private CategoriaServicoServices categoriaServicoServices;

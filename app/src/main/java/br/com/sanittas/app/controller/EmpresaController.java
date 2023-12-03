@@ -9,6 +9,8 @@ import br.com.sanittas.app.service.empresa.dto.EmpresaCriacaoDto;
 import br.com.sanittas.app.service.empresa.dto.ListaEmpresa;
 import br.com.sanittas.app.service.empresa.dto.NovaSenhaDto;
 import br.com.sanittas.app.util.ListaObj;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/empresas")
+@SecurityRequirement(name = "bearer-key") // Requisito de segurança para autenticação JWT
 @Slf4j
 public class EmpresaController {
 
@@ -27,6 +30,7 @@ public class EmpresaController {
     private EmailServices emailServices;
 
     @PostMapping("/login")
+    @Operation(security = @SecurityRequirement(name = "")) // Desabilita a autenticação JWT para este método
     public ResponseEntity<EmpresaTokenDto> login(@RequestBody EmpresaLoginDto empresaLoginDto) {
         log.info("Recebida solicitação de login para empresa: {}", empresaLoginDto.cnpj());
         EmpresaTokenDto empresaTokenDto = services.autenticar(empresaLoginDto);
@@ -65,6 +69,7 @@ public class EmpresaController {
     }
 
     @PostMapping("/cadastrar/")
+    @Operation(security = @SecurityRequirement(name = "")) // Desabilita a autenticação JWT para este método
     public ResponseEntity<Void> cadastrarEmpresa(@RequestBody @Valid EmpresaCriacaoDto empresa) {
         try {
             log.info("Recebida solicitação para cadastrar uma nova empresa: {}", empresa.razaoSocial());

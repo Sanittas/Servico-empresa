@@ -3,6 +3,7 @@ package br.com.sanittas.app.controller;
 import br.com.sanittas.app.model.FuncionarioCompetencia;
 import br.com.sanittas.app.service.FuncionarioCompetenciaServices;
 import br.com.sanittas.app.service.funcionario.dto.FuncionarioCompetenciaDto;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "bearer-key") // Requisito de segurança para autenticação JWT
 @RequestMapping("/funcionarios-competencias")
 public class FuncionarioCompetenciaController {
     @Autowired

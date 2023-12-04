@@ -3,6 +3,7 @@ package br.com.sanittas.app.controller;
 import br.com.sanittas.app.model.AgendamentoServico;
 import br.com.sanittas.app.service.AgendamentoServicoServices;
 import br.com.sanittas.app.service.agendamento.dto.AgendamentoCriacaoDto;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/agendamentos")
+@SecurityRequirement(name = "bearer-key") // Requisito de segurança para autenticação JWT
 @Slf4j
 public class AgendamentoServicoController {
     @Autowired

@@ -10,8 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +26,7 @@ import java.util.Objects;
 public class FuncionarioController {
     @Autowired
     private FuncionarioServices services;
+
 
     @GetMapping("/")
     public ResponseEntity<List<Funcionario>> listar() {
@@ -52,6 +57,26 @@ public class FuncionarioController {
             return ResponseEntity.status(200).body(response);
         } catch (ResponseStatusException e) {
             log.error("Erro ao buscar funcionarios", e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
+    @PostMapping("/cadastro-em-massa")
+    public ResponseEntity<Void> cadastrarEmMassa( @RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        try{
+            if (file == null || file.isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+            String requestTokenHeader = request.getHeader("Authorization");
+            String jwtToken = "";
+            if (Objects.nonNull(requestTokenHeader) && requestTokenHeader.startsWith("Bearer ")) {
+                jwtToken = requestTokenHeader.substring(7);
+            }
+            services.cadastrarFuncionarioEmLote(file,jwtToken);
+        return ResponseEntity.ok().build();
+        }catch (ResponseStatusException e) {
+            log.error("Erro ao cadastrar funcionarios", e.getLocalizedMessage());
+            log.error(e.getReason());
             throw new ResponseStatusException(e.getStatusCode());
         }
     }

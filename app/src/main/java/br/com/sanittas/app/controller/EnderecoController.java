@@ -3,16 +3,23 @@ package br.com.sanittas.app.controller;
 import br.com.sanittas.app.model.Endereco;
 import br.com.sanittas.app.service.EnderecoServices;
 import br.com.sanittas.app.service.endereco.dto.EnderecoCriacaoDto;
+import br.com.sanittas.app.service.funcionario.dto.FuncionarioCriacaoDto;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 @RestController
 @RequestMapping("/enderecos")
+@SecurityRequirement(name = "bearer-key") // Requisito de segurança para autenticação JWT
 @Slf4j
 public class EnderecoController {
 

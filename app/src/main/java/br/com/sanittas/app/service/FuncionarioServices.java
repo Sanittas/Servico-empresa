@@ -7,13 +7,18 @@ import br.com.sanittas.app.repository.EmpresaRepository;
 import br.com.sanittas.app.repository.FuncionarioRepository;
 import br.com.sanittas.app.service.funcionario.dto.FuncionarioCriacaoDto;
 import br.com.sanittas.app.service.funcionario.dto.FuncionarioMapper;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 @Service
@@ -72,7 +77,7 @@ public class FuncionarioServices {
             return funcionario;
     }
 
-    public void cadastrar(FuncionarioCriacaoDto funcionarioCriacaoDto, String token) {
+    public void cadastrar(@Valid FuncionarioCriacaoDto funcionarioCriacaoDto, String token) {
         final Empresa empresa = empresaRepository.findByCnpj(gerenciadorTokenJwt.obterNomeUsuarioDoToken(token)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (repository.existsByFuncional(funcionarioCriacaoDto.getFuncional())) {
             log.error("Funcional já cadastrado");
@@ -109,5 +114,30 @@ public class FuncionarioServices {
     public Integer countFuncionariosEmpresa(String jwtToken) {
         final Empresa empresa = empresaRepository.findByCnpj(gerenciadorTokenJwt.obterNomeUsuarioDoToken(jwtToken)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return repository.countByIdEmpresa(empresa);
+    }
+
+    public void cadastrarFuncionarioEmLote(MultipartFile file, String jwtToken) {
+        try (InputStream inputStream = file.getInputStream();
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                System.out.println(linha);
+                FuncionarioCriacaoDto func = new FuncionarioCriacaoDto(
+                        linha.substring(2,47).strip(),
+                        linha.substring(48,92).strip(),
+                        linha.substring(93,104).strip(),
+                        linha.substring(104,113).strip(),
+                        linha.substring(113,157).strip(),
+                        linha.substring(157,202).strip()
+                );
+                log.info("cadastrando funcionário: " + func);
+
+                cadastrar(func, jwtToken);
+                log.info("Funcionario cadastrado");
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 }

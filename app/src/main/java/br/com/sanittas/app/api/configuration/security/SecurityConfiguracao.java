@@ -53,6 +53,7 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/empresas/esqueci-senha/**"),
             new AntPathRequestMatcher("/empresas/validarToken/**"),
             new AntPathRequestMatcher("/empresas/alterar-senha/"),
+            new AntPathRequestMatcher("/servicos/servico-empresa/categoria/"),
 
     };
 

@@ -1,16 +1,13 @@
 package br.com.sanittas.app.service;
 
-import br.com.sanittas.app.model.CategoriaServico;
 import br.com.sanittas.app.model.Servico;
 import br.com.sanittas.app.repository.CategoriaServicoRepository;
 import br.com.sanittas.app.repository.ServicoRepository;
 import br.com.sanittas.app.service.servico.dto.ServicoCriacaoDto;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 

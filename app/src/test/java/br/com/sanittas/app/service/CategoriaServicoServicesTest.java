@@ -1,6 +1,5 @@
 package br.com.sanittas.app.service;
 
-import br.com.sanittas.app.model.CategoriaServico;
 import br.com.sanittas.app.repository.CategoriaServicoRepository;
 import br.com.sanittas.app.service.categoria.dto.CategoriaServicoCriacaoDto;
 import org.junit.jupiter.api.Test;
@@ -8,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;

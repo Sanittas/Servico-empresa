@@ -1,9 +1,7 @@
 package br.com.sanittas.app.service;
 
-import br.com.sanittas.app.model.CategoriaServico;
 import br.com.sanittas.app.model.Servico;
 import br.com.sanittas.app.repository.CategoriaServicoRepository;
-import br.com.sanittas.app.repository.EmpresaRepository;
 import br.com.sanittas.app.repository.ServicoRepository;
 import br.com.sanittas.app.service.servico.dto.ServicoCriacaoDto;
 import lombok.extern.slf4j.Slf4j;

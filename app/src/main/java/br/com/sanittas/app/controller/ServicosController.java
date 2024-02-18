@@ -1,7 +1,6 @@
 package br.com.sanittas.app.controller;
 
 import br.com.sanittas.app.model.Servico;
-import br.com.sanittas.app.model.ServicoEmpresa;
 import br.com.sanittas.app.service.ServicosServices;
 import br.com.sanittas.app.service.servico.dto.ServicoCriacaoDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

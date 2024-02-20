@@ -1,20 +1,16 @@
 package br.com.sanittas.app.service;
 
-import br.com.sanittas.app.model.Endereco;
+import br.com.sanittas.app.model.EnderecoEmpresa;
 import br.com.sanittas.app.repository.EmpresaRepository;
-import br.com.sanittas.app.repository.EnderecoRepository;
+import br.com.sanittas.app.repository.EnderecoEmpresaRepository;
 import br.com.sanittas.app.service.endereco.dto.EnderecoCriacaoDto;
 import br.com.sanittas.app.service.endereco.dto.EnderecoMapper;
-import br.com.sanittas.app.service.endereco.dto.ListaEndereco;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,7 +18,7 @@ import java.util.List;
 public class EnderecoServices {
 
     @Autowired
-    private EnderecoRepository repository;
+    private EnderecoEmpresaRepository repository;
 
     @Autowired
     private EmpresaRepository empresaRepository;
@@ -31,12 +27,13 @@ public class EnderecoServices {
         log.info("Cadastrando endereço para a empresa com ID: {}", empresa_id);
         var endereco = EnderecoMapper.of(enderecoCriacaoDto);
         var empresa = empresaRepository.findById(empresa_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        endereco.setEmpresa(empresa);
+        empresa.addEndereco(endereco);
         repository.save(endereco);
+        empresaRepository.save(empresa);
         log.info("Endereço cadastrado com sucesso para a empresa com ID: {}", empresa_id);
     }
 
-    public Endereco atualizar(EnderecoCriacaoDto enderecoCriacaoDto, Long id) {
+    public EnderecoEmpresa atualizar(EnderecoCriacaoDto enderecoCriacaoDto, Integer id) {
 
         log.info("Atualizando endereço com ID: {}", id);
         var endereco = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -48,7 +45,7 @@ public class EnderecoServices {
         return repository.save(endereco);
     }
 
-    public void deletarEndereco(Long id) {
+    public void deletarEndereco(Integer id) {
         log.info("Deletando endereço com ID: {}", id);
         if (repository.existsById(id)) {
             repository.deleteById(id);
@@ -59,7 +56,7 @@ public class EnderecoServices {
         }
     }
 
-    public List<Endereco> listarEnderecosPorEmpresa(Integer idEmpresa) {
+    public List<EnderecoEmpresa> listarEnderecosPorEmpresa(Integer idEmpresa) {
             log.info("Listando endereços para a empresa com ID: {}", idEmpresa);
             var empresa = empresaRepository.findById(idEmpresa).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
             return empresa.getEnderecos();

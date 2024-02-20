@@ -1,7 +1,6 @@
 package br.com.sanittas.app.service;
 
 import br.com.sanittas.app.model.Servico;
-import br.com.sanittas.app.repository.CategoriaServicoRepository;
 import br.com.sanittas.app.repository.ServicoRepository;
 import br.com.sanittas.app.service.servico.dto.ServicoCriacaoDto;
 import org.junit.jupiter.api.Test;

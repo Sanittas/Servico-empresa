@@ -1,9 +1,9 @@
 package br.com.sanittas.app.service;
 
 import br.com.sanittas.app.model.Empresa;
-import br.com.sanittas.app.model.Endereco;
+import br.com.sanittas.app.model.EnderecoEmpresa;
 import br.com.sanittas.app.repository.EmpresaRepository;
-import br.com.sanittas.app.repository.EnderecoRepository;
+import br.com.sanittas.app.repository.EnderecoEmpresaRepository;
 import br.com.sanittas.app.service.endereco.dto.EnderecoCriacaoDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 class EnderecoServicesTest {
 
     @Mock
-    private EnderecoRepository repository;
+    private EnderecoEmpresaRepository repository;
 
     @Mock
     private EmpresaRepository empresaRepository;
@@ -47,7 +47,7 @@ class EnderecoServicesTest {
         enderecoServices.cadastrarEnderecoEmpresa(enderecoCriacaoDto, empresaId);
 
         // Then
-        verify(repository, times(1)).save(any(Endereco.class));
+        verify(repository, times(1)).save(any(EnderecoEmpresa.class));
     }
 
     @Test
@@ -70,17 +70,17 @@ class EnderecoServicesTest {
         EnderecoCriacaoDto enderecoCriacaoDto = new EnderecoCriacaoDto();
         enderecoCriacaoDto.setLogradouro("Rua Atualizada");
 
-        Endereco endereco = new Endereco();
+        EnderecoEmpresa endereco = new EnderecoEmpresa();
         endereco.setId(enderecoId);
         endereco.setLogradouro("Rua Teste");
 
-        Endereco enderecoAtualizado = new Endereco();
+        EnderecoEmpresa enderecoAtualizado = new EnderecoEmpresa();
         enderecoAtualizado.setId(enderecoId);
         enderecoAtualizado.setLogradouro("Rua Atualizada");
 
         // Simula o comportamento do findById retornando um endereço
         when(repository.findById(enderecoId)).thenReturn(Optional.of(endereco));
-        when(repository.save(any(Endereco.class))).thenReturn(enderecoAtualizado);
+        when(repository.save(any(EnderecoEmpresa.class))).thenReturn(enderecoAtualizado);
 
         // When
         var result = enderecoServices.atualizar(enderecoCriacaoDto, enderecoId);
@@ -88,7 +88,7 @@ class EnderecoServicesTest {
         // Then
         assertNotNull(result);
         assertEquals("Rua Atualizada", result.getLogradouro());
-        verify(repository, times(1)).save(any(Endereco.class));
+        verify(repository, times(1)).save(any(EnderecoEmpresa.class));
     }
 
     @Test

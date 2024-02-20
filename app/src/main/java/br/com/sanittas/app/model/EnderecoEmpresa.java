@@ -8,22 +8,20 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity(name="Endereco")
-@Table(name = "endereco")
-public class Endereco {
+@Entity
+@Table(name = "endereco_empresa")
+public class EnderecoEmpresa {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "fk_empresa")
-    private Empresa empresa;
-    @ManyToOne
-    @JoinColumn(name = "fk_usuario")
-    private Usuario usuario;
+    @Column(name = "id_end_empresa")
+    private Integer id;
+    @NotBlank
+    private String cep;
     @NotBlank
     private String logradouro;
     @NotBlank
     private String numero;
+    @NotBlank
+    private String bairro;
     private String complemento;
     @NotBlank
     private String estado;

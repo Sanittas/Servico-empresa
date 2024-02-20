@@ -29,12 +29,12 @@ public class CompetenciaServices {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
-
-    public Competencia atualizar(Integer id, Competencia competencia) {
-            Competencia competenciaAtualizada = competenciaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            competenciaAtualizada.setDescricao(competencia.getDescricao());
-            return competenciaRepository.save(competenciaAtualizada);
-    }
+    // Discutir se vale a pena ter um método para atualizar competencia
+//    public Competencia atualizar(Integer id, Competencia competencia) {
+//            Competencia competenciaAtualizada = competenciaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//            competenciaAtualizada.setDescricao(competencia.getDescricao());
+//            return competenciaRepository.save(competenciaAtualizada);
+//    }
 
     public void deletar(Integer id) {
         try {

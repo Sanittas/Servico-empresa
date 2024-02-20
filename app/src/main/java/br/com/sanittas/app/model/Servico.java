@@ -2,22 +2,25 @@ package br.com.sanittas.app.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
+@Table(name = "servico")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Servico {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_servico")
     private Integer id;
     private String descricao;
-    @ManyToOne
-    @JoinColumn(name = "fk_categoria_servico")
-    private CategoriaServico categoriaServico;
-    @JsonManagedReference
-    @OneToMany(mappedBy = "servico",orphanRemoval = true)
-    private List<ServicoEmpresa> servicoEmpresa;
+    private String areaSaude;
+    private Double valor;
+    private Integer duracaoEstimada;
+    @OneToMany
+    private List<AgendamentoServico> agendamentos;
 }

@@ -1,6 +1,7 @@
 package br.com.sanittas.app.service;
 
 import br.com.sanittas.app.api.configuration.security.jwt.GerenciadorTokenJwt;
+import br.com.sanittas.app.model.ContatoFuncionario;
 import br.com.sanittas.app.model.Empresa;
 import br.com.sanittas.app.model.Funcionario;
 import br.com.sanittas.app.repository.EmpresaRepository;
@@ -51,17 +52,11 @@ public class FuncionarioServices {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
         funcionario.setCpf(dados.getCpf());
-        if (repository.existsByRg(dados.getRg())) {
-            log.error("RG já cadastrado");
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-        }
-        funcionario.setRg(dados.getRg());
-        if (repository.existsByEmail(dados.getEmail())) {
-            log.error("Email já cadastrado");
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-        }
-        funcionario.setEmail(dados.getEmail());
-        funcionario.setNumeroRegistroAtuacao(dados.getNumeroRegistroAtuacao());
+//        if (repository.existsByEmail(dados.getEmail())) {
+//            log.error("Email já cadastrado");
+//            throw new ResponseStatusException(HttpStatus.CONFLICT);
+//        }
+        funcionario.addContato(ContatoFuncionario.builder().email(dados.getEmail()).tel(null).build());
         return repository.save(funcionario);
     }
 
@@ -87,22 +82,18 @@ public class FuncionarioServices {
             log.error("CPF já cadastrado");
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
-        if (repository.existsByRg(funcionarioCriacaoDto.getRg())) {
-            log.error("RG já cadastrado");
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-        }
-        if (repository.existsByEmail(funcionarioCriacaoDto.getEmail())) {
-            log.error("Email já cadastrado");
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-        }
+//        if (repository.existsByEmail(funcionarioCriacaoDto.getEmail())) {
+//            log.error("Email já cadastrado");
+//            throw new ResponseStatusException(HttpStatus.CONFLICT);
+//        }
         final Funcionario novoFuncionario = FuncionarioMapper.of(funcionarioCriacaoDto);
-        novoFuncionario.setIdEmpresa(empresa);
+        novoFuncionario.setFkEmpresa(empresa);
         repository.save(novoFuncionario);
     }
 
     public List<Funcionario> listaFuncionariosPorEmpresa(Integer idEmpresa) {
             Empresa empresa = empresaRepository.findById(idEmpresa).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            List<Funcionario> funcionarios = repository.findAllByIdEmpresa(empresa);
+            List<Funcionario> funcionarios = repository.findAllByfkEmpresa(empresa);
             return funcionarios;
     }
 
@@ -113,31 +104,31 @@ public class FuncionarioServices {
 
     public Integer countFuncionariosEmpresa(String jwtToken) {
         final Empresa empresa = empresaRepository.findByCnpj(gerenciadorTokenJwt.obterNomeUsuarioDoToken(jwtToken)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return repository.countByIdEmpresa(empresa);
+        return repository.countByfkEmpresa(empresa);
     }
 
-    public void cadastrarFuncionarioEmLote(MultipartFile file, String jwtToken) {
-        try (InputStream inputStream = file.getInputStream();
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+    //Erro ao cadastrar em lote pois foi retirado atributo RG
 
-            String linha;
-            while ((linha = reader.readLine()) != null) {
-                System.out.println(linha);
-                FuncionarioCriacaoDto func = new FuncionarioCriacaoDto(
-                        linha.substring(2,47).strip(),
-                        linha.substring(48,92).strip(),
-                        linha.substring(93,104).strip(),
-                        linha.substring(104,113).strip(),
-                        linha.substring(113,157).strip(),
-                        linha.substring(157,202).strip()
-                );
-                log.info("cadastrando funcionário: " + func);
-
-                cadastrar(func, jwtToken);
-                log.info("Funcionario cadastrado");
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-    }
+//    public void cadastrarFuncionarioEmLote(MultipartFile file, String jwtToken) {
+//        try (InputStream inputStream = file.getInputStream();
+//             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+//
+//            String linha;
+//            while ((linha = reader.readLine()) != null) {
+//                System.out.println(linha);
+//                FuncionarioCriacaoDto func = new FuncionarioCriacaoDto(
+//                        linha.substring(2,47).strip(),
+//                        linha.substring(48,92).strip(),
+//                        linha.substring(93,104).strip(),
+//                        linha.substring(157,202).strip()
+//                );
+//                log.info("cadastrando funcionário: " + func);
+//
+//                cadastrar(func, jwtToken);
+//                log.info("Funcionario cadastrado");
+//            }
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//        }
+//    }
 }

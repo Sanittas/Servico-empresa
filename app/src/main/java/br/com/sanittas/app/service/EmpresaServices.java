@@ -2,7 +2,7 @@ package br.com.sanittas.app.service;
 
 import br.com.sanittas.app.api.configuration.security.jwt.GerenciadorTokenJwt;
 import br.com.sanittas.app.model.Empresa;
-import br.com.sanittas.app.model.Endereco;
+import br.com.sanittas.app.model.EnderecoEmpresa;
 import br.com.sanittas.app.repository.EmpresaRepository;
 import br.com.sanittas.app.service.autenticacao.dto.EmpresaLoginDto;
 import br.com.sanittas.app.service.autenticacao.dto.EmpresaTokenDto;
@@ -80,7 +80,7 @@ public class EmpresaServices {
     }
 
     private static void extrairEndereco(Empresa empresa, List<ListaEndereco> listaEnderecos) {
-        for (Endereco endereco : empresa.getEnderecos()) {
+        for (EnderecoEmpresa endereco : empresa.getEnderecos()) {
             var enderecoDto = new ListaEndereco(
                     endereco.getId(),
                     endereco.getLogradouro(),

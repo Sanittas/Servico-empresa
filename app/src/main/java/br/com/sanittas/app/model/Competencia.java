@@ -15,5 +15,7 @@ public class Competencia {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotBlank
-    private String descricao;
+    private String especializacao;
+    @NotBlank
+    private String registroAtuacao;
 }

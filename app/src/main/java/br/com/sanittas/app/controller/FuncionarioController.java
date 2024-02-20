@@ -61,25 +61,25 @@ public class FuncionarioController {
         }
     }
 
-    @PostMapping("/cadastro-em-massa")
-    public ResponseEntity<Void> cadastrarEmMassa( @RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        try{
-            if (file == null || file.isEmpty()) {
-                return ResponseEntity.badRequest().build();
-            }
-            String requestTokenHeader = request.getHeader("Authorization");
-            String jwtToken = "";
-            if (Objects.nonNull(requestTokenHeader) && requestTokenHeader.startsWith("Bearer ")) {
-                jwtToken = requestTokenHeader.substring(7);
-            }
-            services.cadastrarFuncionarioEmLote(file,jwtToken);
-        return ResponseEntity.ok().build();
-        }catch (ResponseStatusException e) {
-            log.error("Erro ao cadastrar funcionarios", e.getLocalizedMessage());
-            log.error(e.getReason());
-            throw new ResponseStatusException(e.getStatusCode());
-        }
-    }
+//    @PostMapping("/cadastro-em-massa")
+//    public ResponseEntity<Void> cadastrarEmMassa( @RequestParam("file") MultipartFile file, HttpServletRequest request) {
+//        try{
+//            if (file == null || file.isEmpty()) {
+//                return ResponseEntity.badRequest().build();
+//            }
+//            String requestTokenHeader = request.getHeader("Authorization");
+//            String jwtToken = "";
+//            if (Objects.nonNull(requestTokenHeader) && requestTokenHeader.startsWith("Bearer ")) {
+//                jwtToken = requestTokenHeader.substring(7);
+//            }
+//            services.cadastrarFuncionarioEmLote(file,jwtToken);
+//        return ResponseEntity.ok().build();
+//        }catch (ResponseStatusException e) {
+//            log.error("Erro ao cadastrar funcionarios", e.getLocalizedMessage());
+//            log.error(e.getReason());
+//            throw new ResponseStatusException(e.getStatusCode());
+//        }
+//    }
 
     @GetMapping("/cpf/{cpf}")
     public ResponseEntity<Integer> getIdByCpf(@PathVariable String cpf) {

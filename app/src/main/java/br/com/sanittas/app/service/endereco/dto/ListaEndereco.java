@@ -1,7 +1,7 @@
 package br.com.sanittas.app.service.endereco.dto;
 
 public record ListaEndereco(
-        Long id,
+        Integer id,
         String logradouro,
         String numero,
         String complemento,

@@ -1,11 +1,11 @@
 package br.com.sanittas.app.service.endereco.dto;
 
-import br.com.sanittas.app.model.Endereco;
+import br.com.sanittas.app.model.EnderecoEmpresa;
 
 public class EnderecoMapper {
 
-    public static Endereco of(EnderecoCriacaoDto enderecoCriacaoDto) {
-        Endereco endereco = new Endereco();
+    public static EnderecoEmpresa of(EnderecoCriacaoDto enderecoCriacaoDto) {
+        EnderecoEmpresa endereco = new EnderecoEmpresa();
 
         endereco.setLogradouro(enderecoCriacaoDto.getLogradouro());
         endereco.setNumero(enderecoCriacaoDto.getNumero());

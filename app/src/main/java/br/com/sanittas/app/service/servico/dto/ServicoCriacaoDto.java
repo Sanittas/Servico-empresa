@@ -1,5 +1,7 @@
 package br.com.sanittas.app.service.servico.dto;
 
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,5 +9,8 @@ import lombok.Setter;
 @Setter
 public class ServicoCriacaoDto {
     private String descricao;
-    private Integer fkCategoriaServico;
+    private String areaSaude;
+    @Positive
+    private Double valor;
+    private Integer duracaoEstimada;
 }

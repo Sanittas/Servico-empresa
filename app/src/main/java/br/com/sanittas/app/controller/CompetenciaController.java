@@ -40,15 +40,15 @@ public class CompetenciaController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Competencia> atualizar(@PathVariable Integer id, @RequestBody Competencia competencia) {
-        try{
-            var response = competenciaServices.atualizar(id, competencia);
-            return ResponseEntity.status(200).body(response);
-        } catch (ResponseStatusException e) {
-            throw new ResponseStatusException(e.getStatusCode());
-        }
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Competencia> atualizar(@PathVariable Integer id, @RequestBody Competencia competencia) {
+//        try{
+//            var response = competenciaServices.atualizar(id, competencia);
+//            return ResponseEntity.status(200).body(response);
+//        } catch (ResponseStatusException e) {
+//            throw new ResponseStatusException(e.getStatusCode());
+//        }
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Integer id) {

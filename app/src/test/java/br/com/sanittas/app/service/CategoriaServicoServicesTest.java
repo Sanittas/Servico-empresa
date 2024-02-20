@@ -1,6 +1,5 @@
 package br.com.sanittas.app.service;
 
-import br.com.sanittas.app.repository.CategoriaServicoRepository;
 import br.com.sanittas.app.service.categoria.dto.CategoriaServicoCriacaoDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

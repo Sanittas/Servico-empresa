@@ -14,7 +14,7 @@ public class AgendamentoCriacaoDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dataAgendamento;
     @NotNull
-    private Integer idServicoEmpresa;
+    private Integer idServico;
     @NotNull
     private Integer idUsuario;
 }

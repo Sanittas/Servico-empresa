@@ -1,20 +1,15 @@
 package br.com.sanittas.app.controller;
 
-import br.com.sanittas.app.model.Endereco;
+import br.com.sanittas.app.model.EnderecoEmpresa;
 import br.com.sanittas.app.service.EnderecoServices;
 import br.com.sanittas.app.service.endereco.dto.EnderecoCriacaoDto;
-import br.com.sanittas.app.service.funcionario.dto.FuncionarioCriacaoDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 
 @RestController
@@ -33,7 +28,7 @@ public class EnderecoController {
      * @return ResponseEntity<List<ListaEndereco>> - Lista de endereços.
      */
     @GetMapping("/empresas/{id_empresa}")
-    public ResponseEntity<List<Endereco>> listarEnderecosPorEmpresa(@PathVariable Integer id_empresa) {
+    public ResponseEntity<List<EnderecoEmpresa>> listarEnderecosPorEmpresa(@PathVariable Integer id_empresa) {
         try {
             log.info("Listando endereços da empresa com ID: {}", id_empresa);
             var response = enderecoServices.listarEnderecosPorEmpresa(id_empresa);
@@ -75,7 +70,7 @@ public class EnderecoController {
      * @return ResponseEntity<ListaEndereco> - Endereço atualizado.
      */
     @PutMapping("/empresas/{id}")
-    public ResponseEntity<Endereco> atualizarEnderecoEmpresa(@RequestBody EnderecoCriacaoDto enderecoCriacaoDto, @PathVariable Long id) {
+    public ResponseEntity<EnderecoEmpresa> atualizarEnderecoEmpresa(@RequestBody EnderecoCriacaoDto enderecoCriacaoDto, @PathVariable Integer id) {
         try {
             log.info("Atualizando endereço com ID: {}", id);
             var endereco = enderecoServices.atualizar(enderecoCriacaoDto, id);
@@ -93,7 +88,7 @@ public class EnderecoController {
      * @return ResponseEntity<Void> - Resposta HTTP.
      */
     @DeleteMapping("/empresas/{id}")
-    public ResponseEntity<Void> deletarEnderecoEmpresa(@PathVariable Long id) {
+    public ResponseEntity<Void> deletarEnderecoEmpresa(@PathVariable Integer id) {
         try {
             log.info("Deletando endereço com ID: {}", id);
             enderecoServices.deletarEndereco(id);

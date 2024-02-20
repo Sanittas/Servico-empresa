@@ -3,7 +3,6 @@ package br.com.sanittas.app.service;
 import br.com.sanittas.app.model.AgendamentoServico;
 import br.com.sanittas.app.model.Usuario;
 import br.com.sanittas.app.repository.AgendamentoRepository;
-import br.com.sanittas.app.repository.ServicoEmpresaRepository;
 import br.com.sanittas.app.repository.UsuarioRepository;
 import br.com.sanittas.app.service.agendamento.dto.AgendamentoCriacaoDto;
 import org.junit.jupiter.api.Test;

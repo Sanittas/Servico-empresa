@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import java.util.ArrayList;
@@ -26,7 +25,13 @@ public class Empresa {
     private String cnpj;
     private String senha;
     @JsonManagedReference
-    @OneToMany(mappedBy = "empresa", orphanRemoval = true)
-    private List<Endereco> enderecos = new ArrayList<>();
+    @OneToMany(orphanRemoval = true)
+    private List<EnderecoEmpresa> enderecos = new ArrayList<>();
+    @OneToMany(orphanRemoval = true)
+    private List<Servico> servicos = new ArrayList<>();
+
+    public void addEndereco(EnderecoEmpresa endereco) {
+        this.enderecos.add(endereco);
+    }
 
 }

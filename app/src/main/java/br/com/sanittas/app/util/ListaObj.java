@@ -1,6 +1,6 @@
 package br.com.sanittas.app.util;
 
-import br.com.sanittas.app.service.empresa.dto.ListaEmpresa;
+import br.com.sanittas.app.empresa.services.dto.ListaEmpresa;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 

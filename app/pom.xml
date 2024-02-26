@@ -28,10 +28,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		<dependency>
@@ -58,27 +54,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-api</artifactId>
-			<version>0.11.5</version>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId>
-			<version>0.11.5</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
-			<version>0.11.5</version> <!-- Use a versão mais recente disponível -->
 		</dependency>
         <dependency>
             <groupId>com.mysql</groupId>
@@ -120,18 +95,6 @@
 					<excludes>
 						<!-- Exclui todos os pacotes exceto o da camada de serviço -->
 						<exclude>br/com/sanittas/app/api/**</exclude>
-						<exclude>br/com/sanittas/app/controller/</exclude>
-						<exclude>br/com/sanittas/app/model/*</exclude>
-						<exclude>br/com/sanittas/app/repository/*</exclude>
-						<exclude>br/com/sanittas/app/util/*</exclude>
-						<exclude>br/com/sanittas/app/service/agendamento/</exclude>
-						<exclude>br/com/sanittas/app/service/autenticacao/</exclude>
-						<exclude>br/com/sanittas/app/service/categoria/</exclude>
-						<exclude>br/com/sanittas/app/service/empresa/</exclude>
-						<exclude>br/com/sanittas/app/service/endereco/</exclude>
-						<exclude>br/com/sanittas/app/service/funcionario/</exclude>
-						<exclude>br/com/sanittas/app/service/servico/</exclude>
-						<exclude>br/com/sanittas/app/service/servicoEmpresa/</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

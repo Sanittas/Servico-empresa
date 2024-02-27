@@ -3,17 +3,20 @@ package br.com.sanittas.app.mail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 @Component
 @Slf4j
 public class EmailServices {
-    private FilaObj fila;
+    private Queue<EmailEmpresa> fila;
 
     public EmailServices() {
-        this.fila = new FilaObj(20);
+        this.fila = new LinkedList<>();
     }
 
     public void enviarEmailComToken(String email, String token) {
-        fila.insert(new EmailEmpresa(email, token));
+        fila.add(new EmailEmpresa(email, token));
         log.info("Email adicionado a fila");
     }
 }

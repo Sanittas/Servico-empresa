@@ -7,14 +7,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import java.util.Queue;
+
 @Slf4j
 public class EmailThread implements EventListener {
 
     private JavaMailSender javaMailSender;
-    private FilaObj fila;
+    private Queue<EmailEmpresa> fila;
     private MimeMessageHelper helper;
 
-    public EmailThread(FilaObj fila) {
+    public EmailThread(Queue<EmailEmpresa> fila) {
         this.javaMailSender = MailConfig.javaMailSender();
         this.fila = fila;
         try {
@@ -25,7 +27,7 @@ public class EmailThread implements EventListener {
         }
     }
 
-    public EmailThread(FilaObj fila, JavaMailSender javaMailSender, MimeMessageHelper helper) {
+    public EmailThread(Queue<EmailEmpresa> fila, JavaMailSender javaMailSender, MimeMessageHelper helper) {
         this.fila = fila;
         this.javaMailSender = javaMailSender;
         this.helper = helper;

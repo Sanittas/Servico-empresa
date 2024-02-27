@@ -56,7 +56,7 @@ public class EmpresaController {
         }
     }
 
-    @PostMapping("/cadastrar/")
+    @PostMapping("/")
     public ResponseEntity<Void> cadastrarEmpresa(@RequestBody @Valid EmpresaCriacaoDto empresa) {
         try {
             log.info("Recebida solicitação para cadastrar uma nova empresa: {}", empresa.razaoSocial());

@@ -7,6 +7,7 @@ import br.com.sanittas.app.servicos.repository.ServicoRepository;
 import br.com.sanittas.app.servicos.services.dto.AgendamentoCriacaoDto;
 import br.com.sanittas.app.usuario.model.Usuario;
 import br.com.sanittas.app.usuario.repository.UsuarioRepository;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -17,13 +18,11 @@ import java.util.List;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class AgendamentoServicoServices {
-    @Autowired
-    private AgendamentoRepository repository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private ServicoRepository servicoRepository;
+    private final AgendamentoRepository repository;
+    private final UsuarioRepository usuarioRepository;
+    private final ServicoRepository servicoRepository;
 
     public List<AgendamentoServico> listar() {
         try {

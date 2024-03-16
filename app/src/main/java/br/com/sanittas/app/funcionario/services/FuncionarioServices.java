@@ -9,6 +9,7 @@ import br.com.sanittas.app.funcionario.repository.FuncionarioRepository;
 import br.com.sanittas.app.funcionario.services.dto.FuncionarioCriacaoDto;
 import br.com.sanittas.app.funcionario.services.dto.FuncionarioMapper;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +20,11 @@ import java.util.List;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class FuncionarioServices {
-    @Autowired
-    private FuncionarioRepository repository;
-    @Autowired
-    private EmpresaRepository empresaRepository;
-    @Autowired
-    private ContatoFuncionarioRepository contatoFuncionarioRepository;
+    private final FuncionarioRepository repository;
+    private final EmpresaRepository empresaRepository;
+    private final ContatoFuncionarioRepository contatoFuncionarioRepository;
 
     public List<Funcionario> listaFuncionarios() {
         var funcionarios = repository.findAll();
@@ -65,7 +64,6 @@ public class FuncionarioServices {
             return funcionario;
     }
 
-    //Empresa era obtida através de token jwt
     public void cadastrar(@Valid FuncionarioCriacaoDto funcionarioCriacaoDto) {
         final Empresa empresa =
                 empresaRepository.findById(funcionarioCriacaoDto.getEmpresaId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -96,35 +94,10 @@ public class FuncionarioServices {
         Funcionario funcionario = repository.findByCpf(cpf).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return funcionario.getId();
     }
-    //Empresa era obtida pelo token jwt
+
     public Integer countFuncionariosEmpresa(Integer idEmpresa) {
         final Empresa empresa =
                 empresaRepository.findById(idEmpresa).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return repository.countByfkEmpresa(empresa);
     }
-
-    //Erro ao cadastrar em lote pois foi retirado atributo RG
-
-//    public void cadastrarFuncionarioEmLote(MultipartFile file, String jwtToken) {
-//        try (InputStream inputStream = file.getInputStream();
-//             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-//
-//            String linha;
-//            while ((linha = reader.readLine()) != null) {
-//                System.out.println(linha);
-//                FuncionarioCriacaoDto func = new FuncionarioCriacaoDto(
-//                        linha.substring(2,47).strip(),
-//                        linha.substring(48,92).strip(),
-//                        linha.substring(93,104).strip(),
-//                        linha.substring(157,202).strip()
-//                );
-//                log.info("cadastrando funcionário: " + func);
-//
-//                cadastrar(func, jwtToken);
-//                log.info("Funcionario cadastrado");
-//            }
-//        } catch (Exception e) {
-//            log.error(e.getMessage());
-//        }
-//    }
 }

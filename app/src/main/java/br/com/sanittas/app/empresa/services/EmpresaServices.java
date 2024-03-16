@@ -251,10 +251,7 @@ public class EmpresaServices {
             Empresa empresa = repository.findByCnpj(publicData.getCnpj())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-//            KeyBasedPersistenceTokenService tokenService = this.getInstanceFor(empresa);
-//            tokenService.verifyToken(novaSenhaDto.getToken());
-
-//            empresa.setSenha(this.passwordEncoder.encode(novaSenhaDto.getNovaSenha()));
+            empresa.setSenha(novaSenhaDto.getNovaSenha());
             repository.save(empresa);
         } catch (Exception e) {
             log.error("Erro ao alterar senha: {}", e.getMessage());
@@ -268,13 +265,6 @@ public class EmpresaServices {
         return createdAt.plus(Duration.ofMinutes(5)).isBefore(now);
     }
 
-//    private KeyBasedPersistenceTokenService getInstanceFor(Empresa empresa) throws Exception {
-//        KeyBasedPersistenceTokenService tokenService = new KeyBasedPersistenceTokenService();
-//        tokenService.setServerSecret(empresa.getSenha());
-//        tokenService.setServerInteger(16);
-//        tokenService.setSecureRandom(new SecureRandomFactoryBean().getObject());
-//        return tokenService;
-//    }
 
     private PasswordTokenPublicData readPublicData(String rawToken) {
         String rawTokenDecoded = new String(Base64.getDecoder().decode(rawToken));
@@ -282,5 +272,9 @@ public class EmpresaServices {
         Long timestamp = Long.parseLong(tokenParts[0]);
         String email = tokenParts[2];
         return new PasswordTokenPublicData(email, timestamp);
+    }
+
+    public Empresa login(LoginDtoRequest loginDto) {
+        return repository.findByCnpj(loginDto.cnpj()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }

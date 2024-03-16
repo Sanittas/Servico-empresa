@@ -1,11 +1,9 @@
 package br.com.sanittas.app.empresa.controller;
 
 import br.com.sanittas.app.empresa.model.Empresa;
+import br.com.sanittas.app.empresa.services.dto.*;
 import br.com.sanittas.app.mail.EmailServices;
 import br.com.sanittas.app.empresa.services.EmpresaServices;
-import br.com.sanittas.app.empresa.services.dto.EmpresaCriacaoDto;
-import br.com.sanittas.app.empresa.services.dto.ListaEmpresa;
-import br.com.sanittas.app.empresa.services.dto.NovaSenhaDto;
 import br.com.sanittas.app.util.ListaObj;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -25,6 +23,20 @@ public class EmpresaController {
     private EmpresaServices services;
     @Autowired
     private EmailServices emailServices;
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginDtoResponse> login(@RequestBody @Valid LoginDtoRequest loginDto) {
+        try {
+            log.info("Recebida solicitação de login para empresa com CNPJ: {}", loginDto.cnpj());
+            Empresa empresa = services.login(loginDto);
+            log.info("Login efetuado com sucesso para empresa: {}", empresa.getRazaoSocial());
+            return ResponseEntity.status(200).body(new LoginDtoResponse(empresa.getId(), empresa.getRazaoSocial()));
+        } catch (ResponseStatusException e) {
+            log.error("Erro ao efetuar login: {}", e.getMessage());
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
 
     @GetMapping("/")
     public ResponseEntity<ListaObj<ListaEmpresa>> listarEmpresas() {

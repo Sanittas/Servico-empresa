@@ -15,5 +15,4 @@ public class EnderecoCriacaoDto {
     private String cidade;
     @NotBlank
     private String estado;
-
 }

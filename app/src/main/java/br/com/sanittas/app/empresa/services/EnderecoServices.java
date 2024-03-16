@@ -4,6 +4,7 @@ import br.com.sanittas.app.empresa.model.EnderecoEmpresa;
 import br.com.sanittas.app.empresa.repository.EmpresaRepository;
 import br.com.sanittas.app.empresa.repository.EnderecoEmpresaRepository;
 import br.com.sanittas.app.empresa.services.dto.EnderecoCriacaoDto;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,13 +15,10 @@ import java.util.List;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class EnderecoServices {
-
-    @Autowired
-    private EnderecoEmpresaRepository repository;
-
-    @Autowired
-    private EmpresaRepository empresaRepository;
+    private final EnderecoEmpresaRepository repository;
+    private final EmpresaRepository empresaRepository;
 
     public void cadastrarEnderecoEmpresa(EnderecoCriacaoDto enderecoCriacaoDto, Integer empresa_id) {
         log.info("Cadastrando endereço para a empresa com ID: {}", empresa_id);

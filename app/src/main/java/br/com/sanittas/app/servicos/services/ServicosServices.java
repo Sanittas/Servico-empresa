@@ -3,6 +3,7 @@ package br.com.sanittas.app.servicos.services;
 import br.com.sanittas.app.servicos.model.Servico;
 import br.com.sanittas.app.servicos.repository.ServicoRepository;
 import br.com.sanittas.app.servicos.services.dto.ServicoCriacaoDto;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,9 +15,9 @@ import java.util.List;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class ServicosServices {
-    @Autowired
-    private ServicoRepository servicoRepository;
+    private final ServicoRepository servicoRepository;
 
     public List<Servico> listar() {
         try {
@@ -26,10 +27,6 @@ public class ServicosServices {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
-
-//    public List<Servico> listarServicoCategoria() {
-//                servicoRepository.findAlllJoinServicoCategoria();
-//    }
 
     public void cadastrar(ServicoCriacaoDto dados) {
         Servico novoServico = Servico.builder()
@@ -41,7 +38,6 @@ public class ServicosServices {
         servicoRepository.save(novoServico);
     }
 
-
     public void atualizar(Integer id, ServicoCriacaoDto dados) {
         Servico servicoAtualizado = servicoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Servico não encontrado"));
         servicoAtualizado.setDescricao(dados.getDescricao());
@@ -51,11 +47,9 @@ public class ServicosServices {
         servicoRepository.save(servicoAtualizado);
     }
 
-
     public void deletar(Integer id) {
         servicoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Servico não encontrado"));
         servicoRepository.deleteById(id);
     }
-
 
 }

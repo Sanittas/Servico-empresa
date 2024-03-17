@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/empresas")
 @Slf4j
+@CrossOrigin(origins = "*")
 public class EmpresaController {
 
     @Autowired

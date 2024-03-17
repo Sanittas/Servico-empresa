@@ -1,6 +1,7 @@
 package br.com.sanittas.app.empresa.model;
 
 import br.com.sanittas.app.servicos.model.Servico;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -27,6 +28,7 @@ public class Empresa {
     private String senha;
     @JsonManagedReference
     @OneToMany(orphanRemoval = true)
+    @JsonIgnore
     private List<EnderecoEmpresa> enderecos = new ArrayList<>();
     @OneToMany(orphanRemoval = true)
     private List<Servico> servicos = new ArrayList<>();

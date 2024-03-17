@@ -18,6 +18,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/funcionarios")
 @Slf4j
+@CrossOrigin(origins = "*")
 public class FuncionarioController {
     @Autowired
     private FuncionarioServices services;

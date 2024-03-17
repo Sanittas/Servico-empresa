@@ -23,10 +23,12 @@ public class EnderecoServices {
     public void cadastrarEnderecoEmpresa(EnderecoCriacaoDto enderecoCriacaoDto, Integer empresa_id) {
         log.info("Cadastrando endereço para a empresa com ID: {}", empresa_id);
         var endereco = EnderecoEmpresa.builder()
+                .cep(enderecoCriacaoDto.getCep())
                 .logradouro(enderecoCriacaoDto.getLogradouro())
                 .numero(enderecoCriacaoDto.getNumero())
                 .complemento(enderecoCriacaoDto.getComplemento())
                 .cidade(enderecoCriacaoDto.getCidade())
+                .bairro(enderecoCriacaoDto.getBairro())
                 .estado(enderecoCriacaoDto.getEstado())
                 .build();
         var empresa = empresaRepository.findById(empresa_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -52,6 +54,7 @@ public class EnderecoServices {
         log.info("Deletando endereço com ID: {}", id);
         if (repository.existsById(id)) {
             repository.deleteById(id);
+
             log.info("Endereço deletado com sucesso. ID: {}", id);
         } else {
             log.warn("Tentativa de deletar endereço com ID {}, mas não encontrado.", id);

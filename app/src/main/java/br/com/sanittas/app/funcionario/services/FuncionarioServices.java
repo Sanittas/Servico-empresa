@@ -33,22 +33,22 @@ public class FuncionarioServices {
 
     public Funcionario atualizar(Integer id, FuncionarioCriacaoDto dados) {
         var funcionario = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if (repository.existsByFuncional(dados.getFuncional())) {
-            log.error("Funcional já cadastrado");
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-        }
+//        if (repository.existsByFuncional(dados.getFuncional())) {
+//            log.error("Funcional já cadastrado");
+//            throw new ResponseStatusException(HttpStatus.CONFLICT);
+//        }
         funcionario.setFuncional(dados.getFuncional());
         funcionario.setNome(dados.getNome());
-        if (repository.existsByCpf(dados.getCpf())) {
-            log.error("CPF já cadastrado");
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-        }
+//        if (repository.existsByCpf(dados.getCpf())) {
+//            log.error("CPF já cadastrado");
+//            throw new ResponseStatusException(HttpStatus.CONFLICT);
+//        }
         funcionario.setCpf(dados.getCpf());
-        if (contatoFuncionarioRepository.existsByEmail(dados.getEmail())) {
-            log.error("Email já cadastrado");
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-        }
-        funcionario.addContato(ContatoFuncionario.builder().email(dados.getEmail()).tel(null).build());
+//        if (contatoFuncionarioRepository.existsByEmail(dados.getEmail())) {
+//            log.error("Email já cadastrado");
+//            throw new ResponseStatusException(HttpStatus.CONFLICT);
+//        }
+//        funcionario.addContato(ContatoFuncionario.builder().email(dados.getEmail()).tel(null).build());
         return repository.save(funcionario);
     }
 

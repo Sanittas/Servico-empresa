@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/competencias")
+@CrossOrigin(origins = "*")
 public class CompetenciaController {
     @Autowired
     private CompetenciaServices competenciaServices;

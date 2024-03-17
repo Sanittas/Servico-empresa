@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/servicos")
 @Slf4j
+@CrossOrigin(origins = "*")
 public class ServicosController {
     @Autowired
     private ServicosServices services;

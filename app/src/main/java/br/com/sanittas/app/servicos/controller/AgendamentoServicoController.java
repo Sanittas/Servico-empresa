@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/agendamentos")
 @Slf4j
+@CrossOrigin(origins = "*")
 public class AgendamentoServicoController {
     @Autowired
     private AgendamentoServicoServices services;

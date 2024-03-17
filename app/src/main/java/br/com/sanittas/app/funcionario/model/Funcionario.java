@@ -31,8 +31,6 @@ public class Funcionario {
     @JoinColumn(name = "fk_empresa")
     private Empresa fkEmpresa;
     private Boolean inativo;
-    @NotBlank
-    private String numeroRegistroAtuacao;
     @OneToMany(orphanRemoval = true)
     private List<Competencia> competencias = new ArrayList<>();
     @OneToMany(orphanRemoval = true)

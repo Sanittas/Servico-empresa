@@ -10,7 +10,6 @@ public class FuncionarioMapper {
         funcionario.setFuncional(funcionarioCriacaoDto.getFuncional());
         funcionario.setNome(funcionarioCriacaoDto.getNome());
         funcionario.setCpf(funcionarioCriacaoDto.getCpf());
-        funcionario.setNumeroRegistroAtuacao(funcionarioCriacaoDto.getNumeroRegistroAtuacao());
 
 
         return funcionario;

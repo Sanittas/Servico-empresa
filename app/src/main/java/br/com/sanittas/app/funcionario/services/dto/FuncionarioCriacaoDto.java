@@ -23,7 +23,11 @@ public class FuncionarioCriacaoDto {
     @Email
     private String email;
     @NotBlank
-    private String numeroRegistroAtuacao;
+    private String telefone;
+    @NotBlank
+    private String especializacao;
+    @NotBlank
+    private String registroAtuacao;
     @NotNull
     private Integer empresaId;
 }

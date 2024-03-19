@@ -1,11 +1,13 @@
 package br.com.sanittas.app.funcionario.controller;
 
+import br.com.sanittas.app.funcionario.model.ContatoFuncionario;
 import br.com.sanittas.app.funcionario.model.Funcionario;
 import br.com.sanittas.app.funcionario.services.FuncionarioServices;
 import br.com.sanittas.app.funcionario.services.dto.FuncionarioCriacaoDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,10 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/funcionarios")
 @Slf4j
+@AllArgsConstructor
 @CrossOrigin(origins = "*")
 public class FuncionarioController {
-    @Autowired
-    private FuncionarioServices services;
-
+    private final FuncionarioServices services;
 
     @GetMapping("/")
     public ResponseEntity<List<Funcionario>> listar() {
@@ -84,6 +85,22 @@ public class FuncionarioController {
             return ResponseEntity.status(201).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar funcionario. Exceção:" + e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
+    @GetMapping("/contato/{id}")
+    public ResponseEntity<List<ContatoFuncionario>> listarContatoFuncionario(@PathVariable Integer id) {
+        try {
+            var response = services.listaContatoFuncionario(id);
+            if (!response.isEmpty()) {
+                log.info("Contatos encontrados" + response);
+                return ResponseEntity.status(200).body(response);
+            }
+            log.info("Nenhum contato encontrado");
+            return ResponseEntity.status(204).body(response);
+        } catch (ResponseStatusException e) {
+            log.error("Erro ao buscar contatos", e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode());
         }
     }

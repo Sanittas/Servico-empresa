@@ -30,7 +30,7 @@ public class Usuario {
     private String cpf;
     @NotBlank
     private String senha;
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<EnderecoUsuario> enderecos = new ArrayList<>(); // Lista de endereços associados ao usuário
 }
 

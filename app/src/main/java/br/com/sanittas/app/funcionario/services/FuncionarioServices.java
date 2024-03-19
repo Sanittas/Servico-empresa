@@ -1,8 +1,10 @@
 package br.com.sanittas.app.funcionario.services;
 
+import br.com.sanittas.app.funcionario.model.Competencia;
 import br.com.sanittas.app.funcionario.model.ContatoFuncionario;
 import br.com.sanittas.app.empresa.model.Empresa;
 import br.com.sanittas.app.funcionario.model.Funcionario;
+import br.com.sanittas.app.funcionario.repository.CompetenciaRepository;
 import br.com.sanittas.app.funcionario.repository.ContatoFuncionarioRepository;
 import br.com.sanittas.app.empresa.repository.EmpresaRepository;
 import br.com.sanittas.app.funcionario.repository.FuncionarioRepository;
@@ -22,6 +24,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class FuncionarioServices {
+    private final CompetenciaRepository competenciaRepository;
     private final FuncionarioRepository repository;
     private final EmpresaRepository empresaRepository;
     private final ContatoFuncionarioRepository contatoFuncionarioRepository;
@@ -33,22 +36,22 @@ public class FuncionarioServices {
 
     public Funcionario atualizar(Integer id, FuncionarioCriacaoDto dados) {
         var funcionario = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-//        if (repository.existsByFuncional(dados.getFuncional())) {
-//            log.error("Funcional já cadastrado");
-//            throw new ResponseStatusException(HttpStatus.CONFLICT);
-//        }
+        if (repository.existsByFuncional(dados.getFuncional())) {
+            log.error("Funcional já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
         funcionario.setFuncional(dados.getFuncional());
         funcionario.setNome(dados.getNome());
-//        if (repository.existsByCpf(dados.getCpf())) {
-//            log.error("CPF já cadastrado");
-//            throw new ResponseStatusException(HttpStatus.CONFLICT);
-//        }
+        if (repository.existsByCpf(dados.getCpf())) {
+            log.error("CPF já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
         funcionario.setCpf(dados.getCpf());
-//        if (contatoFuncionarioRepository.existsByEmail(dados.getEmail())) {
-//            log.error("Email já cadastrado");
-//            throw new ResponseStatusException(HttpStatus.CONFLICT);
-//        }
-//        funcionario.addContato(ContatoFuncionario.builder().email(dados.getEmail()).tel(null).build());
+        if (contatoFuncionarioRepository.existsByEmail(dados.getEmail())) {
+            log.error("Email já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+        funcionario.addContato(ContatoFuncionario.builder().email(dados.getEmail()).tel(dados.getTelefone()).build());
         return repository.save(funcionario);
     }
 
@@ -81,7 +84,19 @@ public class FuncionarioServices {
         }
         final Funcionario novoFuncionario = FuncionarioMapper.of(funcionarioCriacaoDto);
         novoFuncionario.setFkEmpresa(empresa);
-        repository.save(novoFuncionario);
+        final Funcionario funcSalvo = repository.save(novoFuncionario);
+        final Competencia competencia = Competencia.builder()
+                .especializacao(funcionarioCriacaoDto.getEspecializacao())
+                .registroAtuacao(funcionarioCriacaoDto.getRegistroAtuacao())
+                .build();
+        final ContatoFuncionario contatoFuncionario = ContatoFuncionario.builder()
+                .email(funcionarioCriacaoDto.getEmail())
+                .tel(funcionarioCriacaoDto.getTelefone()).build();
+        funcSalvo.addContato(contatoFuncionario);
+        funcSalvo.addCompetencia(competencia);
+        contatoFuncionarioRepository.save(contatoFuncionario);
+        competenciaRepository.save(competencia);
+        repository.save(funcSalvo);
     }
 
     public List<Funcionario> listaFuncionariosPorEmpresa(Integer idEmpresa) {
@@ -99,5 +114,11 @@ public class FuncionarioServices {
         final Empresa empresa =
                 empresaRepository.findById(idEmpresa).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return repository.countByfkEmpresa(empresa);
+    }
+
+    public List<ContatoFuncionario> listaContatoFuncionario(Integer id) {
+        final Funcionario funcionario =
+                repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return contatoFuncionarioRepository.findAllByFkFuncionario_Id(id);
     }
 }

@@ -14,10 +14,11 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity(name="Empresa")
+@Entity
 @Table(name = "empresa")
 public class Empresa {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_empresa")
     private Integer id;
     @Column(name = "razao_social")
     private String razaoSocial;
@@ -27,7 +28,7 @@ public class Empresa {
     private String cnpj;
     private String senha;
     @JsonManagedReference
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<EnderecoEmpresa> enderecos = new ArrayList<>();
     @OneToMany(orphanRemoval = true)

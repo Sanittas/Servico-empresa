@@ -1,9 +1,7 @@
 package br.com.sanittas.app.usuario.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +19,10 @@ public class EnderecoUsuario {
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id_end_usuario")
     private Integer id;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    @JsonBackReference
+    private Usuario usuario;
     @NotBlank
     private String cep;
     @NotBlank

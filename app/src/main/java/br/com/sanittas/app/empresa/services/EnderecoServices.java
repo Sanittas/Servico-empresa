@@ -32,6 +32,7 @@ public class EnderecoServices {
                 .estado(enderecoCriacaoDto.getEstado())
                 .build();
         var empresa = empresaRepository.findById(empresa_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        endereco.setEmpresa(empresa);
         empresa.addEndereco(endereco);
         repository.save(endereco);
         empresaRepository.save(empresa);

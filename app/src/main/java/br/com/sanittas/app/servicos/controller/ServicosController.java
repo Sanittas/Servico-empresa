@@ -37,6 +37,18 @@ public class ServicosController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Servico> buscarPorId(@PathVariable Integer id) {
+        try{
+            Servico response = services.buscarPorId(id);
+            log.info("Servico encontrado" + response);
+            return ResponseEntity.status(200).body(response);
+        }catch (ResponseStatusException e) {
+            log.error("Erro ao buscar servico: " + e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
 //    @GetMapping("/servico-empresa/categoria/")
 //    public ResponseEntity<List<Servico>> listarServicoCategoria() {
 //        try{

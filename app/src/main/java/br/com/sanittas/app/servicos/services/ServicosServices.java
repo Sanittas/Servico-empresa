@@ -28,6 +28,10 @@ public class ServicosServices {
         }
     }
 
+    public Servico buscarPorId(Integer id) {
+        return servicoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Servico não encontrado"));
+    }
+
     public void cadastrar(ServicoCriacaoDto dados) {
         Servico novoServico = Servico.builder()
                 .descricao(dados.getDescricao())

@@ -46,6 +46,19 @@ public class AgendamentoServicoController {
         }
     }
 
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<List<AgendamentoServico>> listarAgendamentosPorUsuario(@PathVariable Integer id) {
+        try {
+            List<AgendamentoServico> response = services.listarAgendamentosPorUsuario(id);
+            if (!response.isEmpty()) {
+                return ResponseEntity.status(200).body(response);
+            }
+            return ResponseEntity.status(204).build();
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(e.getStatusCode());
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Void> atualizar(@PathVariable Integer id, @RequestBody @Valid AgendamentoCriacaoDto dados) {
         try {

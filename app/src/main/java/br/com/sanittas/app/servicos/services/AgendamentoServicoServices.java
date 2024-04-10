@@ -55,4 +55,8 @@ public class AgendamentoServicoServices {
         repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
         repository.deleteById(id);
     }
+
+    public List<AgendamentoServico> listarAgendamentosPorUsuario(Integer id) {
+        return repository.findAllByUsuario_Id(id);
+    }
 }

@@ -23,15 +23,15 @@ public class ServicosController {
 
     @GetMapping("/")
     public ResponseEntity<?> listar() {
-        try{
+        try {
             List<Servico> response = services.listar();
-            if (!response.isEmpty()){
+            if (!response.isEmpty()) {
                 log.info("Servicos encontrados" + response);
                 return ResponseEntity.status(200).body(response);
             }
             log.info("Nenhum servico encontrado");
             return ResponseEntity.status(204).body(response);
-        }catch (ResponseStatusException e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao buscar servicos: " + e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode());
         }
@@ -39,11 +39,11 @@ public class ServicosController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Servico> buscarPorId(@PathVariable Integer id) {
-        try{
+        try {
             Servico response = services.buscarPorId(id);
             log.info("Servico encontrado" + response);
             return ResponseEntity.status(200).body(response);
-        }catch (ResponseStatusException e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao buscar servico: " + e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode());
         }
@@ -68,11 +68,11 @@ public class ServicosController {
 
     @PostMapping("/")
     public ResponseEntity<Void> cadastrar(@RequestBody @Valid ServicoCriacaoDto dados) {
-        try{
+        try {
             services.cadastrar(dados);
             log.info("Servico cadastrado com sucesso");
             return ResponseEntity.status(201).build();
-        }catch (ResponseStatusException e){
+        } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar servico" + e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode());
         }
@@ -80,11 +80,11 @@ public class ServicosController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> atualizar(@PathVariable Integer id, @RequestBody @Valid ServicoCriacaoDto dados) {
-        try{
+        try {
             services.atualizar(id, dados);
             log.info("Servico atualizado com sucesso");
             return ResponseEntity.status(200).build();
-        }catch (ResponseStatusException e){
+        } catch (ResponseStatusException e) {
             log.error("Erro ao atualizar servico" + e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode());
         }
@@ -92,11 +92,11 @@ public class ServicosController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Integer id) {
-        try{
+        try {
             services.deletar(id);
             log.info("Servico deletado com sucesso");
             return ResponseEntity.status(200).build();
-        }catch (ResponseStatusException e){
+        } catch (ResponseStatusException e) {
             log.error("Erro ao deletar servico" + e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode());
         }

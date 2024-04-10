@@ -2,6 +2,7 @@ package br.com.sanittas.app.servicos.model;
 
 
 import br.com.sanittas.app.usuario.model.Usuario;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,9 +21,11 @@ public class AgendamentoServico {
     private Integer id;
     private LocalDateTime dataHoraAgendamento;
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "fk_usuario")
     private Usuario usuario;
     private Boolean status;
     @ManyToOne
+    @JsonBackReference
     private Servico servico;
 }

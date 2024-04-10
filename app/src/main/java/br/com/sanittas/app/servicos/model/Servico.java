@@ -1,5 +1,6 @@
 package br.com.sanittas.app.servicos.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,5 +22,6 @@ public class Servico {
     private Double valor;
     private Integer duracaoEstimada;
     @OneToMany
+    @JsonManagedReference
     private List<AgendamentoServico> agendamentos;
 }

@@ -8,6 +8,7 @@ import br.com.sanittas.app.util.ListaObj;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,11 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/empresas")
 @Slf4j
+@AllArgsConstructor
 @CrossOrigin(origins = "*")
 public class EmpresaController {
-
-    @Autowired
-    private EmpresaServices services;
-    @Autowired
-    private EmailServices emailServices;
+    private final EmpresaServices services;
+    private final EmailServices emailServices;
 
     @PostMapping("/login")
     public ResponseEntity<LoginDtoResponse> login(@RequestBody @Valid LoginDtoRequest loginDto) {
@@ -34,7 +33,7 @@ public class EmpresaController {
             return ResponseEntity.status(200).body(new LoginDtoResponse(empresa.getId(), empresa.getRazaoSocial()));
         } catch (ResponseStatusException e) {
             log.error("Erro ao efetuar login: {}", e.getMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -50,9 +49,9 @@ public class EmpresaController {
             }
             log.info("Nenhuma empresa encontrada");
             return ResponseEntity.status(204).build();
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao listar empresas: {}", e.getMessage());
-            return ResponseEntity.status(400).build();
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -65,7 +64,7 @@ public class EmpresaController {
             return response;
         } catch (ResponseStatusException e) {
             log.error("Erro ao buscar empresa com ID {}: {}", id, e.getMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -78,7 +77,7 @@ public class EmpresaController {
             return ResponseEntity.status(201).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar empresa: {}", e.getMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -91,7 +90,7 @@ public class EmpresaController {
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao atualizar empresa: {}", e.getMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -104,7 +103,7 @@ public class EmpresaController {
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao deletar empresa: {}", e.getMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -117,7 +116,7 @@ public class EmpresaController {
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao exportar dados para arquivo CSV: {}", e.getMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -130,7 +129,7 @@ public class EmpresaController {
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao ordenar empresas por razão social: {}", e.getMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -143,7 +142,7 @@ public class EmpresaController {
             return ResponseEntity.status(200).body(response);
         } catch (ResponseStatusException e) {
             log.error("Erro na pesquisa binária por razão social: {}", e.getMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -155,7 +154,7 @@ public class EmpresaController {
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
             log.info(e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -171,7 +170,7 @@ public class EmpresaController {
             services.validarToken(token);
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -187,7 +186,7 @@ public class EmpresaController {
             services.alterarSenha(novaSenhaDto);
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 }

@@ -48,13 +48,11 @@ public class EmpresaServices {
 
     public Empresa listarEmpresaPorId(Integer id) {
         log.info("Listando empresa com ID: {}", id);
-        var empresa = repository.findById(id);
-        if (empresa.isPresent()) {
-            log.info("Empresa listada com sucesso.");
-            return empresa.get();
-        }
-        log.warn("Tentativa de listar empresa com ID {}, mas não encontrada.", id);
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Empresa não encontrada."
+                ));
     }
 
     private static void extrairEndereco(Empresa empresa, List<ListaEndereco> listaEnderecos) {
@@ -74,15 +72,15 @@ public class EmpresaServices {
     public void cadastrar(EmpresaCriacaoDto empresa) {
         if (repository.existsByRazaoSocial(empresa.razaoSocial())) {
             log.error("Razão social já cadastrada");
-         throw new ResponseStatusException(HttpStatus.CONFLICT);
+         throw new ResponseStatusException(HttpStatus.CONFLICT, "Razão social já cadastrada");
         }
         if (repository.existsByCnpj(empresa.cnpj())) {
             log.error("CNPJ já cadastrado");
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "CNPJ já cadastrado");
         }
         if (repository.findByEmail(empresa.email()).isPresent()) {
             log.error("Email já cadastrado");
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já cadastrado");
         }
         log.info("Cadastrando nova empresa.");
         Empresa empresaNova = new Empresa();
@@ -106,7 +104,7 @@ public class EmpresaServices {
             log.info("Empresa atualizada com sucesso.");
         } else {
             log.warn("Tentativa de atualizar empresa com ID {}, mas não encontrada.", id);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Empresa não encontrada.");
         }
     }
 
@@ -114,7 +112,7 @@ public class EmpresaServices {
         var empresa = repository.findById(id);
         if (empresa.isEmpty()){
             log.error("Tentativa de deletar empresa com ID {}, mas não encontrada.", id);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Empresa não encontrada.");
         }
         log.info("Deletando empresa com ID: {}", id);
         repository.deleteById(id);
@@ -217,7 +215,7 @@ public class EmpresaServices {
             return "";
         } catch (Exception e) {
             log.error("Erro ao gerar token: {}", e.getMessage());
-            throw new ResponseStatusException(HttpStatusCode.valueOf(400));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
         }
     }
 
@@ -245,7 +243,7 @@ public class EmpresaServices {
 
             if (isExpired(publicData)) {
 
-                throw new ResponseStatusException(HttpStatusCode.valueOf(400));
+                throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Token expirado");
             }
 
             Empresa empresa = repository.findByCnpj(publicData.getCnpj())
@@ -275,6 +273,7 @@ public class EmpresaServices {
     }
 
     public Empresa login(LoginDtoRequest loginDto) {
-        return repository.findByCnpj(loginDto.cnpj()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return repository.findByCnpj(loginDto.cnpj())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empresa não encontrada."));
     }
 }

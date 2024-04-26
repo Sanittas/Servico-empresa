@@ -33,7 +33,7 @@ public class ServicosController {
             return ResponseEntity.status(204).body(response);
         } catch (ResponseStatusException e) {
             log.error("Erro ao buscar servicos: " + e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -45,7 +45,7 @@ public class ServicosController {
             return ResponseEntity.status(200).body(response);
         } catch (ResponseStatusException e) {
             log.error("Erro ao buscar servico: " + e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -74,7 +74,7 @@ public class ServicosController {
             return ResponseEntity.status(201).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar servico" + e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -86,7 +86,7 @@ public class ServicosController {
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao atualizar servico" + e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -98,8 +98,7 @@ public class ServicosController {
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao deletar servico" + e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
-
 }

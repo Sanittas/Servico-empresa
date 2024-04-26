@@ -17,4 +17,6 @@ public class AgendamentoCriacaoDto {
     private Integer idServico;
     @NotNull
     private Integer idUsuario;
+    @NotNull
+    private Integer idFuncionario;
 }

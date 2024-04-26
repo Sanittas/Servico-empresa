@@ -3,8 +3,10 @@ package br.com.sanittas.app.servicos.controller;
 import br.com.sanittas.app.servicos.model.AgendamentoServico;
 import br.com.sanittas.app.servicos.services.AgendamentoServicoServices;
 import br.com.sanittas.app.servicos.services.dto.AgendamentoCriacaoDto;
+import br.com.sanittas.app.servicos.services.dto.VerificarDisponibilidadeDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/agendamentos")
 @Slf4j
+@AllArgsConstructor
 @CrossOrigin(origins = "*")
 public class AgendamentoServicoController {
-    @Autowired
-    private AgendamentoServicoServices services;
+
+    private final AgendamentoServicoServices services;
 
     @GetMapping("/")
     public ResponseEntity<List<AgendamentoServico>> listar() {
@@ -30,7 +33,7 @@ public class AgendamentoServicoController {
             }
             return ResponseEntity.status(204).build();
         } catch (ResponseStatusException e) {
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -42,7 +45,7 @@ public class AgendamentoServicoController {
         } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar agendamento: " + e.getMessage());
             log.error(e.getReason());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -55,7 +58,16 @@ public class AgendamentoServicoController {
             }
             return ResponseEntity.status(204).build();
         } catch (ResponseStatusException e) {
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
+        }
+    }
+
+    @GetMapping("/verificar-disponibilidade")
+    public ResponseEntity<String> verificarDisponibilidadeAgendamento(@Valid @RequestBody VerificarDisponibilidadeDto dados) {
+        try {
+            return ResponseEntity.status(200).body(services.verificarDisponibilidade(dados));
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -65,7 +77,7 @@ public class AgendamentoServicoController {
             services.atualizar(id, dados);
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -75,7 +87,7 @@ public class AgendamentoServicoController {
             services.deletar(id);
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 }

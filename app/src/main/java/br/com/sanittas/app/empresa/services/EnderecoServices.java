@@ -31,7 +31,11 @@ public class EnderecoServices {
                 .bairro(enderecoCriacaoDto.getBairro())
                 .estado(enderecoCriacaoDto.getEstado())
                 .build();
-        var empresa = empresaRepository.findById(empresa_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        var empresa = empresaRepository.findById(empresa_id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Empresa não encontrada."
+                ));
         endereco.setEmpresa(empresa);
         empresa.addEndereco(endereco);
         repository.save(endereco);
@@ -42,7 +46,12 @@ public class EnderecoServices {
     public EnderecoEmpresa atualizar(EnderecoCriacaoDto enderecoCriacaoDto, Integer id) {
 
         log.info("Atualizando endereço com ID: {}", id);
-        var endereco = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        var endereco =
+                repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Endereço não encontrado."
+                ));
         endereco.setLogradouro(enderecoCriacaoDto.getLogradouro());
         endereco.setNumero(enderecoCriacaoDto.getNumero());
         endereco.setComplemento(enderecoCriacaoDto.getComplemento());
@@ -59,13 +68,18 @@ public class EnderecoServices {
             log.info("Endereço deletado com sucesso. ID: {}", id);
         } else {
             log.warn("Tentativa de deletar endereço com ID {}, mas não encontrado.", id);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado.");
         }
     }
 
     public List<EnderecoEmpresa> listarEnderecosPorEmpresa(Integer idEmpresa) {
             log.info("Listando endereços para a empresa com ID: {}", idEmpresa);
-            var empresa = empresaRepository.findById(idEmpresa).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            var empresa =
+                    empresaRepository.findById(idEmpresa)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND,
+                            "Empresa não encontrada."
+                    ));
             return empresa.getEnderecos();
     }
 }

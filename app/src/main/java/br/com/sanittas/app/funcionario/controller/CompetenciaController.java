@@ -26,7 +26,7 @@ public class CompetenciaController {
             }
             return ResponseEntity.status(200).body(response);
         } catch (ResponseStatusException e) {
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -36,7 +36,7 @@ public class CompetenciaController {
             var response = competenciaServices.cadastrar(competencia);
             return ResponseEntity.status(201).body(response);
         } catch (ResponseStatusException e) {
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -56,7 +56,7 @@ public class CompetenciaController {
             competenciaServices.deletar(id);
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 }

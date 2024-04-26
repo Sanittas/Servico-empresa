@@ -39,7 +39,7 @@ public class EnderecoController {
             return ResponseEntity.status(204).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao listar endereços da empresa com ID: {}", id_empresa, e);
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -58,7 +58,7 @@ public class EnderecoController {
             return ResponseEntity.status(201).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar endereço para a empresa com ID: {}", empresa_id, e);
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -77,7 +77,7 @@ public class EnderecoController {
             return ResponseEntity.status(200).body(endereco);
         } catch (ResponseStatusException e) {
             log.error("Erro ao atualizar endereço com ID: {}", id, e);
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -93,9 +93,9 @@ public class EnderecoController {
             log.info("Deletando endereço com ID: {}", id);
             enderecoServices.deletarEndereco(id);
             return ResponseEntity.status(200).build();
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             log.error("Erro ao deletar endereço com ID: {}", id, e);
-            return ResponseEntity.status(400).build();
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 }

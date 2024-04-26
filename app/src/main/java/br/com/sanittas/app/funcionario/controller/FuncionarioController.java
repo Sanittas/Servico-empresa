@@ -37,7 +37,7 @@ public class FuncionarioController {
             return ResponseEntity.status(204).body(response);
         } catch (ResponseStatusException e) {
             log.error("Erro ao buscar funcionarios", e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -49,7 +49,7 @@ public class FuncionarioController {
             return ResponseEntity.status(200).body(response);
         } catch (ResponseStatusException e) {
             log.error("Erro ao buscar funcionarios", e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -61,7 +61,7 @@ public class FuncionarioController {
             return ResponseEntity.status(200).body(funcionario);
         } catch (ResponseStatusException e) {
             log.info("Funcionario não encontrado");
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -73,7 +73,7 @@ public class FuncionarioController {
             return ResponseEntity.status(200).body(funcionario);
         } catch (ResponseStatusException e) {
             log.info("Funcionario não encontrado");
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -85,7 +85,7 @@ public class FuncionarioController {
             return ResponseEntity.status(201).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar funcionario. Exceção:" + e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -101,7 +101,7 @@ public class FuncionarioController {
             return ResponseEntity.status(204).body(response);
         } catch (ResponseStatusException e) {
             log.error("Erro ao buscar contatos", e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -113,7 +113,7 @@ public class FuncionarioController {
             return ResponseEntity.status(200).body(funcionario);
         } catch (ResponseStatusException e) {
             log.error("Erro ao atualizar funcionario" + e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -125,7 +125,7 @@ public class FuncionarioController {
             return ResponseEntity.status(200).build();
         } catch (ResponseStatusException e) {
             log.error("Erro ao deletar funcionario" + e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 
@@ -141,7 +141,7 @@ public class FuncionarioController {
             return ResponseEntity.status(204).body(response);
         } catch (ResponseStatusException e) {
             log.error("Erro ao buscar funcionarios", e.getLocalizedMessage());
-            throw new ResponseStatusException(e.getStatusCode());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }
 

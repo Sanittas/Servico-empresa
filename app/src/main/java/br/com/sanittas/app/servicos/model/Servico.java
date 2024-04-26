@@ -1,5 +1,6 @@
 package br.com.sanittas.app.servicos.model;
 
+import br.com.sanittas.app.empresa.model.Empresa;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +22,8 @@ public class Servico {
     private String areaSaude;
     private Double valor;
     private Integer duracaoEstimada;
-    @OneToMany
-    @JsonManagedReference
+    @ManyToOne
+    private Empresa empresa;
+    @OneToMany(mappedBy = "servico", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AgendamentoServico> agendamentos;
 }

@@ -1,5 +1,6 @@
 package br.com.sanittas.app.usuario.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -29,6 +30,7 @@ public class Usuario {
     @CPF
     private String cpf;
     @NotBlank
+    @JsonIgnore
     private String senha;
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<EnderecoUsuario> enderecos = new ArrayList<>(); // Lista de endereços associados ao usuário

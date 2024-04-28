@@ -25,8 +25,10 @@ public class AgendamentoServico {
     @JoinColumn(name = "fk_usuario")
     private Usuario usuario;
     @ManyToOne
+    @JsonBackReference
     private Funcionario funcionario;
     private Boolean status;
     @ManyToOne
+    @JsonBackReference
     private Servico servico;
 }

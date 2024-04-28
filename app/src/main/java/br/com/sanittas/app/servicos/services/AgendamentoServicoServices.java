@@ -81,6 +81,8 @@ public class AgendamentoServicoServices {
     }
 
     public List<AgendamentoServico> listarAgendamentosPorUsuario(Integer id) {
+        usuarioRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404),
+                "Usuário não encontrado"));
         return repository.findAllByUsuario_Id(id);
     }
 

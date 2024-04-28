@@ -2,6 +2,7 @@ package br.com.sanittas.app.funcionario.model;
 
 import br.com.sanittas.app.empresa.model.Empresa;
 import br.com.sanittas.app.servicos.model.AgendamentoServico;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,7 @@ public class Funcionario {
     @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Competencia> competencias = new ArrayList<>();
     @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<AgendamentoServico> agendamentos = new ArrayList<>();
     @OneToMany(mappedBy = "fkFuncionario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ContatoFuncionario> contatos = new ArrayList<>();

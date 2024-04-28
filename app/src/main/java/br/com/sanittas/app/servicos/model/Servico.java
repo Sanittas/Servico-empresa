@@ -25,5 +25,6 @@ public class Servico {
     @ManyToOne
     private Empresa empresa;
     @OneToMany(mappedBy = "servico", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<AgendamentoServico> agendamentos;
 }

@@ -1,49 +1,50 @@
 package br.com.sanittas.app.empresa.controller;
 
 import br.com.sanittas.app.empresa.model.Empresa;
-import br.com.sanittas.app.empresa.services.dto.*;
-import br.com.sanittas.app.mail.EmailServices;
 import br.com.sanittas.app.empresa.services.EmpresaServices;
-import br.com.sanittas.app.util.ListaObj;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import br.com.sanittas.app.empresa.services.dto.EmpresaCriacaoDto;
+import br.com.sanittas.app.empresa.services.dto.ListaEmpresa;
+import br.com.sanittas.app.empresa.services.dto.NovaSenhaDto;
+import br.com.sanittas.app.mail.EmailServices;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/empresas")
 @Slf4j
 @AllArgsConstructor
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class EmpresaController {
     private final EmpresaServices services;
     private final EmailServices emailServices;
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginDtoResponse> login(@RequestBody @Valid LoginDtoRequest loginDto) {
-        try {
-            log.info("Recebida solicitação de login para empresa com CNPJ: {}", loginDto.cnpj());
-            Empresa empresa = services.login(loginDto);
-            log.info("Login efetuado com sucesso para empresa: {}", empresa.getRazaoSocial());
-            return ResponseEntity.status(200).body(new LoginDtoResponse(empresa.getId(), empresa.getRazaoSocial()));
-        } catch (ResponseStatusException e) {
-            log.error("Erro ao efetuar login: {}", e.getMessage());
-            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
-        }
-    }
+
+//    @PostMapping("/login")
+//    public ResponseEntity<LoginDtoResponse> login(@RequestBody @Valid LoginDtoRequest loginDto) {
+//        try {
+//            log.info("Recebida solicitação de login para empresa com CNPJ: {}", loginDto.username());
+//            LoginDtoResponse response = services.login(loginDto);
+//            log.info("Login efetuado com sucesso para empresa de cnpj: {}", loginDto.username());
+//            return ResponseEntity.status(200).body(response);
+//        } catch (ResponseStatusException e) {
+//            log.error("Erro ao efetuar login: {}", e.getMessage());
+//            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
+//        }
+//    }
 
 
     @GetMapping("/")
-    public ResponseEntity<ListaObj<ListaEmpresa>> listarEmpresas() {
+    public ResponseEntity<List<ListaEmpresa>> listarEmpresas() {
         try {
             log.info("Recebida solicitação para listar empresas");
-            ListaObj<ListaEmpresa> response = services.listarEmpresas();
-            if (response.getNroElem() > 0) {
+            List<ListaEmpresa> response = services.listarEmpresas();
+            if (response.size() > 0) {
                 log.info("Empresas listadas com sucesso");
                 return ResponseEntity.status(200).body(response);
             }
@@ -68,7 +69,7 @@ public class EmpresaController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("/cadastrar/")
     public ResponseEntity<Void> cadastrarEmpresa(@RequestBody @Valid EmpresaCriacaoDto empresa) {
         try {
             log.info("Recebida solicitação para cadastrar uma nova empresa: {}", empresa.razaoSocial());
@@ -107,44 +108,44 @@ public class EmpresaController {
         }
     }
 
-    @GetMapping("/export")
-    public ResponseEntity<?> gravaArquivoCsv() {
-        try {
-            log.info("Recebida solicitação para exportar dados para arquivo CSV");
-            services.gravaArquivosCsv(services.listarEmpresas());
-            log.info("Exportação de dados para arquivo CSV concluída com sucesso");
-            return ResponseEntity.status(200).build();
-        } catch (ResponseStatusException e) {
-            log.error("Erro ao exportar dados para arquivo CSV: {}", e.getMessage());
-            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
-        }
-    }
+//    @GetMapping("/export")
+//    public ResponseEntity<?> gravaArquivoCsv() {
+//        try {
+//            log.info("Recebida solicitação para exportar dados para arquivo CSV");
+//            services.gravaArquivosCsv(services.listarEmpresas());
+//            log.info("Exportação de dados para arquivo CSV concluída com sucesso");
+//            return ResponseEntity.status(200).build();
+//        } catch (ResponseStatusException e) {
+//            log.error("Erro ao exportar dados para arquivo CSV: {}", e.getMessage());
+//            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
+//        }
+//    }
 
-    @PostMapping("/ordenar-razao-social")
-    public ResponseEntity<Void> ordenarPorRazaoSocial() {
-        try {
-            log.info("Recebida solicitação para ordenar empresas por razão social");
-            services.ordenarPorRazaoSocial();
-            log.info("Empresas ordenadas por razão social com sucesso");
-            return ResponseEntity.status(200).build();
-        } catch (ResponseStatusException e) {
-            log.error("Erro ao ordenar empresas por razão social: {}", e.getMessage());
-            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
-        }
-    }
+//    @PostMapping("/ordenar-razao-social")
+//    public ResponseEntity<Void> ordenarPorRazaoSocial() {
+//        try {
+//            log.info("Recebida solicitação para ordenar empresas por razão social");
+//            services.ordenarPorRazaoSocial();
+//            log.info("Empresas ordenadas por razão social com sucesso");
+//            return ResponseEntity.status(200).build();
+//        } catch (ResponseStatusException e) {
+//            log.error("Erro ao ordenar empresas por razão social: {}", e.getMessage());
+//            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
+//        }
+//    }
 
-    @GetMapping("/pesquisa-razao-social/{razaoSocial}")
-    public ResponseEntity<Integer> pesquisaBinariaRazaoSocial(@PathVariable String razaoSocial) {
-        try {
-            log.info("Recebida solicitação para pesquisa binária por razão social: {}", razaoSocial);
-            Integer response = services.pesquisaBinariaRazaoSocial(razaoSocial);
-            log.info("Resultado da pesquisa binária por razão social: {}", response);
-            return ResponseEntity.status(200).body(response);
-        } catch (ResponseStatusException e) {
-            log.error("Erro na pesquisa binária por razão social: {}", e.getMessage());
-            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
-        }
-    }
+//    @GetMapping("/pesquisa-razao-social/{razaoSocial}")
+//    public ResponseEntity<Integer> pesquisaBinariaRazaoSocial(@PathVariable String razaoSocial) {
+//        try {
+//            log.info("Recebida solicitação para pesquisa binária por razão social: {}", razaoSocial);
+//            Integer response = services.pesquisaBinariaRazaoSocial(razaoSocial);
+//            log.info("Resultado da pesquisa binária por razão social: {}", response);
+//            return ResponseEntity.status(200).body(response);
+//        } catch (ResponseStatusException e) {
+//            log.error("Erro na pesquisa binária por razão social: {}", e.getMessage());
+//            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
+//        }
+//    }
 
     @PostMapping("/esqueci-senha")
     public ResponseEntity<?> esqueciASenha(@RequestParam String email) {

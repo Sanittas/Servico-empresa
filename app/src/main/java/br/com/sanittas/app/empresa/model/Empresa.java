@@ -5,9 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CNPJ;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +25,12 @@ public class Empresa {
     private Integer id;
     @Column(name = "razao_social")
     private String razaoSocial;
+    @CNPJ
+    private String cnpj;
+    @NotBlank @Size(min = 8)
+    private String senha;
     @Email @Column(unique = true)
     private String email;
-    @CNPJ @Column(unique = true)
-    private String cnpj;
-    private String senha;
     @JsonManagedReference
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

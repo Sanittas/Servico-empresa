@@ -2,6 +2,7 @@ package br.com.sanittas.app.empresa.repository;
 
 import br.com.sanittas.app.empresa.model.Empresa;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

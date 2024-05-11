@@ -11,6 +11,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,11 +29,12 @@ import java.util.*;
 @AllArgsConstructor
 public class EmpresaServices {
     private final EmpresaRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public ListaObj<ListaEmpresa> listarEmpresas() {
+    public List<ListaEmpresa> listarEmpresas() {
         log.info("Listando todas as empresas.");
         List<Empresa> empresas = repository.findAll();
-        ListaObj<ListaEmpresa> listaEmpresas = new ListaObj<>(empresas.size());
+        List<ListaEmpresa> listaEmpresas = new ArrayList<>();
         for (Empresa empresa : empresas) {
             List<ListaEndereco> listaEnderecos = new ArrayList<>();
             extrairEndereco(empresa, listaEnderecos);
@@ -40,7 +44,7 @@ public class EmpresaServices {
                     empresa.getCnpj(),
                     listaEnderecos
             );
-            listaEmpresas.adiciona(empresaDto);
+            listaEmpresas.add(empresaDto);
         }
         log.info("Empresas listadas com sucesso.");
         return listaEmpresas;
@@ -87,7 +91,7 @@ public class EmpresaServices {
         empresaNova.setRazaoSocial(empresa.razaoSocial());
         empresaNova.setCnpj(empresa.cnpj());
         empresaNova.setEmail(empresa.email());
-        empresaNova.setSenha(empresa.senha());
+        empresaNova.setSenha(passwordEncoder.encode(empresa.senha()));
         repository.save(empresaNova);
         log.info("Empresa cadastrada com sucesso.");
     }
@@ -99,7 +103,7 @@ public class EmpresaServices {
             empresaAtualizada.get().setRazaoSocial(empresa.razaoSocial());
             empresaAtualizada.get().setCnpj(empresa.cnpj());
             empresaAtualizada.get().setEmail(empresa.email());
-            empresaAtualizada.get().setSenha(empresa.senha());
+            empresaAtualizada.get().setSenha(passwordEncoder.encode(empresa.senha()));
             repository.save(empresaAtualizada.get());
             log.info("Empresa atualizada com sucesso.");
         } else {
@@ -176,30 +180,30 @@ public class EmpresaServices {
         log.info("Arquivo CSV gravado com sucesso.");
     }
 
-    public ListaObj<ListaEmpresa> ordenarPorRazaoSocial() {
-        log.info("Ordenando empresas por Razão Social.");
-        ListaObj<ListaEmpresa> listaEmpresas = listarEmpresas();
-        for (int i = 0; i < listaEmpresas.getNroElem() - 1; i++) {
-            for (int j = i + 1; j < listaEmpresas.getNroElem(); j++) {
-                if (listaEmpresas.getElemento(j).razaoSocial().compareToIgnoreCase(listaEmpresas.getElemento(i).razaoSocial()) < 0) {
-                    ListaEmpresa aux = listaEmpresas.getElemento(i);
-                    listaEmpresas.setElemento(i, listaEmpresas.getElemento(j));
-                    listaEmpresas.setElemento(j, aux);
-                }
-            }
-        }
-        gravaArquivosCsv(listaEmpresas);
-        log.info("Empresas ordenadas por Razão Social.");
-        return listaEmpresas;
-    }
+//    public ListaObj<ListaEmpresa> ordenarPorRazaoSocial() {
+//        log.info("Ordenando empresas por Razão Social.");
+//        ListaObj<ListaEmpresa> listaEmpresas = listarEmpresas();
+//        for (int i = 0; i < listaEmpresas.getNroElem() - 1; i++) {
+//            for (int j = i + 1; j < listaEmpresas.getNroElem(); j++) {
+//                if (listaEmpresas.getElemento(j).razaoSocial().compareToIgnoreCase(listaEmpresas.getElemento(i).razaoSocial()) < 0) {
+//                    ListaEmpresa aux = listaEmpresas.getElemento(i);
+//                    listaEmpresas.setElemento(i, listaEmpresas.getElemento(j));
+//                    listaEmpresas.setElemento(j, aux);
+//                }
+//            }
+//        }
+//        gravaArquivosCsv(listaEmpresas);
+//        log.info("Empresas ordenadas por Razão Social.");
+//        return listaEmpresas;
+//    }
 
-    public Integer pesquisaBinariaRazaoSocial(String razaoSocial) {
-        log.info("Realizando pesquisa binária por Razão Social: {}", razaoSocial);
-        ListaObj<ListaEmpresa> listaObj = ordenarPorRazaoSocial();
-        Integer resultado = listaObj.pesquisaBinaria(razaoSocial);
-        log.info("Resultado da pesquisa binária: {}", resultado);
-        return resultado;
-    }
+//    public Integer pesquisaBinariaRazaoSocial(String razaoSocial) {
+//        log.info("Realizando pesquisa binária por Razão Social: {}", razaoSocial);
+//        ListaObj<ListaEmpresa> listaObj = ordenarPorRazaoSocial();
+//        Integer resultado = listaObj.pesquisaBinaria(razaoSocial);
+//        log.info("Resultado da pesquisa binária: {}", resultado);
+//        return resultado;
+//    }
 
     public String generateToken(String email) {
         try {
@@ -272,8 +276,15 @@ public class EmpresaServices {
         return new PasswordTokenPublicData(email, timestamp);
     }
 
-    public Empresa login(LoginDtoRequest loginDto) {
-        return repository.findByCnpj(loginDto.cnpj())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empresa não encontrada."));
-    }
+//    public LoginDtoResponse login(LoginDtoRequest loginDto) {
+//        var authenticationtoken = new UsernamePasswordAuthenticationToken(loginDto.username(), loginDto.senha());
+//        var authentication = manager.authenticate(authenticationtoken);
+//        Empresa empresa = (Empresa) authentication.getPrincipal();
+//        var tokenJWT = tokenService.gerarToken(authentication.getName());
+//        return new LoginDtoResponse(
+//                empresa.getId(),
+//                empresa.getRazaoSocial(),
+//                tokenJWT
+//        );
+//    }
 }

@@ -12,7 +12,7 @@ public record EmpresaCriacaoDto(
         String cnpj,
         @Email
         String email,
-        @Size(min = 8, max = 20)
+        @Size(min = 8)
         String senha
 ) {
 }

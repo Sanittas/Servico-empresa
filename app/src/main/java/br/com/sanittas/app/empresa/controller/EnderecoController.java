@@ -1,9 +1,9 @@
 package br.com.sanittas.app.empresa.controller;
 
+import br.com.sanittas.app.api.configuration.security.roles.EmpresaRole;
 import br.com.sanittas.app.empresa.model.EnderecoEmpresa;
 import br.com.sanittas.app.empresa.services.EnderecoServices;
 import br.com.sanittas.app.empresa.services.dto.EnderecoCriacaoDto;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +27,7 @@ public class EnderecoController {
      * @param id_empresa ID da empresa.
      * @return ResponseEntity<List<ListaEndereco>> - Lista de endereços.
      */
+    @EmpresaRole
     @GetMapping("/empresas/{id_empresa}")
     public ResponseEntity<List<EnderecoEmpresa>> listarEnderecosPorEmpresa(@PathVariable Integer id_empresa) {
         try {
@@ -50,6 +51,7 @@ public class EnderecoController {
      * @param empresa_id   ID da empresa.
      * @return ResponseEntity<Void> - Resposta HTTP.
      */
+    @EmpresaRole
     @PostMapping("/empresas/{empresa_id}")
     public ResponseEntity<Void> cadastrarEnderecoEmpresa(@RequestBody EnderecoCriacaoDto endereco, @PathVariable Integer empresa_id) {
         try {
@@ -69,6 +71,7 @@ public class EnderecoController {
      * @param id                ID do endereço.
      * @return ResponseEntity<ListaEndereco> - Endereço atualizado.
      */
+    @EmpresaRole
     @PutMapping("/empresas/{id}")
     public ResponseEntity<EnderecoEmpresa> atualizarEnderecoEmpresa(@RequestBody EnderecoCriacaoDto enderecoCriacaoDto, @PathVariable Integer id) {
         try {
@@ -87,6 +90,7 @@ public class EnderecoController {
      * @param id ID do endereço.
      * @return ResponseEntity<Void> - Resposta HTTP.
      */
+    @EmpresaRole
     @DeleteMapping("/empresas/{id}")
     public ResponseEntity<Void> deletarEnderecoEmpresa(@PathVariable Integer id) {
         try {

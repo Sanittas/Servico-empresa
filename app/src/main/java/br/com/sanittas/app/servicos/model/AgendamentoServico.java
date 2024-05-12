@@ -2,6 +2,7 @@ package br.com.sanittas.app.servicos.model;
 
 
 import br.com.sanittas.app.funcionario.model.Funcionario;
+import br.com.sanittas.app.pagamento.model.Pagamento;
 import br.com.sanittas.app.usuario.model.Usuario;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -29,6 +30,7 @@ public class AgendamentoServico {
     private Funcionario funcionario;
     private Boolean status;
     @ManyToOne
-    @JsonBackReference
     private Servico servico;
+    @ManyToOne
+    private Pagamento pagamento;
 }

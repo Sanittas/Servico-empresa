@@ -1,8 +1,8 @@
 package br.com.sanittas.app.funcionario.controller;
 
+import br.com.sanittas.app.api.configuration.security.roles.EmpresaRole;
 import br.com.sanittas.app.funcionario.model.Competencia;
 import br.com.sanittas.app.funcionario.services.CompetenciaServices;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +17,7 @@ public class CompetenciaController {
     @Autowired
     private CompetenciaServices competenciaServices;
 
+    @EmpresaRole
     @GetMapping("/")
     public ResponseEntity<List<Competencia>> listar() {
         try{
@@ -30,6 +31,7 @@ public class CompetenciaController {
         }
     }
 
+    @EmpresaRole
     @PostMapping("/")
     public ResponseEntity<Competencia> cadastrar(@RequestBody Competencia competencia) {
         try{
@@ -50,6 +52,7 @@ public class CompetenciaController {
 //        }
 //    }
 
+    @EmpresaRole
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Integer id) {
         try{

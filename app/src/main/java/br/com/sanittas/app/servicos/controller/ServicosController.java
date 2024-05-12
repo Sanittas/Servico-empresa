@@ -1,12 +1,12 @@
 package br.com.sanittas.app.servicos.controller;
 
+import br.com.sanittas.app.api.configuration.security.roles.EmpresaRole;
 import br.com.sanittas.app.servicos.model.Servico;
 import br.com.sanittas.app.servicos.services.ServicosServices;
 import br.com.sanittas.app.servicos.services.dto.ServicoCriacaoDto;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,10 +16,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/servicos")
 @Slf4j
-@CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class ServicosController {
-    @Autowired
-    private ServicosServices services;
+    private final ServicosServices services;
 
     @GetMapping("/")
     public ResponseEntity<?> listar() {
@@ -66,6 +65,7 @@ public class ServicosController {
 //    }
 
 
+    @EmpresaRole
     @PostMapping("/")
     public ResponseEntity<Void> cadastrar(@RequestBody @Valid ServicoCriacaoDto dados) {
         try {
@@ -78,6 +78,7 @@ public class ServicosController {
         }
     }
 
+    @EmpresaRole
     @PutMapping("/{id}")
     public ResponseEntity<Void> atualizar(@PathVariable Integer id, @RequestBody @Valid ServicoCriacaoDto dados) {
         try {
@@ -90,6 +91,7 @@ public class ServicosController {
         }
     }
 
+    @EmpresaRole
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Integer id) {
         try {

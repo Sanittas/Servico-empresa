@@ -1,9 +1,11 @@
 package br.com.sanittas.app.api.configuration.security;
 
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +22,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Slf4j
 public class SecurityConfig {
     @Value("${jwt.secret-key}")
     private String jwtSecretKey;
@@ -42,18 +46,16 @@ public class SecurityConfig {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         converter.setJwtGrantedAuthoritiesConverter(
                 jwt -> {
-                    List<String> userRoleAuthorities = jwt.getClaimAsStringList("authorities");
-                    if (userRoleAuthorities == null) {
+                    String userRole = jwt.getClaimAsString("role");
+                    if (userRole == null) {
+                        log.warn("No role found in JWT");
                         return Collections.emptyList();
                     }
-                    JwtGrantedAuthoritiesConverter scopersConverter =
-                            new JwtGrantedAuthoritiesConverter();
-                    Collection<GrantedAuthority> scopeAuthorities = scopersConverter.convert(jwt);
-                    scopeAuthorities.addAll(userRoleAuthorities.stream()
-                            .map(SimpleGrantedAuthority::new)
-                            .toList());
+                    log.info("Role found in JWT: " + userRole);
+                    Collection<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + userRole));
+                    log.info("Authorities after conversion: " + authorities);
 
-                    return scopeAuthorities;
+                    return authorities;
                 }
         );
         return converter;

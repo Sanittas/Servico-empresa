@@ -1,6 +1,6 @@
 package br.com.sanittas.app.util;
 
-import br.com.sanittas.app.empresa.services.dto.ListaEmpresa;
+import br.com.sanittas.app.empresa.services.dto.ListaEmpresaDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
@@ -8,15 +8,15 @@ import lombok.Getter;
 @Getter
 public class ListaObj<T> {
 
-    private ListaEmpresa[] vetor;
+    private ListaEmpresaDto[] vetor;
     private int nroElem;
 
     public ListaObj(int tam) {
-        this.vetor = new ListaEmpresa[tam];
+        this.vetor = new ListaEmpresaDto[tam];
         this.nroElem = 0;
     }
 
-    public void adiciona(ListaEmpresa valor) {
+    public void adiciona(ListaEmpresaDto valor) {
         if (this.nroElem >= vetor.length){
             throw new IllegalStateException("Lista cheia");
         } else {
@@ -35,7 +35,7 @@ public class ListaObj<T> {
         return cont;
     }
 
-    public boolean adicionaNoInicio(ListaEmpresa valor) {
+    public boolean adicionaNoInicio(ListaEmpresaDto valor) {
         if (this.nroElem >= this.vetor.length) {
             return false;
         }
@@ -75,7 +75,7 @@ public class ListaObj<T> {
         if (indice < 0 || indice >= this.nroElem) {
             return false;
         } else {
-            var novoVetor = new ListaEmpresa[vetor.length-1];
+            var novoVetor = new ListaEmpresaDto[vetor.length-1];
             for (int i = 0; i < this.nroElem; i++) {
                 if (i < indice) {
                     novoVetor[i] = this.vetor[i];
@@ -124,7 +124,7 @@ public class ListaObj<T> {
     }
 
 
-    public void setElemento(int indice, ListaEmpresa elemento) {
+    public void setElemento(int indice, ListaEmpresaDto elemento) {
         if (indice < 0 || indice >= nroElem) {   // se indice invalido
             System.out.println("\nIndice invalido!");
         }
@@ -134,14 +134,14 @@ public class ListaObj<T> {
     }
 
 
-    public ListaEmpresa getElemento(int indice) {
+    public ListaEmpresaDto getElemento(int indice) {
         if (indice > nroElem || indice < 0) {
             return null;
         }
         return this.vetor[indice];
     }
     public void limpa() {
-        var novoVetor = new ListaEmpresa[vetor.length];
+        var novoVetor = new ListaEmpresaDto[vetor.length];
         this.vetor = novoVetor;
         nroElem = 0;
     }

@@ -1,30 +1,27 @@
 package br.com.sanittas.app.funcionario.controller;
 
+import br.com.sanittas.app.api.configuration.security.roles.EmpresaRole;
 import br.com.sanittas.app.funcionario.model.ContatoFuncionario;
 import br.com.sanittas.app.funcionario.model.Funcionario;
 import br.com.sanittas.app.funcionario.services.FuncionarioServices;
 import br.com.sanittas.app.funcionario.services.dto.FuncionarioCriacaoDto;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/funcionarios")
 @Slf4j
 @AllArgsConstructor
-@CrossOrigin(origins = "*")
 public class FuncionarioController {
     private final FuncionarioServices services;
 
+    @EmpresaRole
     @GetMapping("/")
     public ResponseEntity<List<Funcionario>> listar() {
         try {
@@ -41,6 +38,7 @@ public class FuncionarioController {
         }
     }
 
+    @EmpresaRole
     @GetMapping("/count-empresa/{idEmpresa}")
     public ResponseEntity<Integer> countFuncionariosEmpresa(@PathVariable Integer idEmpresa) {
         try {
@@ -53,6 +51,7 @@ public class FuncionarioController {
         }
     }
 
+    @EmpresaRole
     @GetMapping("/cpf/{cpf}")
     public ResponseEntity<Integer> getIdByCpf(@PathVariable String cpf) {
         try {
@@ -65,6 +64,7 @@ public class FuncionarioController {
         }
     }
 
+    @EmpresaRole
     @GetMapping("/{id}")
     public ResponseEntity<?> buscar(@PathVariable Integer id) {
         try {
@@ -77,6 +77,7 @@ public class FuncionarioController {
         }
     }
 
+    @EmpresaRole
     @PostMapping("/")
     public ResponseEntity<Void> cadastrar(@RequestBody @Valid FuncionarioCriacaoDto dados) {
         try {
@@ -89,6 +90,7 @@ public class FuncionarioController {
         }
     }
 
+    @EmpresaRole
     @GetMapping("/contato/{id}")
     public ResponseEntity<List<ContatoFuncionario>> listarContatoFuncionario(@PathVariable Integer id) {
         try {
@@ -105,6 +107,7 @@ public class FuncionarioController {
         }
     }
 
+    @EmpresaRole
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Integer id, @RequestBody @Valid FuncionarioCriacaoDto dados) {
         try {
@@ -117,6 +120,7 @@ public class FuncionarioController {
         }
     }
 
+    @EmpresaRole
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletar(@PathVariable Integer id) {
         try {
@@ -129,6 +133,7 @@ public class FuncionarioController {
         }
     }
 
+    @EmpresaRole
     @GetMapping("/empresa/{id}")
     public ResponseEntity<List<Funcionario>> listarPorEmpresa(@PathVariable Integer id) {
         try {

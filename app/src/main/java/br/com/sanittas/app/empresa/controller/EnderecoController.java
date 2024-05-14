@@ -28,7 +28,7 @@ public class EnderecoController {
      * @return ResponseEntity<List<ListaEndereco>> - Lista de endereços.
      */
     @EmpresaRole
-    @GetMapping("/empresas/{id_empresa}")
+    @GetMapping("/{id_empresa}")
     public ResponseEntity<List<EnderecoEmpresa>> listarEnderecosPorEmpresa(@PathVariable Integer id_empresa) {
         try {
             log.info("Listando endereços da empresa com ID: {}", id_empresa);
@@ -52,7 +52,7 @@ public class EnderecoController {
      * @return ResponseEntity<Void> - Resposta HTTP.
      */
     @EmpresaRole
-    @PostMapping("/empresas/{empresa_id}")
+    @PostMapping("/{empresa_id}")
     public ResponseEntity<Void> cadastrarEnderecoEmpresa(@RequestBody EnderecoCriacaoDto endereco, @PathVariable Integer empresa_id) {
         try {
             log.info("Cadastrando endereço para a empresa com ID: {}", empresa_id);
@@ -72,7 +72,7 @@ public class EnderecoController {
      * @return ResponseEntity<ListaEndereco> - Endereço atualizado.
      */
     @EmpresaRole
-    @PutMapping("/empresas/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<EnderecoEmpresa> atualizarEnderecoEmpresa(@RequestBody EnderecoCriacaoDto enderecoCriacaoDto, @PathVariable Integer id) {
         try {
             log.info("Atualizando endereço com ID: {}", id);
@@ -91,7 +91,7 @@ public class EnderecoController {
      * @return ResponseEntity<Void> - Resposta HTTP.
      */
     @EmpresaRole
-    @DeleteMapping("/empresas/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarEnderecoEmpresa(@PathVariable Integer id) {
         try {
             log.info("Deletando endereço com ID: {}", id);

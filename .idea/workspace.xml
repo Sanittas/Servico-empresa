@@ -5,13 +5,46 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d09b6a41-1f43-414e-90ff-8ff7f6c7226d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../AuthServer/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/AuthServerApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/config/PasswordEncoderConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/config/WebConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/controller/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/controller/CadastroController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/controller/EmpresaCriacaoDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/controller/LoginDtoRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/controller/LoginDtoResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/controller/UsuarioCriacaoDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/domain/AgendamentoServico.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/domain/Competencia.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/domain/ContatoFuncionario.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/domain/Empresa.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/domain/EmpresaRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/domain/EnderecoEmpresa.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/domain/EnderecoUsuario.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/domain/Funcionario.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/domain/Servico.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/domain/Usuario.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/domain/UsuarioRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/services/AuthService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/services/CompositeUserDetailsService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/services/EmpresaService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/services/SecurityConfigurer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/services/UsuarioMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/services/UsuarioService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/test/java/com/sanittas/AuthServer/AuthServerApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../CRUD-Usuario" beforeDir="false" afterPath="$PROJECT_DIR$/../CRUD-Usuario" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$" beforeDir="false" afterPath="$PROJECT_DIR$" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/api/configuration/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/api/configuration/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/empresa/controller/EmpresaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/empresa/controller/EmpresaController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/br/com/sanittas/app/AppApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/br/com/sanittas/app/AppApplicationTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +122,7 @@
       <recent name="br.com.sanittas.app.model" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.AppApplicationTests">
+  <component name="RunManager" selected="Spring Boot.AppApplication">
     <configuration name="AppApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="app" />
       <extension name="coverage">
@@ -165,7 +198,7 @@
       <workItem from="1715628898189" duration="2911000" />
       <workItem from="1715645873949" duration="3292000" />
       <workItem from="1715690778519" duration="5768000" />
-      <workItem from="1715867243992" duration="1130000" />
+      <workItem from="1715867243992" duration="7030000" />
     </task>
     <servers />
   </component>

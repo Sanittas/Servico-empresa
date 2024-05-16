@@ -15,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/empresas")
 @Slf4j
 @AllArgsConstructor
 public class EmpresaController {

@@ -41,9 +41,6 @@
       <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/resources/application.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/test/java/com/sanittas/AuthServer/AuthServerApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../CRUD-Usuario" beforeDir="false" afterPath="$PROJECT_DIR$/../CRUD-Usuario" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/api/configuration/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/api/configuration/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/empresa/controller/EmpresaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/empresa/controller/EmpresaController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -198,7 +195,7 @@
       <workItem from="1715628898189" duration="2911000" />
       <workItem from="1715645873949" duration="3292000" />
       <workItem from="1715690778519" duration="5768000" />
-      <workItem from="1715867243992" duration="7030000" />
+      <workItem from="1715867243992" duration="7531000" />
     </task>
     <servers />
   </component>

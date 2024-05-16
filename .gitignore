@@ -1,24 +1,35 @@
-# Compiled class file
+# Arquivos temporários
 *.class
-
-# Log file
 *.log
+*.swp
 
-# BlueJ files
-*.ctxt
+# Arquivos de compilação
+target/
+build/
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Arquivos de dependência
+.mvn/
+# Se você estiver usando Maven Wrapper (mvnw)
+!/.mvn/wrapper/maven-wrapper.jar
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+# Arquivos de configuração específicos do IDE (Eclipse, IntelliJ, etc.)
+.classpath
+.project
+.settings/
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+# Logs e arquivos de configuração do Spring Boot
+logs/
+spring-boot-*.log
+
+# Arquivos gerados pelo IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Arquivos de configuração do Visual Studio Code (opcional, se você estiver usando o VS Code)
+.vscode/
+
+# Arquivos de configuração do Eclipse (opcional, se você estiver usando o Eclipse)
+.settings/
+bin/

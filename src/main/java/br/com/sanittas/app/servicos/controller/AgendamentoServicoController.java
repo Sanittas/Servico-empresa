@@ -19,7 +19,6 @@ import java.util.List;
 @RequestMapping("/agendamentos")
 @Slf4j
 @AllArgsConstructor
-@CrossOrigin(origins = "*")
 public class AgendamentoServicoController {
 
     private final AgendamentoServicoServices services;

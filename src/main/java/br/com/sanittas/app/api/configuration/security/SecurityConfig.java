@@ -55,8 +55,7 @@ public class SecurityConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://3.228.35.151")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("Content-Type", "Authorization")
-                .allowCredentials(true);
+                .allowedHeaders("Content-Type", "Authorization");
     }
 
     private JwtAuthenticationConverter jwtAuthenticationConverter() {

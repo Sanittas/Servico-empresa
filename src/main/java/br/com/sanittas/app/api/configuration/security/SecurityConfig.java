@@ -52,6 +52,16 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("Content-Type", "Authorization")
                 .allowCredentials(true);
+        registry.addMapping("/**")
+                .allowedOriginPatterns("http://3.228.35.151")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("Content-Type", "Authorization")
+                .allowCredentials(true);
+        registry.addMapping("/**")
+                .allowedOriginPatterns("http://52.72.202.136")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("Content-Type", "Authorization")
+                .allowCredentials(true);
     }
 
     private JwtAuthenticationConverter jwtAuthenticationConverter() {

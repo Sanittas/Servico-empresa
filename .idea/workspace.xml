@@ -9,10 +9,6 @@
       <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/config/WebConfig.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/resources/application.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../CRUD-Usuario" beforeDir="false" afterPath="$PROJECT_DIR$/../CRUD-Usuario" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$" beforeDir="false" afterPath="$PROJECT_DIR$" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/api/configuration/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/api/configuration/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +167,7 @@
       <workItem from="1715973634334" duration="4184000" />
       <workItem from="1716307353188" duration="2984000" />
       <workItem from="1716503084616" duration="1464000" />
-      <workItem from="1716504936917" duration="357000" />
+      <workItem from="1716504936917" duration="627000" />
     </task>
     <servers />
   </component>

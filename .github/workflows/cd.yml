@@ -12,5 +12,7 @@ jobs:
         run: docker pull ogabrielsantoos/backend:service-empresas
       - name: Stop Docker Container
         run: docker stop empresas || true
+      - name: Remover container
+        run: docker rm empresas
       - name: Run Docker Container
         run: docker run --name empresas -d -p 8080:8080 ogabrielsantoos/backend:service-empresas

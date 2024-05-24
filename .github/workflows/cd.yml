@@ -1,0 +1,16 @@
+name: ci-cd
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Pull Docker image
+        run: docker pull ogabrielsantoos/backend:service-empresas
+      - name: Stop Docker Container
+        run: docker stop empresas || true
+      - name: Run Docker Container
+        run: docker run --name empresas -d -p 8080:8080 ogabrielsantoos/backend:service-empresas

@@ -9,6 +9,8 @@
       <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/config/WebConfig.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/resources/application.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../CRUD-Usuario" beforeDir="false" afterPath="$PROJECT_DIR$/../CRUD-Usuario" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,6 +170,7 @@
       <workItem from="1716307353188" duration="2984000" />
       <workItem from="1716503084616" duration="1464000" />
       <workItem from="1716504936917" duration="627000" />
+      <workItem from="1716588929253" duration="808000" />
     </task>
     <servers />
   </component>

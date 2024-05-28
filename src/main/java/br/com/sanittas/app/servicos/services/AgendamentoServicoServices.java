@@ -38,7 +38,7 @@ public class AgendamentoServicoServices {
         }
     }
 
-    public void cadastrar(AgendamentoCriacaoDto dados) {
+    public AgendamentoServico cadastrar(AgendamentoCriacaoDto dados) {
         Servico servico =
                 servicoRepository.findById(dados.getIdServico())
                         .orElseThrow(() -> new ResponseStatusException(
@@ -60,7 +60,7 @@ public class AgendamentoServicoServices {
                 .servico(servico)
                 .funcionario(funcionario)
                 .build();
-        repository.save(novoAgendamento);
+        return repository.save(novoAgendamento);
     }
 
     public void atualizar(Integer id, AgendamentoCriacaoDto dados) {

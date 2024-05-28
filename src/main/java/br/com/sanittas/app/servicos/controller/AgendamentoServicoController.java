@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,10 +38,21 @@ public class AgendamentoServicoController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Void> cadastrar(@RequestBody @Valid AgendamentoCriacaoDto dados) {
+    public ResponseEntity<AgendamentoServico> cadastrar(@RequestBody @Valid AgendamentoCriacaoDto dados) {
         try {
-            services.cadastrar(dados);
-            return ResponseEntity.status(201).build();
+            if (services.verificarDisponibilidade(
+                    new VerificarDisponibilidadeDto(
+                            dados.getIdServico(),
+                            dados.getIdFuncionario(),
+                            dados.getDataAgendamento())
+            ).equals("Indisponível")
+            ) {
+                throw new ResponseStatusException(
+                        HttpStatusCode.valueOf(400),
+                        "Agendamento indisponível");
+            }
+            var response = services.cadastrar(dados);
+            return ResponseEntity.status(201).body(response);
         } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar agendamento: " + e.getMessage());
             log.error(e.getReason());

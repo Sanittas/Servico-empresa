@@ -35,6 +35,7 @@ public class Empresa {
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<EnderecoEmpresa> enderecos = new ArrayList<>();
+    @JsonManagedReference
     @OneToMany(orphanRemoval = true)
     private List<Servico> servicos = new ArrayList<>();
 

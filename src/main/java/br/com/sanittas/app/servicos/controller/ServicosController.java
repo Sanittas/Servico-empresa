@@ -36,6 +36,23 @@ public class ServicosController {
         }
     }
 
+    @GetMapping("/servicos-empresa/{empresaId}")
+    public ResponseEntity<List<Servico>> getServicosPorEmpresa(@PathVariable Integer empresaId) {
+        try {
+            List<Servico> response = services.getServicosPorEmpresa(empresaId);
+            if (!response.isEmpty()) {
+                log.info("Servicos encontrados" + response);
+                return ResponseEntity.status(200).body(response);
+            }
+            log.info("Nenhum servico encontrado");
+            return ResponseEntity.status(204).body(response);
+        } catch (ResponseStatusException e) {
+            log.error("Erro ao buscar servicos: " + e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
+        }
+
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Servico> buscarPorId(@PathVariable Integer id) {
         try {
@@ -67,11 +84,11 @@ public class ServicosController {
 
     @EmpresaRole
     @PostMapping("/")
-    public ResponseEntity<Void> cadastrar(@RequestBody @Valid ServicoCriacaoDto dados) {
+    public ResponseEntity<Servico> cadastrar(@RequestBody @Valid ServicoCriacaoDto dados) {
         try {
-            services.cadastrar(dados);
+            Servico response = services.cadastrar(dados);
             log.info("Servico cadastrado com sucesso");
-            return ResponseEntity.status(201).build();
+            return ResponseEntity.status(201).body(response);
         } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar servico" + e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode(), e.getReason());

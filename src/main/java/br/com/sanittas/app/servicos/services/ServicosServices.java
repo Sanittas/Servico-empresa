@@ -1,5 +1,7 @@
 package br.com.sanittas.app.servicos.services;
 
+import br.com.sanittas.app.empresa.model.Empresa;
+import br.com.sanittas.app.empresa.repository.EmpresaRepository;
 import br.com.sanittas.app.servicos.model.Servico;
 import br.com.sanittas.app.servicos.repository.ServicoRepository;
 import br.com.sanittas.app.servicos.services.dto.ServicoCriacaoDto;
@@ -17,6 +19,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class ServicosServices {
+    private final EmpresaRepository empresaRepository;
     private final ServicoRepository servicoRepository;
 
     public List<Servico> listar() {
@@ -32,14 +35,16 @@ public class ServicosServices {
         return servicoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Servico não encontrado"));
     }
 
-    public void cadastrar(ServicoCriacaoDto dados) {
+    public Servico cadastrar(ServicoCriacaoDto dados) {
+        Empresa empresa = empresaRepository.findById(dados.getEmpresaId()).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Empresa não encontrada"));
         Servico novoServico = Servico.builder()
                 .descricao(dados.getDescricao())
                 .areaSaude(dados.getAreaSaude())
                 .valor(dados.getValor())
                 .duracaoEstimada(dados.getDuracaoEstimada())
+                .empresa(empresa)
                 .build();
-        servicoRepository.save(novoServico);
+        return servicoRepository.save(novoServico);
     }
 
     public void atualizar(Integer id, ServicoCriacaoDto dados) {
@@ -56,4 +61,7 @@ public class ServicosServices {
         servicoRepository.deleteById(id);
     }
 
+    public List<Servico> getServicosPorEmpresa(Integer empresaId) {
+        return servicoRepository.findByEmpresaId(empresaId);
+    }
 }

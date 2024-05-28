@@ -1,8 +1,12 @@
 package br.com.sanittas.app.pagamento.services;
 
+import br.com.sanittas.app.pagamento.model.Pagamento;
 import br.com.sanittas.app.pagamento.repository.PagamentoRepository;
 import br.com.sanittas.app.pagamento.services.dto.PagamentoReponse;
 import br.com.sanittas.app.pagamento.services.dto.PagamentoRequest;
+import br.com.sanittas.app.pagamento.services.dto.SalvarPagamentoDto;
+import br.com.sanittas.app.servicos.model.AgendamentoServico;
+import br.com.sanittas.app.servicos.repository.AgendamentoRepository;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.payment.PaymentClient;
@@ -11,9 +15,12 @@ import com.mercadopago.client.payment.PaymentPayerRequest;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.net.http.HttpClient;
@@ -25,10 +32,10 @@ import java.util.Map;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class PagamentoServices {
-
-    @Autowired
-    private PagamentoRepository repository;
+    private final PagamentoRepository repository;
+    private final AgendamentoRepository agendamentoRepository;
 
     public PagamentoReponse criarPagamento(PagamentoRequest pagamentoRequest) throws MPException, MPApiException {
 
@@ -66,4 +73,18 @@ public class PagamentoServices {
     }
 
 
+    public Pagamento salvarPagamento(SalvarPagamentoDto pagamento) {
+        AgendamentoServico agendamento =
+                agendamentoRepository.findById(pagamento.idAgendamento()).orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Agendamento não encontrado"));
+        Pagamento novoPagamento = Pagamento.builder()
+                .dataPagamento(pagamento.dataPagamento())
+                .valor(pagamento.valor())
+                .build();
+        agendamento.setPagamento(novoPagamento);
+        repository.save(novoPagamento);
+        agendamentoRepository.save(agendamento);
+        return novoPagamento;
+    }
 }

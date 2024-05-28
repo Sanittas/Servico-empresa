@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ServicoRepository extends JpaRepository<Servico, Integer> {
+    List<Servico> findByEmpresaId(Integer empresaId);
 //    @Query("""
 //            select s from Servico s
 //            join fetch s.servicoEmpresa se

@@ -1,8 +1,8 @@
-name: ci-cd
+name: ci
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build:
@@ -29,3 +29,27 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: push no docker hub
         run: docker push ogabrielsantoos/backend:service-empresas
+  deploy_instance_1:
+    needs: build
+    runs-on: [ self-hosted, empresas_1 ]
+    steps:
+      - name: Pull Docker image
+        run: docker pull ogabrielsantoos/backend:service-empresas
+      - name: Stop Docker Container
+        run: docker stop empresas || true
+      - name: Remover container
+        run: docker rm empresas || true
+      - name: Run Docker Container
+        run: docker run --name empresas -d -p 8080:8080 ogabrielsantoos/backend:service-empresas
+  deploy_instance_2:
+    needs: build
+    runs-on: [ self-hosted, empresas_2 ]
+    steps:
+      - name: Pull Docker image
+        run: docker pull ogabrielsantoos/backend:service-empresas
+      - name: Stop Docker Container
+        run: docker stop empresas || true
+      - name: Remover container
+        run: docker rm empresas || true
+      - name: Run Docker Container
+        run: docker run --name empresas -d -p 8080:8080 ogabrielsantoos/backend:service-empresas

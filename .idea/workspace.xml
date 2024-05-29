@@ -9,13 +9,8 @@
       <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/config/WebConfig.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/resources/application.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../CRUD-Usuario" beforeDir="false" afterPath="$PROJECT_DIR$/../CRUD-Usuario" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CRUD-Usuario/.github/workflows/cd.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../CRUD-Usuario/.github/workflows/cd.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CRUD-Usuario/.github/workflows/ci-cd.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../CRUD-Usuario/.github/workflows/ci-cd.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$" beforeDir="false" afterPath="$PROJECT_DIR$" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/ci.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +83,7 @@
       <recent name="br.com.sanittas.app.servicos.services" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\gabri\OneDrive\Documentos\Aplicacao\Servico-empresa\.github\workflows" />
       <recent name="C:\Users\gabri\OneDrive\Documentos\Aplicacao\Servico-empresa\src\main\resources" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -197,7 +193,7 @@
       <workItem from="1716588929253" duration="808000" />
       <workItem from="1716843703995" duration="1737000" />
       <workItem from="1716906657075" duration="10196000" />
-      <workItem from="1717016492015" duration="3727000" />
+      <workItem from="1717016492015" duration="4903000" />
     </task>
     <servers />
   </component>

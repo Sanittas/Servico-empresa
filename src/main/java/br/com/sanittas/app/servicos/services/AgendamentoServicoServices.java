@@ -89,8 +89,8 @@ public class AgendamentoServicoServices {
         Servico servico = servicoRepository.findById(dados.idServico())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Serviço não encontrado"));
         List<AgendamentoServico> agendamentos =
-                repository.findAllByDay(dados.dataHoraAgendamento().minusMinutes(31),
-                        dados.dataHoraAgendamento().plusMinutes(31),
+                repository.findAllByDay(dados.dataHoraAgendamento().minusMinutes(61),
+                        dados.dataHoraAgendamento().plusMinutes(61),
                         servico,
                         funcionario);
         return agendamentos.isEmpty() ? "Disponível": "Indisponível";

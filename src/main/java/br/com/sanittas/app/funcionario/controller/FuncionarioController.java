@@ -151,7 +151,6 @@ public class FuncionarioController {
         }
     }
 
-    @EmpresaRole
     @GetMapping("/empresa/{id}")
     public ResponseEntity<List<Funcionario>> listarPorEmpresa(@PathVariable Integer id) {
         try {

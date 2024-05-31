@@ -41,7 +41,7 @@ public class Funcionario {
     @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<AgendamentoServico> agendamentos = new ArrayList<>();
-    @OneToMany(mappedBy = "fkFuncionario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ContatoFuncionario> contatos = new ArrayList<>();
 
     public void addCompetencia(Competencia competencia) {
@@ -51,6 +51,6 @@ public class Funcionario {
 
     public void addContato(ContatoFuncionario contato) {
         this.contatos.add(contato);
-        contato.setFkFuncionario(this);
+        contato.setFuncionario(this);
     }
 }

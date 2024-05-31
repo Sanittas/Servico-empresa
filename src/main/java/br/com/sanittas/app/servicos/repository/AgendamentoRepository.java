@@ -23,4 +23,6 @@ public interface AgendamentoRepository extends JpaRepository<AgendamentoServico,
                                           @Param("dataFim") LocalDateTime dataFim,
                                           @Param("servico") Servico servico,
                                           @Param("funcionario") Funcionario funcionario);
+    @Query("SELECT a FROM AgendamentoServico a WHERE a.funcionario.id = :funcionarioId AND DATE(a.dataHoraAgendamento) = :data")
+    List<AgendamentoServico> findByFuncionarioAndDate(Integer funcionarioId, LocalDate data);
 }

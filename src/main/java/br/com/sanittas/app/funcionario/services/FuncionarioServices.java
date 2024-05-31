@@ -1,9 +1,11 @@
 package br.com.sanittas.app.funcionario.services;
 
+import br.com.sanittas.app.funcionario.model.AreaSaude;
 import br.com.sanittas.app.funcionario.model.Competencia;
 import br.com.sanittas.app.funcionario.model.ContatoFuncionario;
 import br.com.sanittas.app.empresa.model.Empresa;
 import br.com.sanittas.app.funcionario.model.Funcionario;
+import br.com.sanittas.app.funcionario.repository.AreaSaudeRepository;
 import br.com.sanittas.app.funcionario.repository.CompetenciaRepository;
 import br.com.sanittas.app.funcionario.repository.ContatoFuncionarioRepository;
 import br.com.sanittas.app.empresa.repository.EmpresaRepository;
@@ -28,6 +30,7 @@ public class FuncionarioServices {
     private final FuncionarioRepository repository;
     private final EmpresaRepository empresaRepository;
     private final ContatoFuncionarioRepository contatoFuncionarioRepository;
+    private final AreaSaudeRepository areaSaudeRepository;
 
     public List<Funcionario> listaFuncionarios() {
         var funcionarios = repository.findAll();
@@ -63,13 +66,14 @@ public class FuncionarioServices {
     }
 
     public Funcionario buscarPorId(Integer id) {
-            var funcionario = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            return funcionario;
+        var funcionario = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return funcionario;
     }
 
-    public void cadastrar(@Valid FuncionarioCriacaoDto funcionarioCriacaoDto) {
+    public Funcionario cadastrar(@Valid FuncionarioCriacaoDto funcionarioCriacaoDto) {
         final Empresa empresa =
-                empresaRepository.findById(funcionarioCriacaoDto.getEmpresaId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                empresaRepository.findById(funcionarioCriacaoDto.getEmpresaId())
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (repository.existsByFuncional(funcionarioCriacaoDto.getFuncional())) {
             log.error("Funcional já cadastrado");
             throw new ResponseStatusException(HttpStatus.CONFLICT);
@@ -85,6 +89,10 @@ public class FuncionarioServices {
         final Funcionario novoFuncionario = FuncionarioMapper.of(funcionarioCriacaoDto);
         novoFuncionario.setFkEmpresa(empresa);
         final Funcionario funcSalvo = repository.save(novoFuncionario);
+        if (verificarEspecializacao(funcionarioCriacaoDto.getEspecializacao())) {
+            log.error("Especialização inválida");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        };
         final Competencia competencia = Competencia.builder()
                 .especializacao(funcionarioCriacaoDto.getEspecializacao())
                 .registroAtuacao(funcionarioCriacaoDto.getRegistroAtuacao())
@@ -96,13 +104,23 @@ public class FuncionarioServices {
         funcSalvo.addCompetencia(competencia);
         contatoFuncionarioRepository.save(contatoFuncionario);
         competenciaRepository.save(competencia);
-        repository.save(funcSalvo);
+        return repository.save(funcSalvo);
+    }
+
+    private boolean verificarEspecializacao(String especializacao) {
+        List<AreaSaude> areaSaude = areaSaudeRepository.findAll();
+        for (AreaSaude area : areaSaude) {
+            if (area.getEspecializacao().equals(especializacao)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public List<Funcionario> listaFuncionariosPorEmpresa(Integer idEmpresa) {
-            Empresa empresa = empresaRepository.findById(idEmpresa).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            List<Funcionario> funcionarios = repository.findAllByfkEmpresa(empresa);
-            return funcionarios;
+        Empresa empresa = empresaRepository.findById(idEmpresa).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        List<Funcionario> funcionarios = repository.findAllByfkEmpresa(empresa);
+        return funcionarios;
     }
 
     public Integer buscarPorCpf(String cpf) {
@@ -119,6 +137,10 @@ public class FuncionarioServices {
     public List<ContatoFuncionario> listaContatoFuncionario(Integer id) {
         final Funcionario funcionario =
                 repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return contatoFuncionarioRepository.findAllByFkFuncionario_Id(id);
+        return contatoFuncionarioRepository.findAllByFuncionario_Id(id);
+    }
+
+    public List<Funcionario> listaFuncionariosPorServico(String especializacao) {
+        return repository.findByServico(especializacao);
     }
 }

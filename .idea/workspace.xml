@@ -9,8 +9,25 @@
       <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/java/com/sanittas/AuthServer/config/WebConfig.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../AuthServer/app/src/main/resources/application.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../CRUD-Usuario" beforeDir="false" afterPath="$PROJECT_DIR$/../CRUD-Usuario" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$" beforeDir="false" afterPath="$PROJECT_DIR$" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/empresa/model/Empresa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/empresa/model/Empresa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/empresa/services/EmpresaServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/empresa/services/EmpresaServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/empresa/services/dto/ListaEmpresaDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/empresa/services/dto/ListaEmpresaDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/controller/FuncionarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/controller/FuncionarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/model/ContatoFuncionario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/model/ContatoFuncionario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/model/Funcionario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/model/Funcionario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/repository/ContatoFuncionarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/repository/ContatoFuncionarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/repository/FuncionarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/repository/FuncionarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/services/FuncionarioServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/services/FuncionarioServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/controller/AgendamentoServicoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/controller/AgendamentoServicoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/controller/ServicosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/controller/ServicosController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/model/AgendamentoServico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/model/AgendamentoServico.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/model/Servico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/model/Servico.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/repository/AgendamentoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/repository/AgendamentoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/services/ServicosServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/services/ServicosServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-dev.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,9 +38,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="AnnotationType" />
+        <option value="Record" />
         <option value="Class" />
         <option value="Interface" />
-        <option value="Record" />
       </list>
     </option>
   </component>
@@ -76,11 +93,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
-      <recent name="br.com.sanittas.app.pagamento.services.dto" />
-      <recent name="br.com.sanittas.app.empresa.services.dto" />
-      <recent name="br.com.sanittas.app.empresa.model" />
-      <recent name="br.com.sanittas.app.servicos.services.dto" />
+      <recent name="br.com.sanittas.app.servicos.repository" />
       <recent name="br.com.sanittas.app.servicos.services" />
+      <recent name="br.com.sanittas.app.servicos.services.dto" />
+      <recent name="br.com.sanittas.app.funcionario.services.dto" />
+      <recent name="br.com.sanittas.app.pagamento.services.dto" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\gabri\OneDrive\Documentos\Aplicacao\Servico-empresa\.github\workflows" />
@@ -94,7 +111,7 @@
       <recent name="br.com.sanittas.app.model" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.Teste">
+  <component name="RunManager" selected="Spring Boot.Desenvolvimento">
     <configuration name="AppApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="app" />
       <extension name="coverage">
@@ -193,7 +210,8 @@
       <workItem from="1716588929253" duration="808000" />
       <workItem from="1716843703995" duration="1737000" />
       <workItem from="1716906657075" duration="10196000" />
-      <workItem from="1717016492015" duration="4903000" />
+      <workItem from="1717016492015" duration="5911000" />
+      <workItem from="1717168629165" duration="15815000" />
     </task>
     <servers />
   </component>
@@ -212,24 +230,9 @@
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/controller/AgendamentoServicoController.java</url>
-          <line>65</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/controller/AgendamentoServicoController.java</url>
-          <line>66</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/controller/AgendamentoServicoController.java</url>
-          <line>67</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/sanittas/app/servicos/controller/AgendamentoServicoController.java</url>
-          <line>69</line>
-          <option name="timeStamp" value="6" />
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/sanittas/app/funcionario/services/FuncionarioServices.java</url>
+          <line>143</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

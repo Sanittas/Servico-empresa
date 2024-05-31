@@ -18,7 +18,7 @@ jobs:
           cache: maven
       - name: Teste com maven
         run: mvn clean test -Ptest
-      - name: Build
+      - name: Build com maven
         run: mvn clean package -Pprod
       - name: Build the docker image
         run: docker build -t ogabrielsantoos/backend:service-empresas .

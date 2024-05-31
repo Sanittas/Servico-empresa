@@ -24,8 +24,7 @@ public class Servico {
     private Double valor;
     private Integer duracaoEstimada;
     @ManyToOne
+    @JoinColumn(name = "id_empresa")
     @JsonBackReference
     private Empresa empresa;
-//    @OneToMany(mappedBy = "servico", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<AgendamentoServico> agendamentos;
 }

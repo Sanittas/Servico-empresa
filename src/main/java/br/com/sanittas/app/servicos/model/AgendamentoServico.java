@@ -33,4 +33,6 @@ public class AgendamentoServico {
     private Servico servico;
     @ManyToOne
     private Pagamento pagamento;
+    @OneToOne(mappedBy = "agendamentoServico")
+    private Avaliacao avaliacao;
 }

@@ -20,7 +20,7 @@ public class ContatoFuncionario {
     @ManyToOne
     @JoinColumn(name = "id_funcionario")
     @JsonBackReference
-    private Funcionario fkFuncionario;
+    private Funcionario funcionario;
     @Column(name = "num_cel")
     private String tel;
     @Email

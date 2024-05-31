@@ -4,10 +4,12 @@ import br.com.sanittas.app.api.configuration.security.roles.EmpresaRole;
 import br.com.sanittas.app.funcionario.model.ContatoFuncionario;
 import br.com.sanittas.app.funcionario.model.Funcionario;
 import br.com.sanittas.app.funcionario.services.FuncionarioServices;
+import br.com.sanittas.app.funcionario.services.dto.EspecializacaoDto;
 import br.com.sanittas.app.funcionario.services.dto.FuncionarioCriacaoDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,6 +28,22 @@ public class FuncionarioController {
     public ResponseEntity<List<Funcionario>> listar() {
         try {
             var response = services.listaFuncionarios();
+            if (!response.isEmpty()) {
+                log.info("Funcionarios encontrados" + response);
+                return ResponseEntity.status(200).body(response);
+            }
+            log.info("Nenhum funcionario encontrado");
+            return ResponseEntity.status(204).body(response);
+        } catch (ResponseStatusException e) {
+            log.error("Erro ao buscar funcionarios", e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
+        }
+    }
+
+    @GetMapping("/servico")
+    public ResponseEntity<List<Funcionario>> listarFuncionariosPorServico(@RequestBody @Valid EspecializacaoDto especializacao) {
+        try {
+            List<Funcionario> response = services.listaFuncionariosPorServico(especializacao.especializacao());
             if (!response.isEmpty()) {
                 log.info("Funcionarios encontrados" + response);
                 return ResponseEntity.status(200).body(response);
@@ -79,11 +97,11 @@ public class FuncionarioController {
 
     @EmpresaRole
     @PostMapping("/")
-    public ResponseEntity<Void> cadastrar(@RequestBody @Valid FuncionarioCriacaoDto dados) {
+    public ResponseEntity<Funcionario> cadastrar(@RequestBody @Valid FuncionarioCriacaoDto dados) {
         try {
-            services.cadastrar(dados);
+            Funcionario func = services.cadastrar(dados);
             log.info("Funcionario cadastrado");
-            return ResponseEntity.status(201).build();
+            return ResponseEntity.status(201).body(func);
         } catch (ResponseStatusException e) {
             log.error("Erro ao cadastrar funcionario. Exceção:" + e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode(), e.getReason());

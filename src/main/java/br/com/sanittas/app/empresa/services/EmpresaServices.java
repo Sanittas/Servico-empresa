@@ -5,6 +5,7 @@ import br.com.sanittas.app.empresa.model.EnderecoEmpresa;
 import br.com.sanittas.app.empresa.repository.EmpresaRepository;
 import br.com.sanittas.app.empresa.services.dto.*;
 import br.com.sanittas.app.empresa.services.dto.ListaEndereco;
+import br.com.sanittas.app.servicos.repository.AvaliacaoRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.*;
 @AllArgsConstructor
 public class EmpresaServices {
     private final EmpresaRepository repository;
+    private final AvaliacaoRepository avaliacaoRepository;
     private final PasswordEncoder passwordEncoder;
 
     public List<ListaEmpresaDto> listarEmpresas() {
@@ -32,12 +34,17 @@ public class EmpresaServices {
                     empresa.getId(),
                     empresa.getRazaoSocial(),
                     empresa.getCnpj(),
+                    calcularAvaliacao(empresa),
                     listaEnderecos
             );
             listaEmpresaDtos.add(empresaDto);
         }
         log.info("Empresas listadas com sucesso.");
         return listaEmpresaDtos;
+    }
+
+    private Double calcularAvaliacao(Empresa empresa) {
+        return avaliacaoRepository.calcularAvaliacao(empresa.getId());
     }
 
     public Empresa listarEmpresaPorId(Integer id) {

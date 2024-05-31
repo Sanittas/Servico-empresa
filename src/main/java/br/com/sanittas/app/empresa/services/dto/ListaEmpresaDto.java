@@ -6,6 +6,7 @@ public record ListaEmpresaDto(
         Integer id,
         String razaoSocial,
         String cnpj,
+        Double avaliacao,
         List<ListaEndereco> enderecos
 ) {
 }

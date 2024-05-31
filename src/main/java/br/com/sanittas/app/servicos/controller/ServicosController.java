@@ -3,6 +3,7 @@ package br.com.sanittas.app.servicos.controller;
 import br.com.sanittas.app.api.configuration.security.roles.EmpresaRole;
 import br.com.sanittas.app.servicos.model.Servico;
 import br.com.sanittas.app.servicos.services.ServicosServices;
+import br.com.sanittas.app.servicos.services.dto.AgendaFuncionarioDto;
 import br.com.sanittas.app.servicos.services.dto.ServicoCriacaoDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,22 @@ public class ServicosController {
             return ResponseEntity.status(204).body(response);
         } catch (ResponseStatusException e) {
             log.error("Erro ao buscar servicos: " + e.getLocalizedMessage());
+            throw new ResponseStatusException(e.getStatusCode(), e.getReason());
+        }
+    }
+
+    @GetMapping("/agenda-funcionario")
+    public ResponseEntity<List<String>> listarAgendaFuncionario(@RequestBody @Valid AgendaFuncionarioDto dados) {
+        try {
+            List<String> response = services.listarAgendaFuncionario(dados);
+            if (!response.isEmpty()) {
+                log.info("Agenda de funcionarios encontrada" + response);
+                return ResponseEntity.status(200).body(response);
+            }
+            log.info("Nenhuma agenda de funcionario encontrada");
+            return ResponseEntity.status(204).body(response);
+        } catch (ResponseStatusException e) {
+            log.error("Erro ao buscar agenda de funcionarios: " + e.getLocalizedMessage());
             throw new ResponseStatusException(e.getStatusCode(), e.getReason());
         }
     }

@@ -27,7 +27,7 @@ public class Empresa {
     private String razaoSocial;
     @CNPJ
     private String cnpj;
-    @NotBlank @Size(min = 8)
+    @NotBlank @Size(min = 8) @JsonIgnore
     private String senha;
     @Email @Column(unique = true)
     private String email;
@@ -36,6 +36,7 @@ public class Empresa {
     @JsonIgnore
     private List<EnderecoEmpresa> enderecos = new ArrayList<>();
     @JsonManagedReference
+    @JoinColumn(name = "id_servico")
     @OneToMany(orphanRemoval = true)
     private List<Servico> servicos = new ArrayList<>();
 

@@ -10,5 +10,5 @@ import java.util.List;
 public interface ContatoFuncionarioRepository extends JpaRepository<ContatoFuncionario, Integer> {
     boolean existsByEmail(String email);
 
-    List<ContatoFuncionario> findAllByFkFuncionario_Id(Integer id);
+    List<ContatoFuncionario> findAllByFuncionario_Id(Integer id);
 }

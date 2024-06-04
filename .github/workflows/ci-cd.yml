@@ -16,8 +16,6 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: maven
-      - name: Teste com maven
-        run: mvn clean test -Ptest
       - name: Build com maven
         run: mvn clean package -Pprod
       - name: Build the docker image

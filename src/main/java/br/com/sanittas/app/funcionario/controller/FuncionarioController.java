@@ -40,7 +40,7 @@ public class FuncionarioController {
         }
     }
 
-    @GetMapping("/servico")
+    @PostMapping("/servico")
     public ResponseEntity<List<Funcionario>> listarFuncionariosPorServico(@RequestBody @Valid EspecializacaoDto especializacao) {
         try {
             List<Funcionario> response = services.listaFuncionariosPorServico(especializacao.especializacao());
